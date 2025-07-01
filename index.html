@@ -2501,7 +2501,7 @@ Thông tin về Studio Dự Án Người Việt:
 
                 try {
                     const payload = { contents: chatHistory };
-                    const apiKey = ""; // If you want to use models other than gemini-2.0-flash or imagen-3.0-generate-002, provide an API key here. Otherwise, leave this as-is.
+                    const apiKey = "AIzaSyAOfYgfODkmGT79sahwORK1sViMiJDh3Lw"; // Updated API Key
                     const apiUrl = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=${apiKey}`;
 
                     const response = await fetch(apiUrl, {
@@ -2513,7 +2513,7 @@ Thông tin về Studio Dự Án Người Việt:
                     if (!response.ok) {
                         const errorData = await response.json();
                         console.error('API Error:', errorData);
-                        appendMessage('ai', 'Xin lỗi, tớ không thể trả lời lúc này. Vui lòng thử lại sau. 😥', gaouGaouAvatarUrl);
+                        appendMessage('ai', `Xin lỗi, tớ không thể trả lời lúc này. Lỗi: ${errorData.error ? errorData.error.message : 'Không xác định'}. Vui lòng thử lại sau. 😥`, gaouGaouAvatarUrl);
                         return;
                     }
 
@@ -2577,7 +2577,7 @@ Thông tin về Studio Dự Án Người Việt:
                     }
                 } catch (error) {
                     console.error('Fetch Error:', error);
-                    appendMessage('ai', 'Đã xảy ra lỗi khi kết nối với AI. Vui lòng kiểm tra kết nối mạng của bạn. 📶', gaouGaouAvatarUrl);
+                    appendMessage('ai', `Đã xảy ra lỗi khi kết nối với AI: ${error.message}. Vui lòng kiểm tra kết nối mạng của bạn. 📶`, gaouGaouAvatarUrl);
                     isWaitingForAIResponse = false; // Error, not waiting
                     // Manually restart mic if live chat is active and error
                     if (isLiveChatActive && recognition && recognition.readyState !== SpeechRecognition.RECORDING && recognition.readyState !== SpeechRecognition.CONNECTING) {
@@ -2587,7 +2587,7 @@ Thông tin về Studio Dự Án Người Việt:
                             micToggleBtn.classList.add('active');
                         } catch (e) {
                             console.error("Error restarting recognition after AI response error:", e);
-                            spamWarning.textContent = "Không thể bật lại mic. Vui lòng thử lại Live Chat. �";
+                            spamWarning.textContent = "Không thể bật lại mic. Vui lòng thử lại Live Chat. 🔇";
                             spamWarning.style.display = 'block';
                             setTimeout(() => spamWarning.style.display = 'none', spamCooldown * 3);
                         }
@@ -2611,4 +2611,3 @@ Thông tin về Studio Dự Án Người Việt:
 </body>
 
 </html>
-�
