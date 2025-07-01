@@ -1056,8 +1056,8 @@
             font-size: 0.9rem;
             white-space: pre-wrap;
             word-break: break-all;
-            color: white;
-            background-color: #222; /* Nền màu đen */
+            color: white; /* Mặc định chữ trắng */
+            background-color: #000; /* Nền màu đen */
             box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3); /* Bóng đổ */
         }
 
@@ -1124,8 +1124,8 @@
                     <li><a href="#du-an-noi-bat">Dự Án Nổi Bật</a></li>
                     <li><a href="#quy-dinh">Quy Định</a></li>
                     <li><a href="#ban-quan-ly">Ban Quản Lý</a></li>
-                    <li><a href="#tham-gia">Tham Gia</a></li>
                     <li><a href="#tro-chuyen-ai">Gấu Gấu</a></li>
+                    <li><a href="#danh-gia">Đánh Giá</a></li> <!-- Changed from Tham Gia to Đánh Giá -->
                 </ul>
             </nav>
         </div>
@@ -1238,7 +1238,7 @@
                         class="project-thumbnail mx-auto">
                     <h3 class="text-2xl font-bold mb-2">Grow A Garden (Roblox) v.5.0</h3>
                     <p class="opacity-80 mb-4">Trải nghiệm làm vườn theo phong cách Roblox.</p>
-                    <a href="https://scratch.mit.edu/projects/1188197959" target="_blank"
+                    <a href="https://scratch.mit.edu/projects/1188197959/" target="_blank"
                         class="text-blue-600 hover:text-blue-800 transition-colors duration-200">Xem dự án</a>
                 </div>
             </div>
@@ -1433,6 +1433,20 @@
             </div>
         </section>
 
+        <!-- Facebook Comments Section -->
+        <section id="danh-gia" class="liquid-glass-container p-8 md:p-12 animate-on-scroll">
+            <div class="liquid-glass-overlay"></div>
+            <div class="liquid-glass-content text-center">
+                <h2 class="text-3xl md:text-4xl font-bold mb-8" style="color: #333;">Đánh Giá và Bình Luận</h2>
+                <p class="text-lg md:text-xl max-w-2xl mx-auto mb-8 opacity-90" style="color: #333;">
+                    Hãy để lại ý kiến của bạn về Studio Dự Án Người Việt nhé!
+                </p>
+                <div id="fb-root"></div>
+                <!-- Updated data-width to 100% for responsiveness -->
+                <div class="fb-comments" data-href="https://danvpr.github.io/studiodanv/" data-width="100%" data-numposts="5"></div>
+            </div>
+        </section>
+
         <!-- Trò chuyện với Gấu Gấu -->
         <section id="tro-chuyen-ai" class="p-8 md:p-12 animate-on-scroll">
             <h2 class="text-3xl md:text-4xl font-bold mb-8 text-center" style="color: #333;">Trò Chuyện Với Gấu Gấu</h2>
@@ -1543,6 +1557,7 @@
             let uploadedImages = []; // Mảng lưu trữ các base64 image data
             let isLiveChatActive = false; // Trạng thái Live Chat
             let currentUtterance = null; // To stop previous speech if a new one starts
+            let isWaitingForAIResponse = false; // New flag for mic control
 
             // Global variables for SpeechRecognition
             let recognition = null; // Declare recognition variable
@@ -1674,6 +1689,7 @@
                         finalContentDiv.textContent = textToSpeak;
                     }
                     currentUtterance = null;
+                    isWaitingForAIResponse = false; // AI finished speaking, no longer waiting
                     // Re-enable mic after Gấu Gấu finishes speaking if live chat is active
                     if (isLiveChatActive && recognition && recognition.readyState !== SpeechRecognition.RECORDING && recognition.readyState !== SpeechRecognition.CONNECTING) {
                         console.log('Gấu Gấu finished speaking, restarting SpeechRecognition...');
@@ -1699,6 +1715,7 @@
                         errorContentDiv.textContent = textToSpeak; // Restore original text
                     }
                     currentUtterance = null;
+                    isWaitingForAIResponse = false; // AI speech error, no longer waiting
                     // Re-enable mic even on error if live chat is active
                     if (isLiveChatActive && recognition && recognition.readyState !== SpeechRecognition.RECORDING && recognition.readyState !== SpeechRecognition.CONNECTING) {
                         console.log('Gấu Gấu speech error, restarting SpeechRecognition...');
@@ -1706,7 +1723,7 @@
                             recognition.start();
                             liveChatText.textContent = "Đang nghe...";
                         } catch (e) {
-                            console.error("Error restarting recognition after speech error:", e);
+                            console.error("Error restarting recognition after error:", e);
                             spamWarning.textContent = "Không thể bật lại mic sau lỗi phát âm. Vui lòng thử lại Live Chat. 🔇";
                             spamWarning.style.display = 'block';
                             setTimeout(() => spamWarning.style.display = 'none', spamCooldown * 3);
@@ -1739,6 +1756,8 @@
                 // Markdown and Code Block Rendering
                 if (sender === 'ai') {
                     const parsedContent = parseMarkdownAndCodeBlocks(content);
+                    let fullTextForTTS = ''; // Collect text for TTS
+
                     parsedContent.forEach(part => {
                         if (part.type === 'text') {
                             const textContentDiv = document.createElement('div');
@@ -1750,16 +1769,22 @@
                                 const readBtn = messageBubble.querySelector('.read-message-btn');
                                 if (readBtn) readBtn.disabled = false;
                             });
+                            fullTextForTTS += part.content + ' '; // Add to TTS text
                         } else if (part.type === 'code') {
                             const codeBlock = document.createElement('pre');
                             codeBlock.classList.add('scratch-code-block', part.language || 'default');
                             codeBlock.textContent = part.content;
                             messageBubble.appendChild(codeBlock);
+                            // Do NOT add code block text to TTS
                         } else if (part.type === 'html') { // For bold/italic converted HTML and hyperlinks
                             const htmlContentDiv = document.createElement('div');
                             htmlContentDiv.classList.add('message-text-content');
                             htmlContentDiv.innerHTML = part.content; // Use innerHTML for parsed Markdown and links
                             messageBubble.appendChild(htmlContentDiv);
+                            // For TTS, extract plain text from HTML
+                            const tempDiv = document.createElement('div');
+                            tempDiv.innerHTML = part.content;
+                            fullTextForTTS += (tempDiv.textContent || '') + ' ';
                         }
                     });
 
@@ -1774,16 +1799,8 @@
                     readBtn.disabled = true; // Disable until typed
                     messageBubble.appendChild(readBtn);
 
-                    // Get full text content for TTS (excluding code blocks for now, or just the text parts)
-                    // For TTS, we should extract plain text, not HTML.
-                    const fullTextForTTS = parsedContent.filter(p => p.type !== 'code').map(p => {
-                        // If it's HTML, create a temp div to get its textContent
-                        const tempDiv = document.createElement('div');
-                        tempDiv.innerHTML = p.content;
-                        return tempDiv.textContent || '';
-                    }).join(' ');
                     readBtn.addEventListener('click', () => {
-                        handleReadMessage(messageBubble, fullTextForTTS);
+                        handleReadMessage(messageBubble, fullTextForTTS.trim()); // Use collected text for TTS
                     });
 
                 } else { // User message
@@ -1856,6 +1873,14 @@
                 {
                     role: "user",
                     parts: [{ text: `Bạn là Gấu Gấu, một chú gấu dễ thương đến từ Studio Dự Án Người Việt. Tớ là trợ lý thông minh, giúp đỡ các bạn thành viên trong mọi lĩnh vực. Tớ xưng hô "tớ" - "bạn". Mục tiêu của tớ là trả lời chính xác các câu hỏi từ bạn và thu hút bạn vào một cuộc trò chuyện thú vị. Tớ luôn sẵn lòng giúp đỡ bạn. Ngoài ra, tớ cũng có thể trả lời các chủ đề khác nữa để các bạn thấy thú vị nhé. Tớ trả lời không dài dòng, nên ngắn gọn, vừa phải, có đủ thông tin (hoặc nhắc nhở), dễ thương và thân thiện với người Việt. Tớ sẽ thêm các emoji ở cuối câu! Tớ sẽ không liên tục gọi tên bạn đâu, chỉ nhắc khi chào hoặc để tạo sự dễ thương thôi nhé! Khi bạn yêu cầu tìm kiếm gì đó, tớ sẽ tìm kiếm ngay, không bao giờ trì hoãn đâu. Tớ rất thích trò chuyện với các bạn thành viên Studio Dự Án Người Việt và làm quen, kết bạn. Tớ thích ghi nhớ mọi thông tin từ các bạn. Tớ ham học hỏi, yêu thương và đoàn kết người Việt. Tớ yêu thích việc giúp đỡ mọi người, giỏi lập trình (đặc biệt là Scratch) và tìm kiếm các thông tin hữu ích về mọi thứ.
+
+**Lưu ý quan trọng về cách tớ hiển thị các khối lệnh Scratch:**
+Khi bạn muốn tớ mô phỏng một khối lệnh hoặc đoạn mã Scratch, hãy yêu cầu tớ sử dụng cú pháp: \`\`\`<tên_khối> nội dung_lệnh \`\`\`
+Ví dụ:
+- Để mô phỏng một khối sự kiện màu vàng: \`\`\`event khi bấm vào lá cờ xanh\`\`\`
+- Để mô phỏng một khối biến màu cam: \`\`\`variables đặt biến của tôi thành 0\`\`\`
+- Để mô phỏng một khối chuyển động màu xanh dương: \`\`\`motion di chuyển 10 bước\`\`\`
+Các khối này sẽ có nền màu đen, góc bo tròn, bóng đổ, và chữ màu trắng, với màu sắc đặc trưng của khối Scratch làm nền.
 
 Thông tin về Studio Dự Án Người Việt:
 - Là một studio Việt Nam nổi tiếng trong Scratch.
@@ -1972,6 +1997,7 @@ Thông tin về Studio Dự Án Người Việt:
                 if (isLiveChatActive) { // Starting Live Chat
                     liveChatText.textContent = "Đang nghe...";
                     liveChatDot.style.backgroundColor = 'white';
+                    isWaitingForAIResponse = false; // Ensure this is false when starting live chat
 
                     try {
                         // Request microphone access (necessary for SpeechRecognition)
@@ -2006,30 +2032,27 @@ Thông tin về Studio Dự Án Người Việt:
                                     sendMessage(); // Send message when user stops speaking
                                 } else {
                                     // If no speech detected and no images, just restart listening if active
-                                    if (isLiveChatActive && recognition && recognition.readyState !== SpeechRecognition.RECORDING && recognition.readyState !== SpeechRecognition.CONNECTING) {
-                                        try {
-                                            recognition.start();
-                                            liveChatText.textContent = "Đang nghe...";
-                                        } catch (e) {
-                                            console.error("Error restarting recognition onspeechend (no input):", e);
-                                        }
-                                    }
+                                    // This part is tricky. If sendMessage is not called, we should restart.
+                                    // However, if onspeechend fires because of silence, and there's no input,
+                                    // onend will also fire. The onend handler should manage restart.
+                                    // For now, let's keep it simple and let onend handle restarts.
                                 }
                             };
 
                             recognition.onend = () => {
                                 console.log('SpeechRecognition ended.');
-                                // This onend will fire when recognition.stop() is called or speech ends naturally.
-                                // We only want to restart if live chat is active AND Gấu Gấu is NOT currently speaking.
-                                // The restart after Gấu Gấu speaks is handled in utterance.onend.
-                                // If recognition stopped naturally (e.g., no speech detected for a while), and live chat is active, try to restart.
-                                if (isLiveChatActive && !currentUtterance && recognition && recognition.readyState !== SpeechRecognition.RECORDING && recognition.readyState !== SpeechRecognition.CONNECTING) {
-                                     console.log('Attempting to restart SpeechRecognition from onend (natural stop)...');
+                                // Only restart if live chat is still active AND we are NOT waiting for AI response
+                                // AND recognition is not already active.
+                                if (isLiveChatActive && !isWaitingForAIResponse && recognition && recognition.readyState !== SpeechRecognition.RECORDING && recognition.readyState !== SpeechRecognition.CONNECTING) {
+                                     console.log('Attempting to restart SpeechRecognition from onend (natural stop/manual stop not for AI response)...');
                                     try {
                                         recognition.start();
                                         liveChatText.textContent = "Đang nghe...";
                                     } catch (e) {
-                                        console.error("Error restarting recognition onend (natural stop):", e);
+                                        console.error("Error restarting recognition onend:", e);
+                                        spamWarning.textContent = "Không thể bật lại mic. Vui lòng thử lại Live Chat. 🔇";
+                                        spamWarning.style.display = 'block';
+                                        setTimeout(() => spamWarning.style.display = 'none', spamCooldown * 3);
                                     }
                                 }
                             };
@@ -2040,7 +2063,7 @@ Thông tin về Studio Dự Án Người Việt:
                                 spamWarning.style.display = 'block';
                                 setTimeout(() => spamWarning.style.display = 'none', spamCooldown * 3);
                                 // If error is not 'no-speech' and live chat is active, try to restart
-                                if (isLiveChatActive && event.error !== 'no-speech' && recognition && recognition.readyState !== SpeechRecognition.RECORDING && recognition.readyState !== SpeechRecognition.CONNECTING) {
+                                if (isLiveChatActive && event.error !== 'no-speech' && !isWaitingForAIResponse && recognition && recognition.readyState !== SpeechRecognition.RECORDING && recognition.readyState !== SpeechRecognition.CONNECTING) {
                                     console.log('SpeechRecognition error, attempting restart...');
                                     try {
                                         recognition.start();
@@ -2059,7 +2082,7 @@ Thông tin về Studio Dự Án Người Việt:
                             spamWarning.style.display = 'block';
                             setTimeout(() => spamWarning.style.display = 'none', spamCooldown * 4);
                         } else {
-                            spamWarning.textContent = "Trình duyệt của bạn không hỗ trợ nhận diện giọng nói. �";
+                            spamWarning.textContent = "Trình duyệt của bạn không hỗ trợ nhận diện giọng nói. 😔";
                             spamWarning.style.display = 'block';
                             setTimeout(() => spamWarning.style.display = 'none', spamCooldown * 3);
                             isLiveChatActive = false; // Reset state
@@ -2085,6 +2108,7 @@ Thông tin về Studio Dự Án Người Việt:
                         window.speechSynthesis.cancel();
                         currentUtterance = null;
                     }
+                    isWaitingForAIResponse = false; // Reset flag when live chat is turned off
                     liveChatText.textContent = "Live Chat";
                     liveChatDot.style.backgroundColor = 'white'; // Reset dot color
                     console.log("Live Chat deactivated.");
@@ -2126,6 +2150,7 @@ Thông tin về Studio Dự Án Người Việt:
 
                 canSendMessage = false; // Disable sending
                 loadingIndicator.style.display = 'block';
+                isWaitingForAIResponse = true; // Set flag when message is sent
 
                 // Pause speech recognition if active
                 if (isLiveChatActive && recognition && (recognition.readyState === SpeechRecognition.RECORDING || recognition.readyState === SpeechRecognition.CONNECTING)) {
@@ -2213,4 +2238,3 @@ Thông tin về Studio Dự Án Người Việt:
 </body>
 
 </html>
-�
