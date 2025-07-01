@@ -1144,7 +1144,7 @@
     </header>
 
     <!-- Nội dung trang web giới thiệu Studio Scratch -->
-    <main class="w-full max-w-6xl mx-auto p-4 md:p-8 space-y-12 z-20 mt-24 overflow-x-hidden">
+    <main class="w-full max-w-6xl mx-auto p-4 md:p-8 space-y-8 z-20 mt-16 overflow-x-hidden">
 
         <!-- Hero Section -->
         <section id="hero" class="liquid-glass-container p-8 md:p-12 text-center animate-on-scroll">
@@ -1472,7 +1472,7 @@
                                 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor"
                                     class="w-6 h-6">
                                     <path fill-rule="evenodd"
-                                        d="M1.5 6a2.25 2.25 0 012.25-2.25h16.5A2.25 0 0122.5 6v12a2.25 2.25 0 01-2.25 2.25H3.75A2.25 2.25 0 011.5 18V6zM3 16.06V18c0 .414.336.75.75.75h16.5A.75.75 0 0021 18v-1.94l-2.69-2.69a1.5 1.5 0 00-2.12 0l-.88.879.97.97a.75.75 0 11-1.06 1.06l-5.16-5.159a1.5 1.5 0 00-2.12 0L3 16.061zm10.125-7.81a1.125 1.125 0 112.25 0 1.125 1.125 0 01-2.25 0z"
+                                        d="M1.5 6a2.25 2.25 0 012.25-2.25h16.5A2.25 2.25 0 0122.5 6v12a2.25 2.25 0 01-2.25 2.25H3.75A2.25 2.25 0 011.5 18V6zM3 16.06V18c0 .414.336.75.75.75h16.5A.75.75 0 0021 18v-1.94l-2.69-2.69a1.5 1.5 0 00-2.12 0l-.88.879.97.97a.75.75 0 11-1.06 1.06l-5.16-5.159a1.5 1.5 0 00-2.12 0L3 16.061zm10.125-7.81a1.125 1.125 0 112.25 0 1.125 1.125 0 01-2.25 0z"
                                         clip-rule="evenodd" />
                                 </svg>
                                 <input type="file" id="imageUpload" multiple accept="image/*">
@@ -1593,6 +1593,7 @@
 
             // New function for handling speech and highlighting
             function handleReadMessage(messageBubbleElement, textToSpeak) {
+                console.log("Attempting to speak:", textToSpeak); // Log the text being spoken
                 // Stop any ongoing speech
                 if (currentUtterance) {
                     window.speechSynthesis.cancel();
@@ -2061,7 +2062,7 @@ Thông tin về Studio Dự Án Người Việt:
                                         liveChatText.textContent = "Đang nghe...";
                                     } catch (e) {
                                         console.error("Error restarting recognition onend:", e);
-                                        spamWarning.textContent = "Không thể bật lại mic. Vui lòng thử lại Live Chat. 🔇";
+                                        spamWarning.textContent = "Không thể bật lại mic. Vui lòng thử lại Live Chat. �";
                                         spamWarning.style.display = 'block';
                                         setTimeout(() => spamWarning.style.display = 'none', spamCooldown * 3);
                                     }
@@ -2220,7 +2221,12 @@ Thông tin về Studio Dự Án Người Việt:
                                 // Get the full text content from the message bubble for reading
                                 const aiResponseTextContent = Array.from(lastAiMessageBubble.querySelectorAll('.message-text-content, .scratch-code-block'))
                                     .map(el => el.textContent).join(' ');
-                                handleReadMessage(lastAiMessageBubble, aiResponseTextContent);
+                                // Ensure text content is not empty or just whitespace before attempting to speak
+                                if (aiResponseTextContent.trim().length > 0) {
+                                    handleReadMessage(lastAiMessageBubble, aiResponseTextContent);
+                                } else {
+                                    console.warn("AI response text content is empty, skipping speech synthesis.");
+                                }
                             }
                         }
 
@@ -2249,3 +2255,4 @@ Thông tin về Studio Dự Án Người Việt:
 </body>
 
 </html>
+�
