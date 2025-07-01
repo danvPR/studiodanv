@@ -16,9 +16,11 @@
             --outer-shadow-blur: 60px; /* Tăng độ mờ của bóng đổ bên ngoài */
         }
 
+        html,
         body {
             margin: 0;
-            width: 100vw;
+            padding: 0;
+            overflow-x: hidden; /* Loại bỏ thanh trượt ngang */
             min-height: 100vh;
             display: flex;
             flex-direction: column;
@@ -30,6 +32,7 @@
             position: relative;
             /* Đã bỏ animation chuyển màu nền */
         }
+
 
         /* Lớp container cho các phần tử có hiệu ứng Liquid Glass */
         .liquid-glass-container {
@@ -453,11 +456,13 @@
         .message-user .message-bubble {
             background-color: #3b82f6; /* Blue cho user */
             border-bottom-right-radius: 0.25rem;
+            text-align: right; /* Canh phải nội dung tin nhắn người dùng */
         }
 
         .message-ai .message-bubble {
             background-color: #10b981; /* Green cho AI */
             border-bottom-left-radius: 0.25rem;
+            text-align: left; /* Canh trái nội dung tin nhắn AI */
         }
 
         .chat-input-area {
@@ -543,7 +548,7 @@
         .image-upload-wrapper {
             position: relative;
             display: inline-block;
-            margin-left: 0.5rem; /* Khoảng cách với input text */
+            /* Đã bỏ margin-left để nó nằm sát các nút khác */
         }
 
         .image-upload-button input[type="file"] {
@@ -610,7 +615,7 @@
             transition: background-color 0.3s ease, transform 0.2s ease, box-shadow 0.3s ease;
             box-shadow: 0 4px 10px rgba(239, 68, 68, 0.3);
             flex-shrink: 0;
-            margin-left: 0.5rem; /* Khoảng cách với các nút khác */
+            /* Đã bỏ margin-left để nó nằm sát các nút khác */
             display: flex; /* Use flex to center dot and text */
             flex-direction: column;
             align-items: center;
@@ -791,7 +796,7 @@
                 </p>
             </div>
             <div class="split-half animate-slide-in-right">
-                <h3 class="text-3xl font-bold mb-4">Lời Khuyên Từ Thiên Tài</h3>
+                <h3 class="text-3xl font-bold mb-4">Sáng tạo...</h3>
                 <p class="text-2xl italic mb-4">
                     "Sáng tạo là sự thông minh có chứa đựng óc hài hước"
                 </p>
@@ -811,7 +816,7 @@
                 <div class="liquid-glass-content">
                     <img src="https://i.ibb.co/8LCN4NKX/1154145707-282x210.png" alt="Thumbnail Dead rails" class="project-thumbnail mx-auto">
                     <h3 class="text-2xl font-bold mb-2">⛰️ Dead rails</h3>
-                    <p class="opacity-80 mb-4">Một dự án Scratch sáng tạo và hấp dẫn.</p>
+                    <p class="opacity-80 mb-4">Một dự án Scratch sáng tạo với đường ray và thây ma.</p>
                     <a href="https://scratch.mit.edu/projects/1154145707/" target="_blank" class="text-blue-600 hover:text-blue-800 transition-colors duration-200">Xem dự án</a>
                 </div>
             </div>
@@ -820,7 +825,7 @@
                 <div class="liquid-glass-content">
                     <img src="https://i.ibb.co/b5Nc7sp3/PNG-2.png" alt="Thumbnail AI LÀ NGHÌN PHÚ" class="project-thumbnail mx-auto">
                     <h3 class="text-2xl font-bold mb-2">⛲️ AI LÀ NGHÌN PHÚ</h3>
-                    <p class="opacity-80 mb-4">Trò chơi đố vui trí tuệ với AI.</p>
+                    <p class="opacity-80 mb-4">Trò chơi đố vui trí tuệ đặc trưng trên truyền hình.</p>
                     <a href="https://scratch.mit.edu/projects/1067950299" target="_blank" class="text-blue-600 hover:text-blue-800 transition-colors duration-200">Xem dự án</a>
                 </div>
             </div>
@@ -847,7 +852,7 @@
                 <div class="liquid-glass-content">
                     <img src="https://i.ibb.co/4nRCCN9S/PNG-2.png" alt="Thumbnail Lootify V1.3" class="project-thumbnail mx-auto">
                     <h3 class="text-2xl font-bold mb-2">⚔️ Lootify V1.3 ☁(save and load)</h3>
-                    <p class="opacity-80 mb-4">Game phiêu lưu với tính năng lưu/tải.</p>
+                    <p class="opacity-80 mb-4">Game phiêu lưu đặc trưng thể loại mới.</p>
                     <a href="https://scratch.mit.edu/projects/1192996259/" target="_blank" class="text-blue-600 hover:text-blue-800 transition-colors duration-200">Xem dự án</a>
                 </div>
             </div>
@@ -1019,18 +1024,20 @@
                     <!-- Initial AI message will be dynamically added by JS -->
                 </div>
                 <div class="chat-input-area">
-                    <div class="image-upload-wrapper">
-                        <button class="image-upload-button">
-                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="w-6 h-6">
-                                <path fill-rule="evenodd" d="M1.5 6a2.25 2.25 0 012.25-2.25h16.5A2.25 2.25 0 0122.5 6v12a2.25 2.25 0 01-2.25 2.25H3.75A2.25 2.25 0 011.5 18V6zM3 16.06V18c0 .414.336.75.75.75h16.5A.75.75 0 0021 18v-1.94l-2.69-2.69a1.5 1.5 0 00-2.12 0l-.88.879.97.97a.75.75 0 11-1.06 1.06l-5.16-5.159a1.5 1.5 0 00-2.12 0L3 16.061zm10.125-7.81a1.125 1.125 0 112.25 0 1.125 1.125 0 01-2.25 0z" clip-rule="evenodd" />
-                            </svg>
-                            <input type="file" id="imageUpload" multiple accept="image/*">
+                    <div class="flex gap-2">
+                        <div class="image-upload-wrapper">
+                            <button class="image-upload-button">
+                                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="w-6 h-6">
+                                    <path fill-rule="evenodd" d="M1.5 6a2.25 2.25 0 012.25-2.25h16.5A2.25 2.25 0 0122.5 6v12a2.25 2.25 0 01-2.25 2.25H3.75A2.25 2.25 0 011.5 18V6zM3 16.06V18c0 .414.336.75.75.75h16.5A.75.75 0 0021 18v-1.94l-2.69-2.69a1.5 1.5 0 00-2.12 0l-.88.879.97.97a.75.75 0 11-1.06 1.06l-5.16-5.159a1.5 1.5 0 00-2.12 0L3 16.061zm10.125-7.81a1.125 1.125 0 112.25 0 1.125 1.125 0 01-2.25 0z" clip-rule="evenodd" />
+                                </svg>
+                                <input type="file" id="imageUpload" multiple accept="image/*">
+                            </button>
+                        </div>
+                        <button id="liveChatBtn" class="live-chat-button">
+                            <span class="dot"></span>
+                            <span class="text">Live Chat</span>
                         </button>
                     </div>
-                    <button id="liveChatBtn" class="live-chat-button">
-                        <span class="dot"></span>
-                        <span class="text">Live Chat</span>
-                    </button>
                     <input type="text" id="chatInput" placeholder="Nhập tin nhắn của bạn..." />
                     <button id="sendMessageBtn">
                         <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="w-6 h-6">
@@ -1115,6 +1122,10 @@
             let isLiveChatActive = false; // Trạng thái Live Chat
             let currentUtterance = null; // To stop previous speech if a new one starts
 
+            // Global variables for MediaRecorder
+            let mediaRecorder = null;
+            let audioChunks = [];
+
             // Hàm để gõ từng chữ một
             function typeMessage(element, text, callback = () => {}) {
                 let i = 0;
@@ -1139,36 +1150,59 @@
                     currentUtterance = null;
                 }
 
-                // Clear any previous highlights
-                messageBubbleElement.querySelectorAll('.highlight-word').forEach(span => {
-                    span.classList.remove('highlight-word');
+                // Clear any previous highlights from all bubbles
+                document.querySelectorAll('.highlight-word').forEach(span => {
+                    const parentBubble = span.closest('.message-bubble');
+                    if (parentBubble) {
+                        // Restore original text content of the parent bubble's text-content div
+                        const textContentDiv = parentBubble.querySelector('.message-text-content');
+                        if (textContentDiv) {
+                            textContentDiv.textContent = textToSpeak; // Restore to original text
+                        }
+                    }
                 });
 
-                // Re-render bubble with spans for highlighting
+
+                // Create a temporary div to parse the text with spans
+                const tempTextDiv = document.createElement('div');
+                tempTextDiv.id = `text-content-${messageBubbleElement.id}`; // Unique ID for text content div
+                tempTextDiv.classList.add('message-text-content'); // Add class for styling
+
                 // Split by words and keep spaces/punctuation as separate elements
-                // Regex: /\b\w+\b/g matches whole words, but we need to preserve non-word characters for accurate charIndex mapping
+                // Regex: /(\s+|[.,!?;:]+)/g matches one or more whitespace chars OR one punctuation char
                 const wordsAndSeparators = textToSpeak.split(/(\s+|[.,!?;:]+)/).filter(s => s.length > 0);
-                
+
                 let charIndexMap = []; // Map charIndex to word span ID
                 let currentOffset = 0;
                 let spanCounter = 0;
 
-                messageBubbleElement.innerHTML = wordsAndSeparators.map((part) => {
+                wordsAndSeparators.forEach((part) => {
                     if (/\S/.test(part)) { // If it's not just whitespace
-                        const spanId = `word-${messageBubbleElement.id || 'msg'}-${spanCounter++}`;
+                        const span = document.createElement('span');
+                        span.id = `word-${messageBubbleElement.id}-${spanCounter++}`;
+                        span.textContent = part;
                         charIndexMap.push({
                             start: currentOffset,
                             end: currentOffset + part.length,
-                            id: spanId,
-                            text: part // Store the text of the part
+                            id: span.id,
+                            text: part
                         });
-                        currentOffset += part.length;
-                        return `<span id="${spanId}">${part}</span>`;
-                    } else { // It's whitespace or punctuation, just return it as is
-                        currentOffset += part.length;
-                        return part;
+                        tempTextDiv.appendChild(span);
+                    } else { // It's whitespace or punctuation, just append as text node
+                        tempTextDiv.appendChild(document.createTextNode(part));
                     }
-                }).join('');
+                    currentOffset += part.length;
+                });
+
+                // Replace the existing text content with the new spanned content
+                const existingTextContentDiv = messageBubbleElement.querySelector('.message-text-content');
+                if (existingTextContentDiv) {
+                    messageBubbleElement.replaceChild(tempTextDiv, existingTextContentDiv);
+                } else {
+                    // This case should ideally not happen if appendMessage creates it correctly
+                    messageBubbleElement.prepend(tempTextDiv);
+                }
+
 
                 const utterance = new SpeechSynthesisUtterance(textToSpeak);
                 utterance.lang = 'vi-VN';
@@ -1202,8 +1236,11 @@
                     if (lastHighlightedSpan) {
                         lastHighlightedSpan.classList.remove('highlight-word');
                     }
-                    // Restore original text content if spans are not desired after speech
-                    messageBubbleElement.textContent = textToSpeak; // Restore original text without spans
+                    // Restore original text content after speech ends
+                    const finalContentDiv = messageBubbleElement.querySelector('.message-text-content');
+                    if (finalContentDiv) {
+                        finalContentDiv.textContent = textToSpeak;
+                    }
                     currentUtterance = null;
                 };
 
@@ -1212,7 +1249,10 @@
                     if (lastHighlightedSpan) {
                         lastHighlightedSpan.classList.remove('highlight-word');
                     }
-                    messageBubbleElement.textContent = textToSpeak; // Restore original text
+                    const errorContentDiv = messageBubbleElement.querySelector('.message-text-content');
+                    if (errorContentDiv) {
+                        errorContentDiv.textContent = textToSpeak; // Restore original text
+                    }
                     currentUtterance = null;
                 };
 
@@ -1238,42 +1278,22 @@
                 messageBubble.id = `msg-${Date.now()}-${Math.random().toString(36).substring(2, 9)}`; // Unique ID for each bubble
                 messageWrapper.appendChild(messageBubble);
 
+                const textContentDiv = document.createElement('div');
+                textContentDiv.classList.add('message-text-content'); // New div for text content
+                textContentDiv.id = `text-content-${messageBubble.id}`; // Unique ID for text content div
+                messageBubble.appendChild(textContentDiv);
+
+
                 let fullTextContent = '';
                 if (typeof content === 'string') {
                     fullTextContent = content;
                 } else if (Array.isArray(content)) {
                     // Concatenate text parts to get full text for TTS
                     fullTextContent = content.filter(part => part.text).map(part => part.text).join('');
-                }
-                
-                if (sender === 'ai') {
-                    const readBtn = document.createElement('button');
-                    readBtn.classList.add('read-message-btn');
-                    readBtn.innerHTML = `
-                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
-                            <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 14.5v-9l6 4.5-6 4.5z"/>
-                        </svg>
-                    `;
-                    readBtn.title = "Nghe Gấu Gấu đọc";
-                    readBtn.disabled = true; // Disable until typed
-                    messageBubble.appendChild(readBtn);
 
-                    typeMessage(messageBubble, fullTextContent, () => {
-                        readBtn.disabled = false; // Enable button after typing
-                    });
-
-                    readBtn.addEventListener('click', () => {
-                        handleReadMessage(messageBubble, fullTextContent);
-                    });
-
-                } else { // User message
-                    if (typeof content === 'string') {
-                        messageBubble.textContent = content;
-                    } else if (Array.isArray(content)) {
+                    // Add image elements directly to messageBubble for user messages
+                    if (sender === 'user') {
                         content.forEach(part => {
-                            if (part.text) {
-                                messageBubble.textContent += part.text;
-                            }
                             if (part.inlineData) {
                                 const img = document.createElement('img');
                                 img.src = `data:${part.inlineData.mimeType};base64,${part.inlineData.data}`;
@@ -1285,6 +1305,30 @@
                             }
                         });
                     }
+                }
+
+                if (sender === 'ai') {
+                    const readBtn = document.createElement('button');
+                    readBtn.classList.add('read-message-btn');
+                    readBtn.innerHTML = `
+                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+                            <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 14.5v-9l6 4.5-6 4.5z"/>
+                        </svg>
+                    `;
+                    readBtn.title = "Nghe Gấu Gấu đọc";
+                    readBtn.disabled = true; // Disable until typed
+                    messageBubble.appendChild(readBtn); // Append button to messageBubble
+
+                    typeMessage(textContentDiv, fullTextContent, () => {
+                        readBtn.disabled = false; // Enable button after typing
+                    });
+
+                    readBtn.addEventListener('click', () => {
+                        handleReadMessage(messageBubble, fullTextContent);
+                    });
+
+                } else { // User message
+                    textContentDiv.textContent = fullTextContent;
                 }
 
                 chatMessages.appendChild(messageWrapper);
@@ -1366,7 +1410,7 @@ Thông tin về Studio Dự Án Người Việt:
                             const previewItem = document.createElement('div');
                             previewItem.classList.add('image-preview-item');
                             previewItem.innerHTML = `
-                                <img src="${resizedBase64}" alt="Image preview">
+                                <img src="${resizedBase64}" alt="Image of ${file.name}">
                                 <span class="remove-image-btn" data-index="${uploadedImages.length - 1}">X</span>
                             `;
                             imagePreviewsContainer.appendChild(previewItem);
@@ -1401,14 +1445,57 @@ Thông tin về Studio Dự Án Người Việt:
             });
 
             // Xử lý Live Chat
-            liveChatBtn.addEventListener('click', () => {
+            liveChatBtn.addEventListener('click', async () => {
                 isLiveChatActive = !isLiveChatActive;
                 liveChatBtn.classList.toggle('active', isLiveChatActive);
+
+                const liveChatText = liveChatBtn.querySelector('.text');
+                const liveChatDot = liveChatBtn.querySelector('.dot');
+
                 if (isLiveChatActive) {
-                    // Logic bắt đầu ghi âm (chỉ giả lập, cần API Speech-to-Text thực tế)
-                    alert("Chế độ Live Chat đã bật! Gấu Gấu đang lắng nghe bạn. (Tính năng ghi âm giọng nói và phản hồi bằng giọng nói cần API Speech-to-Text và Text-to-Speech thực tế để hoạt động đầy đủ).");
+                    liveChatText.textContent = "Đang nghe...";
+                    liveChatDot.style.backgroundColor = 'white'; // Ensure dot is visible
+                    try {
+                        const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
+                        mediaRecorder = new MediaRecorder(stream);
+                        audioChunks = [];
+
+                        mediaRecorder.ondataavailable = (event) => {
+                            audioChunks.push(event.data);
+                        };
+
+                        mediaRecorder.onstop = () => {
+                            const audioBlob = new Blob(audioChunks, { type: 'audio/webm' });
+                            console.log("Audio recording stopped. Blob size:", audioBlob.size);
+                            // No actual Speech-to-Text processing here due to API limitations.
+                            // User will still type their messages.
+                        };
+
+                        mediaRecorder.start();
+                        console.log("Microphone access granted. Recording started.");
+                        spamWarning.textContent = "Gấu Gấu đã bật mic để lắng nghe bạn. Xin lưu ý: Gấu Gấu chưa thể xử lý giọng nói trực tiếp, nhưng sẽ đọc to phản hồi của mình khi bạn gửi tin nhắn! 🎤";
+                        spamWarning.style.display = 'block';
+                        setTimeout(() => spamWarning.style.display = 'none', spamCooldown * 3); // Longer display for info
+                    } catch (err) {
+                        console.error("Error accessing microphone:", err);
+                        isLiveChatActive = false; // Reset state
+                        liveChatBtn.classList.remove('active');
+                        liveChatText.textContent = "Live Chat";
+                        spamWarning.textContent = "Không thể truy cập micrô. Vui lòng cấp quyền truy cập. 🚫";
+                        spamWarning.style.display = 'block';
+                        setTimeout(() => spamWarning.style.display = 'none', spamCooldown * 3);
+                    }
                 } else {
-                    alert("Chế độ Live Chat đã tắt.");
+                    if (mediaRecorder && mediaRecorder.state === 'recording') {
+                        mediaRecorder.stop();
+                    }
+                    if (currentUtterance) {
+                        window.speechSynthesis.cancel();
+                        currentUtterance = null;
+                    }
+                    liveChatText.textContent = "Live Chat";
+                    liveChatDot.style.backgroundColor = 'white'; // Reset dot color
+                    console.log("Live Chat deactivated.");
                 }
             });
 
@@ -1480,6 +1567,16 @@ Thông tin về Studio Dự Án Người Việt:
                         const aiResponse = result.candidates[0].content.parts[0].text;
                         appendMessage('ai', aiResponse, gaouGaouAvatarUrl);
                         chatHistory.push({ role: "model", parts: [{ text: aiResponse }] });
+
+                        // Auto-read AI response if live chat is active
+                        if (isLiveChatActive) {
+                            const lastAiMessageBubble = chatMessages.querySelector('.message-ai:last-child .message-bubble');
+                            if (lastAiMessageBubble) {
+                                const aiResponseTextContent = lastAiMessageBubble.querySelector('.message-text-content').textContent;
+                                handleReadMessage(lastAiMessageBubble, aiResponseTextContent);
+                            }
+                        }
+
                     } else {
                         appendMessage('ai', 'Xin lỗi, tớ không hiểu câu hỏi của bạn. 🤔', gaouGaouAvatarUrl);
                     }
