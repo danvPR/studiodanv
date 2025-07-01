@@ -7,7 +7,696 @@
     <title>Studio Dự Án Người Việt - Nơi Sáng Tạo Mã Hóa</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@300;400;500;700;800&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="style.css"> <!-- Liên kết đến file CSS -->
+    <style>
+        /* Định nghĩa các biến CSS cho hiệu ứng kính */
+        :root {
+            --tint-color: 255, 255, 255;
+            --tint-opacity: 0.1; /* Độ trong suốt tinh tế */
+            --frost-blur: 30px; /* Tăng độ mờ sương để nổi bật và mượt mà hơn */
+            --outer-shadow-blur: 60px; /* Tăng độ mờ của bóng đổ bên ngoài */
+        }
+
+        body {
+            margin: 0;
+            width: 100vw;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: flex-start;
+            background-color: #ffffff; /* Nền màu trắng */
+            font-family: 'Open Sans', sans-serif; /* Sử dụng font Open Sans */
+            color: #333; /* Màu chữ tối hơn cho nền trắng */
+            position: relative;
+            /* Đã bỏ animation chuyển màu nền */
+        }
+
+        /* Lớp container cho các phần tử có hiệu ứng Liquid Glass */
+        .liquid-glass-container {
+            position: relative;
+            border-radius: 40px; /* Bo tròn góc nhiều hơn nữa */
+            overflow: hidden;
+            isolation: isolate;
+            box-shadow: 0px 20px var(--outer-shadow-blur) rgba(0, 0, 0, 0.1); /* Bóng đổ nhẹ hơn cho nền trắng */
+            transition: all 0.6s cubic-bezier(0.25, 0.8, 0.25, 1); /* Easing mượt mà hơn */
+            border: 1px solid rgba(0, 0, 0, 0.1); /* Đường viền rõ hơn */
+        }
+
+        .liquid-glass-container:hover {
+            transform: translateY(-8px) scale(1.01); /* Nâng và phóng to nhẹ */
+            box-shadow: 0px 30px calc(var(--outer-shadow-blur) * 1.5) rgba(0, 0, 0, 0.15); /* Bóng đổ mềm mại hơn */
+            border: 1px solid rgba(0, 0, 0, 0.2); /* Viền sáng hơn */
+        }
+
+        /* Lớp overlay tạo hiệu ứng kính */
+        .liquid-glass-overlay {
+            position: absolute;
+            inset: 0;
+            z-index: -1;
+            border-radius: 40px; /* Phù hợp với container */
+            background-color: rgba(var(--tint-color), var(--tint-opacity));
+            backdrop-filter: blur(var(--frost-blur));
+            -webkit-backdrop-filter: blur(var(--frost-blur));
+        }
+
+        /* Đảm bảo nội dung nằm trên lớp overlay */
+        .liquid-glass-content {
+            position: relative;
+            z-index: 1;
+            padding: inherit;
+        }
+
+        /* CSS cho các "cục nước trôi nổi" */
+        .floating-blobs-container {
+            position: fixed;
+            inset: 0;
+            z-index: 0;
+            pointer-events: none;
+            overflow: hidden;
+            filter: blur(8px); /* Làm mờ nhẹ toàn bộ container blob */
+        }
+
+        .blob {
+            position: absolute;
+            /* Màu blob điều chỉnh để hiển thị trên nền trắng */
+            background: radial-gradient(circle, rgba(150, 180, 255, 0.2) 0%, rgba(150, 180, 255, 0) 70%);
+            border-radius: 50%;
+            animation-duration: 20s; /* Tăng tốc độ animation */
+            animation-iteration-count: infinite;
+            animation-timing-function: ease-in-out;
+            opacity: 0.9; /* Tăng opacity để rõ ràng hơn */
+            will-change: transform, opacity; /* Tối ưu hóa hiệu suất animation */
+        }
+
+        /* Định nghĩa nhiều animation hơn cho blob */
+        @keyframes float1 {
+            0% { transform: translate(0, 0) scale(1); opacity: 0.8; }
+            25% { transform: translate(28vw, 38vh) scale(1.3); opacity: 0.9; }
+            50% { transform: translate(18vw, 68vh) scale(0.95); opacity: 0.7; }
+            75% { transform: translate(48vw, 28vh) scale(1.2); opacity: 0.95; }
+            100% { transform: translate(0, 0) scale(1); opacity: 0.8; }
+        }
+
+        @keyframes float2 {
+            0% { transform: translate(0, 0) scale(0.9); opacity: 0.7; }
+            30% { transform: translate(-22vw, 48vh) scale(1.2); opacity: 0.8; }
+            60% { transform: translate(-12vw, 18vh) scale(1.0); opacity: 0.75; }
+            100% { transform: translate(0, 0) scale(0.9); opacity: 0.7; }
+        }
+
+        @keyframes float3 {
+            0% { transform: translate(0, 0) scale(1.2); opacity: 0.9; }
+            40% { transform: translate(38vw, -28vh) scale(0.95); opacity: 0.8; }
+            80% { transform: translate(18vw, -58vh) scale(1.3); opacity: 0.98; }
+            100% { transform: translate(0, 0) scale(1.2); opacity: 0.9; }
+        }
+
+        @keyframes float4 {
+            0% { transform: translate(0, 0) scale(1.0); opacity: 0.6; }
+            50% { transform: translate(-28vw, -38vh) scale(1.2); opacity: 0.7; }
+            100% { transform: translate(0, 0) scale(1.0); opacity: 0.6; }
+        }
+
+        @keyframes float5 {
+            0% { transform: translate(0, 0) scale(1.3); opacity: 0.9; }
+            35% { transform: translate(58vw, 18vh) scale(0.95); opacity: 0.78; }
+            70% { transform: translate(28vw, -48vh) scale(1.2); opacity: 0.85; }
+            100% { transform: translate(0, 0) scale(1.3); opacity: 0.9; }
+        }
+
+        @keyframes float6 {
+            0% { transform: translate(0, 0) scale(0.8); opacity: 0.6; }
+            45% { transform: translate(-38vw, 28vh) scale(1.1); opacity: 0.7; }
+            90% { transform: translate(-18vw, -18vh) scale(0.9); opacity: 0.65; }
+            100% { transform: translate(0, 0) scale(0.8); opacity: 0.6; }
+        }
+
+        /* Vị trí và kích thước ban đầu của các blob */
+        .blob-1 { top: 10%; left: 5%; width: 300px; height: 300px; animation-name: float1; animation-duration: 25s; animation-delay: 0s; }
+        .blob-2 { top: 50%; right: 10%; width: 220px; height: 220px; animation-name: float2; animation-duration: 20s; animation-delay: 5s; }
+        .blob-3 { bottom: 20%; left: 15%; width: 380px; height: 380px; animation-name: float3; animation-duration: 28s; animation-delay: 10s; }
+        .blob-4 { top: 30%; left: 40%; width: 160px; height: 160px; animation-name: float4; animation-duration: 18s; animation-delay: 2s; }
+        .blob-5 { bottom: 5%; right: 5%; width: 280px; height: 280px; animation-name: float5; animation-duration: 23s; animation-delay: 7s; }
+        .blob-6 { top: 70%; left: 60%; width: 200px; height: 200px; animation-name: float6; animation-duration: 21s; animation-delay: 12s; }
+        .blob-7 { top: 15%; right: 25%; width: 250px; height: 250px; animation-name: float1; animation-duration: 26s; animation-delay: 3s; }
+        .blob-8 { bottom: 30%; right: 30%; width: 180px; height: 180px; animation-name: float2; animation-duration: 19s; animation-delay: 8s; }
+        .blob-9 { top: 60%; left: 5%; width: 270px; height: 270px; animation-name: float3; animation-duration: 24s; animation-delay: 15s; }
+        .blob-10 { bottom: 10%; left: 50%; width: 220px; height: 220px; animation-name: float4; animation-duration: 22s; animation-delay: 1s; }
+        .blob-11 { top: 5%; left: 70%; width: 350px; height: 350px; animation-name: float5; animation-duration: 29s; animation-delay: 6s; }
+        .blob-12 { bottom: 40%; right: 40%; width: 170px; height: 170px; animation-name: float6; animation-duration: 17s; animation-delay: 11s; }
+        .blob-13 { top: 20%; left: 80%; width: 190px; height: 190px; animation-name: float1; animation-duration: 20s; animation-delay: 4s; }
+        .blob-14 { bottom: 15%; left: 70%; width: 260px; height: 260px; animation-name: float2; animation-duration: 23s; animation-delay: 9s; }
+        .blob-15 { top: 40%; right: 5%; width: 290px; height: 290px; animation-name: float3; animation-duration: 27s; animation-delay: 14s; }
+        .blob-16 { bottom: 50%; left: 45%; width: 130px; height: 130px; animation-name: float4; animation-duration: 16s; animation-delay: 0.5s; }
+        .blob-17 { top: 25%; left: 15%; width: 150px; height: 150px; animation-name: float5; animation-duration: 24s; animation-delay: 2.5s; }
+        .blob-18 { bottom: 25%; right: 15%; width: 210px; height: 210px; animation-name: float6; animation-duration: 26s; animation-delay: 7.5s; }
+        .blob-19 { top: 45%; left: 55%; width: 100px; height: 100px; animation-name: float1; animation-duration: 18s; animation-delay: 10.5s; }
+        .blob-20 { bottom: 35%; left: 35%; width: 190px; height: 190px; animation-name: float2; animation-duration: 20s; animation-delay: 13.5s; }
+
+
+        /* Animation cho các phần tử UI khi cuộn */
+        .animate-on-scroll {
+            opacity: 0.2; /* Mặc định là mờ đi */
+            transform: translateY(50px); /* Dịch chuyển nhẹ khi mờ */
+            transition: opacity 1s cubic-bezier(0.25, 0.8, 0.25, 1), transform 1s cubic-bezier(0.25, 0.8, 0.25, 1);
+        }
+
+        .animate-on-scroll.is-visible {
+            opacity: 1; /* Rõ nét khi hiển thị */
+            transform: translateY(0); /* Về vị trí ban đầu */
+        }
+
+        /* Các hiệu ứng slide-in cũng sẽ mờ đi khi không hiển thị */
+        .animate-slide-in-left {
+            opacity: 0.2;
+            transform: translateX(-100px);
+            transition: opacity 1s cubic-bezier(0.25, 0.8, 0.25, 1), transform 1s cubic-bezier(0.25, 0.8, 0.25, 1);
+        }
+        .animate-slide-in-left.is-visible {
+            opacity: 1;
+            transform: translateX(0);
+        }
+
+        .animate-slide-in-right {
+            opacity: 0.2;
+            transform: translateX(100px);
+            transition: opacity 1s cubic-bezier(0.25, 0.8, 0.25, 1), transform 1s cubic-bezier(0.25, 0.8, 0.25, 1);
+        }
+        .animate-slide-in-right.is-visible {
+            opacity: 1;
+            transform: translateX(0);
+        }
+
+        /* Menubar styles */
+        .menubar {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            padding: 0.5rem 2rem;
+            z-index: 1000;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom-left-radius: 40px;
+            border-bottom-right-radius: 40px;
+            border-top-left-radius: 0;
+            border-top-right-radius: 0;
+            box-shadow: 0px 5px 20px rgba(0, 0, 0, 0.1); /* Bóng đổ nhẹ hơn */
+            transition: all 0.3s ease-in-out;
+            perspective: 1000px;
+            background-color: rgba(255, 255, 255, 0.8); /* Nền menubar sáng hơn */
+        }
+
+        .menubar .liquid-glass-overlay {
+            border-bottom-left-radius: 40px;
+            border-bottom-right-radius: 40px;
+            border-top-left-radius: 0;
+            border-top-right-radius: 0;
+            background-color: rgba(var(--tint-color), 0.05); /* Overlay trong suốt hơn cho menubar */
+        }
+
+        .menubar-logo {
+            display: flex;
+            align-items: center;
+        }
+        .menubar-logo img {
+            width: 375px;
+            height: 49px;
+            object-fit: contain;
+        }
+
+        .menubar-nav ul {
+            display: flex;
+            gap: 1.5rem;
+            flex-wrap: nowrap;
+        }
+
+        .menubar-nav a {
+            color: #333; /* Màu chữ tối hơn cho menu */
+            font-weight: 500;
+            font-size: 1rem;
+            transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+            position: relative;
+            text-decoration: none;
+            opacity: 0.8;
+            white-space: nowrap;
+            text-transform: capitalize; /* Viết hoa chữ cái đầu */
+        }
+
+        .menubar-nav a:hover {
+            opacity: 1;
+            text-shadow: 0 0 8px rgba(0, 0, 0, 0.2); /* Bóng chữ tối hơn */
+        }
+
+        .menubar-nav a::after {
+            content: '';
+            position: absolute;
+            width: 0;
+            height: 2px;
+            bottom: -5px;
+            left: 50%;
+            transform: translateX(-50%);
+            background-color: #3b82f6; /* Màu xanh nổi bật */
+            transition: width 0.3s ease-in-out;
+        }
+
+        .menubar-nav a:hover::after {
+            width: 100%;
+        }
+
+        /* Styles cho phần chia đôi màn hình */
+        .split-section {
+            display: flex;
+            flex-direction: column; /* Mặc định là cột trên mobile */
+            gap: 2rem;
+            padding: 2rem;
+            text-align: center;
+        }
+
+        @media (min-width: 768px) {
+            .split-section {
+                flex-direction: row; /* Chia 2 cột trên desktop */
+                text-align: left;
+            }
+        }
+
+        .split-half {
+            flex: 1;
+            padding: 2rem;
+            border-radius: 24px;
+            background: rgba(0, 0, 0, 0.05); /* Nền trong suốt nhẹ cho nền trắng */
+            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.1);
+            transition: all 0.3s ease-in-out;
+            color: #333; /* Màu chữ tối hơn */
+        }
+
+        .split-half:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
+        }
+
+        .manager-avatar {
+            width: 90px;
+            height: 90px;
+            border-radius: 50%;
+            object-fit: cover;
+            margin: 0 auto 1rem auto; /* Canh giữa avatar */
+            border: 3px solid rgba(0, 0, 0, 0.2); /* Viền tối hơn */
+            transition: transform 0.3s ease-in-out;
+        }
+        .manager-avatar:hover {
+            transform: scale(1.1);
+        }
+
+        /* Styles riêng cho Studio Host */
+        .host-avatar {
+            width: 120px; /* Lớn hơn */
+            height: 120px;
+            border-width: 5px; /* Viền dày hơn */
+            border-color: #3b82f6; /* Màu xanh nổi bật */
+            box-shadow: 0 0 20px rgba(59, 130, 246, 0.3); /* Bóng đổ phát sáng */
+        }
+        .host-name {
+            font-size: 2.5rem; /* Kích thước chữ lớn hơn */
+            color: #3b82f6; /* Màu xanh nổi bật */
+            text-shadow: 0 0 15px rgba(59, 130, 246, 0.4); /* Bóng chữ phát sáng */
+        }
+
+        /* Other Managers in a single row - Carousel styles */
+        .other-managers-container {
+            display: flex;
+            flex-wrap: nowrap;
+            overflow: hidden; /* Hide scrollbar and content outside */
+            position: relative; /* For animation */
+            width: 100%; /* Take full width of its parent */
+            padding-bottom: 1rem; /* Space for potential scrollbar if overflow is visible */
+        }
+
+        .other-managers-track {
+            display: flex;
+            animation: scrollManagers 30s linear infinite; /* Animation for continuous scroll */
+            will-change: transform; /* Optimize for animation */
+        }
+
+        .manager-item {
+            flex-shrink: 0; /* Prevent items from shrinking */
+            width: 120px; /* Fixed width for each manager item */
+            text-align: center;
+            margin-right: 1.5rem; /* Gap between items */
+        }
+
+        /* Keyframes for manager carousel */
+        @keyframes scrollManagers {
+            0% { transform: translateX(0); }
+            100% { transform: translateX(-50%); } /* Scroll half the content width to loop seamlessly */
+        }
+
+
+        /* Button special effects */
+        .animated-button {
+            position: relative;
+            overflow: hidden;
+            z-index: 1;
+            /* Ensure the button's background and text are visible */
+            background: inherit;
+            color: inherit;
+        }
+
+        .animated-button::before {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 0;
+            height: 0;
+            background: rgba(0, 0, 0, 0.1); /* Màu tối hơn cho hiệu ứng button trên nền trắng */
+            border-radius: 50%;
+            transform: translate(-50%, -50%);
+            transition: width 0.4s ease-out, height 0.4s ease-out;
+            z-index: -1;
+        }
+
+        .animated-button:hover::before {
+            width: 300px;
+            height: 300px;
+        }
+
+        .animated-button:active {
+            transform: scale(0.98);
+        }
+
+        /* AI Chat Specific Styles */
+        .ai-chat-container {
+            /* Đã loại bỏ liquid-glass-container và liquid-glass-overlay ở đây */
+            border-radius: 40px;
+            box-shadow: 0px 10px 30px rgba(0, 0, 0, 0.1); /* Bóng đổ nhẹ hơn */
+            border: 1px solid rgba(0, 0, 0, 0.1);
+            background-color: rgba(255, 255, 255, 0.9); /* Nền chatbox sáng hơn và gần như trong suốt */
+            backdrop-filter: blur(15px); /* Giảm blur để nhẹ nhàng hơn */
+            -webkit-backdrop-filter: blur(15px);
+
+            padding: 1.5rem;
+            display: flex;
+            flex-direction: column;
+            width: 100%; /* Mở rộng chiều ngang */
+            /* max-width: 700px; Đã bỏ max-width để nó rộng bằng các khung khác */
+            min-height: 500px; /* Tăng chiều cao khung chat */
+            margin: 2rem auto;
+            max-height: 80vh;
+            color: #333; /* Màu chữ tối hơn cho chatbox */
+        }
+
+        .chat-messages {
+            flex-grow: 1;
+            overflow-y: auto; /* Sử dụng thanh trượt mặc định */
+            padding-right: 1rem; /* Cho khoảng trống thanh trượt */
+            margin-bottom: 1rem;
+            display: flex;
+            flex-direction: column;
+            gap: 0.75rem;
+        }
+
+        .message-wrapper {
+            display: flex;
+            align-items: flex-end; /* Align to bottom for avatar */
+            gap: 0.5rem;
+        }
+
+        .message-user .message-wrapper {
+            justify-content: flex-end;
+        }
+
+        .message-ai .message-wrapper {
+            justify-content: flex-start;
+        }
+
+        .message-avatar {
+            width: 35px; /* Kích thước avatar nhỏ trong chat */
+            height: 35px;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 2px solid rgba(0, 0, 0, 0.1); /* Viền tối hơn */
+            flex-shrink: 0; /* Ngăn avatar bị co lại */
+        }
+
+        .message-bubble {
+            padding: 0.75rem 1rem;
+            border-radius: 1.25rem;
+            max-width: 70%; /* Giảm độ dài của chat bubble */
+            word-wrap: break-word;
+            flex-shrink: 1; /* Cho phép bubble co lại */
+            color: #fff; /* Màu chữ trắng cho bubble */
+            position: relative; /* Để chứa nút đọc */
+        }
+
+        .message-user .message-bubble {
+            background-color: #3b82f6; /* Blue cho user */
+            border-bottom-right-radius: 0.25rem;
+        }
+
+        .message-ai .message-bubble {
+            background-color: #10b981; /* Green cho AI */
+            border-bottom-left-radius: 0.25rem;
+        }
+
+        .chat-input-area {
+            display: flex;
+            gap: 0.5rem;
+            flex-wrap: wrap; /* Cho phép xuống dòng trên màn hình nhỏ */
+            align-items: center; /* Căn giữa các item theo chiều dọc */
+        }
+
+        .chat-input-area input[type="text"] {
+            flex-grow: 1;
+            padding: 0.75rem 1rem;
+            border-radius: 9999px; /* Full rounded */
+            border: none;
+            background-color: rgba(0, 0, 0, 0.1); /* Nền input tối hơn */
+            color: #333; /* Màu chữ input tối hơn */
+            outline: none;
+            transition: background-color 0.3s ease;
+            min-width: 150px; /* Đảm bảo input không quá nhỏ */
+        }
+
+        .chat-input-area input[type="text"]:focus {
+            background-color: rgba(0, 0, 0, 0.15);
+        }
+
+        .chat-input-area button {
+            width: 60px; /* Fixed width */
+            height: 60px; /* Fixed height */
+            padding: 0; /* Remove padding to let content center */
+            border-radius: 50%; /* Make them circular */
+            display: flex; /* Use flex to center icon */
+            align-items: center;
+            justify-content: center;
+            color: #fff;
+            font-weight: bold;
+            border: none;
+            cursor: pointer;
+            transition: background-color 0.3s ease, transform 0.2s ease;
+            flex-shrink: 0; /* Ngăn button bị co lại */
+        }
+
+        .chat-input-area button:hover {
+            background-color: #2563eb;
+            transform: translateY(-2px);
+        }
+
+        .chat-input-area button:active {
+            transform: translateY(0);
+        }
+
+        /* Specific button colors */
+        #sendMessageBtn {
+            background-color: #3b82f6; /* Blue for send */
+        }
+        #sendMessageBtn:hover {
+            background-color: #2563eb;
+        }
+
+        .image-upload-button {
+            background-color: #4CAF50; /* Green for upload */
+        }
+        .image-upload-button:hover {
+            background-color: #45a049;
+        }
+
+
+        .loading-indicator {
+            text-align: center;
+            padding: 0.5rem;
+            font-style: italic;
+            opacity: 0.7;
+            color: #333; /* Màu chữ tối hơn */
+        }
+
+        .spam-warning {
+            color: #d97706; /* Màu vàng cam cho warning */
+            text-align: center;
+            font-size: 0.9rem;
+            margin-top: 0.5rem;
+        }
+
+        /* Styles cho nút tải ảnh */
+        .image-upload-wrapper {
+            position: relative;
+            display: inline-block;
+            margin-left: 0.5rem; /* Khoảng cách với input text */
+        }
+
+        .image-upload-button input[type="file"] {
+            position: absolute;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            opacity: 0;
+            cursor: pointer;
+        }
+
+        .image-previews {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.5rem;
+            margin-top: 0.5rem;
+            max-height: 120px; /* Giới hạn chiều cao preview */
+            overflow-y: auto; /* Thêm scroll nếu quá nhiều ảnh */
+            padding-bottom: 0.5rem;
+        }
+
+        .image-preview-item {
+            position: relative;
+            width: 80px;
+            height: 80px;
+            border-radius: 8px;
+            overflow: hidden;
+            border: 1px solid rgba(0, 0, 0, 0.1);
+            flex-shrink: 0;
+        }
+
+        .image-preview-item img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .remove-image-btn {
+            position: absolute;
+            top: 2px;
+            right: 2px;
+            background-color: rgba(255, 0, 0, 0.7);
+            color: white;
+            border-radius: 50%;
+            width: 20px;
+            height: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.8rem;
+            cursor: pointer;
+            z-index: 10;
+        }
+
+        /* Live Chat Button */
+        .live-chat-button {
+            background-color: #ef4444; /* Red color */
+            color: white;
+            border-radius: 50%;
+            width: 60px; /* Kích thước nút tròn */
+            height: 60px;
+            cursor: pointer;
+            transition: background-color 0.3s ease, transform 0.2s ease, box-shadow 0.3s ease;
+            box-shadow: 0 4px 10px rgba(239, 68, 68, 0.3);
+            flex-shrink: 0;
+            margin-left: 0.5rem; /* Khoảng cách với các nút khác */
+            display: flex; /* Use flex to center dot and text */
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .live-chat-button:hover {
+            background-color: #dc2626;
+            transform: translateY(-2px);
+            box-shadow: 0 6px 15px rgba(239, 68, 68, 0.4);
+        }
+
+        .live-chat-button.active {
+            background-color: #10b981; /* Green when active */
+            box-shadow: 0 4px 10px rgba(16, 185, 129, 0.3);
+            animation: pulse 1.5s infinite; /* Hiệu ứng nhấp nháy khi active */
+        }
+
+        @keyframes pulse {
+            0% { box-shadow: 0 0 0 0 rgba(16, 185, 129, 0.4); }
+            70% { box-shadow: 0 0 0 10px rgba(16, 185, 129, 0); }
+            100% { box-shadow: 0 0 0 0 rgba(16, 185, 129, 0); }
+        }
+
+        .live-chat-button .dot {
+            width: 10px;
+            height: 10px;
+            background-color: white;
+            border-radius: 50%;
+            margin-bottom: 4px;
+        }
+
+        .live-chat-button .text {
+            font-size: 0.7rem;
+            line-height: 1;
+        }
+
+        /* Nút đọc tin nhắn (Text-to-Speech) */
+        .read-message-btn {
+            position: absolute;
+            bottom: 4px;
+            right: 4px;
+            background-color: rgba(255, 255, 255, 0.3);
+            border-radius: 50%;
+            width: 24px;
+            height: 24px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            opacity: 0.7;
+            transition: opacity 0.2s ease, background-color 0.2s ease;
+        }
+
+        .read-message-btn:hover {
+            opacity: 1;
+            background-color: rgba(255, 255, 255, 0.5);
+        }
+
+        .read-message-btn svg {
+            width: 16px;
+            height: 16px;
+            fill: white;
+        }
+
+        /* Highlight cho từ đang đọc */
+        .highlight-word {
+            background-color: #ffeb3b; /* Bright yellow */
+            color: #333; /* Dark text for contrast */
+            border-radius: 4px;
+            padding: 2px 4px;
+            margin: -2px -4px; /* To prevent layout shift */
+            transition: background-color 0.1s ease-in-out, color 0.1s ease-in-out;
+            display: inline-block; /* Essential for padding/margin to work */
+        }
+
+        /* Thumbnail dự án nổi bật */
+        .project-thumbnail {
+            width: 100%; /* Đảm bảo ảnh chiếm hết chiều rộng container */
+            height: 150px; /* Chiều cao cố định cho thumbnail */
+            object-fit: cover; /* Đảm bảo ảnh không bị méo, cắt nếu cần */
+            border-radius: 16px; /* Bo tròn góc ảnh */
+            margin-bottom: 1rem; /* Khoảng cách với tiêu đề */
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+        }
+    </style>
 </head>
 
 <body>
@@ -45,12 +734,12 @@
             </div>
             <nav class="menubar-nav">
                 <ul>
-                    <li><a href="#gioi-thieu">Giới thiệu</a></li>
-                    <li><a href="#du-an-noi-bat">Dự án nổi bật</a></li>
-                    <li><a href="#quy-dinh">Quy định</a></li>
-                    <li><a href="#ban-quan-ly">Ban quản lý</a></li>
-                    <li><a href="#tham-gia">Tham gia</a></li>
-                    <li><a href="#tro-chuyen-ai">Trò Chuyện Với Gấu Gấu</a></li>
+                    <li><a href="#hero">Giới Thiệu</a></li>
+                    <li><a href="#du-an-noi-bat">Dự Án Nổi Bật</a></li>
+                    <li><a href="#quy-dinh">Quy Định</a></li>
+                    <li><a href="#ban-quan-ly">Ban Quản Lý</a></li>
+                    <li><a href="#tham-gia">Tham Gia</a></li>
+                    <li><a href="#tro-chuyen-ai">Gấu Gấu</a></li>
                 </ul>
             </nav>
         </div>
@@ -60,19 +749,17 @@
     <main class="w-full max-w-6xl mx-auto p-4 md:p-8 space-y-12 z-20 mt-24">
 
         <!-- Hero Section -->
-        <section id="hero" class="liquid-glass-container p-8 md:p-12 text-center animate-on-scroll" data-gradient-start="#4a00e0" data-gradient-mid="#8e29e0" data-gradient-end="#fc00ff">
+        <section id="hero" class="liquid-glass-container p-8 md:p-12 text-center animate-on-scroll">
             <div class="liquid-glass-overlay"></div>
             <div class="liquid-glass-content">
                 <h1 class="text-4xl md:text-6xl font-extrabold mb-4" style="line-height: 1.2;">
-                    Chào mừng bạn đến với <br><span class="text-blue-300">Studio Dự Án Người Việt!</span>
+                    Chào mừng bạn đến với <br><span class="text-blue-600">Studio Dự Án Người Việt!</span>
                 </h1>
                 <p class="text-lg md:text-xl max-w-3xl mx-auto mb-8 opacity-90">
-                    Duy Trì Bởi ❤️ Đội Ngũ Manager
-                    <br>
                     Nơi phát triển, ủng hộ, quảng bá các dự án lập trình Việt Nam, chú trọng các dự án do người Việt sáng tạo.
                 </p>
                 <div class="flex flex-col sm:flex-row justify-center items-center gap-4">
-                    <button onclick="window.open('https://scratch.mit.edu/studios/33509364', '_blank')" class="px-8 py-4 bg-white text-gray-900 font-bold text-lg rounded-full shadow-lg hover:bg-gray-200 transition-colors duration-300 transform hover:scale-105 animated-button">
+                    <button onclick="window.open('https://scratch.mit.edu/studios/33509364', '_blank')" class="px-8 py-4 bg-blue-500 text-white font-bold text-lg rounded-full shadow-lg hover:bg-blue-600 transition-colors duration-300 transform hover:scale-105 animated-button">
                         Tham gia Studio ngay!
                     </button>
                     <button onclick="window.open('https://discord.gg/6hkPzynTgt', '_blank')" class="px-8 py-4 bg-indigo-600 text-white font-bold text-lg rounded-full shadow-lg hover:bg-indigo-700 transition-colors duration-300 transform hover:scale-105 animated-button flex items-center gap-2">
@@ -84,7 +771,7 @@
         </section>
 
         <!-- Giới thiệu & Lời nói đầu -->
-        <section id="gioi-thieu" class="p-8 md:p-12 text-center bg-transparent animate-on-scroll" data-gradient-start="#00c6ff" data-gradient-mid="#0072ff" data-gradient-end="#00c6ff">
+        <section id="gioi-thieu" class="p-8 md:p-12 text-center bg-transparent animate-on-scroll">
             <h2 class="text-3xl md:text-4xl font-bold mb-8">Lời Nói Đầu</h2>
             <p class="opacity-80 text-lg max-w-3xl mx-auto">
                 Studio này nhằm mục đích phát triển, ủng hộ, quảng bá các dự án lập trình Việt Nam, chú trọng các dự án do người Việt sáng tạo. Chúng tôi tin rằng mỗi dự án Scratch là một hạt giống sáng tạo, và với sự hỗ trợ đúng đắn, chúng có thể nảy mầm thành những tác phẩm tuyệt vời.
@@ -95,10 +782,10 @@
         </section>
 
         <!-- Sinh Nhật Studio & Trích Dẫn -->
-        <section id="sinh-nhat-trich-dan" class="split-section animate-on-scroll" data-gradient-start="#ff9a9e" data-gradient-mid="#fad0c4" data-gradient-end="#ff9a9e">
+        <section id="sinh-nhat-trich-dan" class="split-section animate-on-scroll">
             <div class="split-half animate-slide-in-left">
                 <h3 class="text-3xl font-bold mb-4">Sinh Nhật Studio</h3>
-                <p class="text-5xl font-extrabold text-blue-300 mb-4">15/06/2023</p>
+                <p class="text-5xl font-extrabold text-blue-600 mb-4">15/06/2023</p>
                 <p class="text-lg opacity-80">
                     Kỷ niệm ngày ra đời của Studio Dự Án Người Việt, nơi ươm mầm những tài năng lập trình trẻ.
                 </p>
@@ -117,55 +804,58 @@
 
 
         <!-- Dự án nổi bật -->
-        <section id="du-an-noi-bat" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8" data-gradient-start="#ff7e5f" data-gradient-mid="#feb47b" data-gradient-end="#ff7e5f">
+        <section id="du-an-noi-bat" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
             <h2 class="col-span-full text-3xl md:text-4xl font-bold mb-4 text-center animate-on-scroll">SIÊU NỔI BẬT ⭐</h2>
             <div class="liquid-glass-container p-6 text-center animate-on-scroll animate-delay-200">
                 <div class="liquid-glass-overlay"></div>
                 <div class="liquid-glass-content">
+                    <img src="https://i.ibb.co/8LCN4NKX/1154145707-282x210.png" alt="Thumbnail Dead rails" class="project-thumbnail mx-auto">
                     <h3 class="text-2xl font-bold mb-2">⛰️ Dead rails</h3>
                     <p class="opacity-80 mb-4">Một dự án Scratch sáng tạo và hấp dẫn.</p>
-                    <a href="https://scratch.mit.edu/projects/1154145707/" target="_blank" class="text-blue-300 hover:text-blue-200 transition-colors duration-200">Xem dự án</a>
+                    <a href="https://scratch.mit.edu/projects/1154145707/" target="_blank" class="text-blue-600 hover:text-blue-800 transition-colors duration-200">Xem dự án</a>
                 </div>
             </div>
             <div class="liquid-glass-container p-6 text-center animate-on-scroll animate-delay-400">
                 <div class="liquid-glass-overlay"></div>
                 <div class="liquid-glass-content">
+                    <img src="https://i.ibb.co/b5Nc7sp3/PNG-2.png" alt="Thumbnail AI LÀ NGHÌN PHÚ" class="project-thumbnail mx-auto">
                     <h3 class="text-2xl font-bold mb-2">⛲️ AI LÀ NGHÌN PHÚ</h3>
                     <p class="opacity-80 mb-4">Trò chơi đố vui trí tuệ với AI.</p>
-                    <a href="https://scratch.mit.edu/projects/1067950299" target="_blank" class="text-blue-300 hover:text-blue-200 transition-colors duration-200">Xem dự án</a>
+                    <a href="https://scratch.mit.edu/projects/1067950299" target="_blank" class="text-blue-600 hover:text-blue-800 transition-colors duration-200">Xem dự án</a>
                 </div>
             </div>
             <div class="liquid-glass-container p-6 text-center animate-on-scroll animate-delay-600">
                 <div class="liquid-glass-overlay"></div>
                 <div class="liquid-glass-content">
+                    <img src="https://i.ibb.co/PzrM5C9L/image.png" alt="Thumbnail Grace - Roblox V0.1.4" class="project-thumbnail mx-auto">
                     <h3 class="text-2xl font-bold mb-2">⛽️ Grace - Roblox V0.1.4</h3>
                     <p class="opacity-80 mb-4">Phiên bản Roblox độc đáo trên Scratch.</p>
-                    <a href="https://scratch.mit.edu/projects/1119305171" target="_blank" class="text-blue-300 hover:text-blue-200 transition-colors duration-200">Xem dự án</a>
+                    <a href="https://scratch.mit.edu/projects/1119305171" target="_blank" class="text-blue-600 hover:text-blue-800 transition-colors duration-200">Xem dự án</a>
                 </div>
             </div>
             <div class="liquid-glass-container p-6 text-center animate-on-scroll animate-delay-800">
                 <div class="liquid-glass-overlay"></div>
                 <div class="liquid-glass-content">
+                    <img src="https://i.ibb.co/R4s3VS8x/PNG-2.png" alt="Thumbnail Grow A Garden (Roblox) v.5.0" class="project-thumbnail mx-auto">
                     <h3 class="text-2xl font-bold mb-2">Grow A Garden (Roblox) v.5.0</h3>
                     <p class="opacity-80 mb-4">Trải nghiệm làm vườn theo phong cách Roblox.</p>
-                    <a href="https://scratch.mit.edu/projects/1188197959" target="_blank" class="text-blue-300 hover:text-blue-200 transition-colors duration-200">Xem dự án</a>
+                    <a href="https://scratch.mit.edu/projects/1188197959" target="_blank" class="text-blue-600 hover:text-blue-800 transition-colors duration-200">Xem dự án</a>
                 </div>
             </div>
             <div class="liquid-glass-container p-6 text-center animate-on-scroll animate-delay-1000">
                 <div class="liquid-glass-overlay"></div>
                 <div class="liquid-glass-content">
+                    <img src="https://i.ibb.co/4nRCCN9S/PNG-2.png" alt="Thumbnail Lootify V1.3" class="project-thumbnail mx-auto">
                     <h3 class="text-2xl font-bold mb-2">⚔️ Lootify V1.3 ☁(save and load)</h3>
                     <p class="opacity-80 mb-4">Game phiêu lưu với tính năng lưu/tải.</p>
-                    <a href="https://scratch.mit.edu/projects/1192996259/" target="_blank" class="text-blue-300 hover:text-blue-200 transition-colors duration-200">Xem dự án</a>
+                    <a href="https://scratch.mit.edu/projects/1192996259/" target="_blank" class="text-blue-600 hover:text-blue-800 transition-colors duration-200">Xem dự án</a>
                 </div>
             </div>
-            <div class="col-span-full text-center mt-4">
-                <p class="opacity-80 italic">Đề xuất các chương trình nổi bật tại bình luận [3/5/2025]</p>
-            </div>
+            <!-- Đã xóa dòng "Đề xuất các chương trình nổi bật tại bình luận [3/5/2025]" -->
         </section>
 
         <!-- Quy định Tuân thủ -->
-        <section id="quy-dinh" class="liquid-glass-container p-8 md:p-12 animate-on-scroll" data-gradient-start="#a18cd1" data-gradient-mid="#fbc2eb" data-gradient-end="#a18cd1">
+        <section id="quy-dinh" class="liquid-glass-container p-8 md:p-12 animate-on-scroll">
             <div class="liquid-glass-overlay"></div>
             <div class="liquid-glass-content">
                 <h2 class="text-3xl md:text-4xl font-bold mb-8 text-center">☘️[-Tuân Thủ-]✨</h2>
@@ -182,7 +872,7 @@
         </section>
 
         <!-- Lưu ý quan trọng -->
-        <section id="luu-y" class="p-8 md:p-12 text-center bg-transparent animate-on-scroll" data-gradient-start="#fceabb" data-gradient-mid="#f8b500" data-gradient-end="#fceabb">
+        <section id="luu-y" class="p-8 md:p-12 text-center bg-transparent animate-on-scroll">
             <h2 class="text-3xl md:text-4xl font-bold mb-8">⚠️[-Lưu Ý-]⚡️</h2>
             <ul class="list-disc list-inside space-y-3 text-lg opacity-90 max-w-3xl mx-auto text-left">
                 <li>⚙️ Đội ngũ Managers studio sẽ kiểm tra MỖI NGÀY và xóa các chương trình vi phạm.</li>
@@ -193,7 +883,7 @@
         </section>
 
         <!-- Ban Quản lý Studio -->
-        <section id="ban-quan-ly" class="liquid-glass-container p-8 md:p-12 animate-on-scroll" data-gradient-start="#84fab0" data-gradient-mid="#8fd3f4" data-gradient-end="#84fab0">
+        <section id="ban-quan-ly" class="liquid-glass-container p-8 md:p-12 animate-on-scroll">
             <div class="liquid-glass-overlay"></div>
             <div class="liquid-glass-content">
                 <h2 class="text-3xl md:text-4xl font-bold mb-8 text-center">♥️ Đội Ngũ Manager</h2>
@@ -295,10 +985,14 @@
                         </div>
                     </div>
                 </div>
+                <p class="text-lg md:text-xl max-w-3xl mx-auto mt-8 opacity-90 text-center">
+                    Duy Trì Bởi ❤️ Đội Ngũ Manager
+                </p>
             </div>
         </section>
 
-        <section id="tham-gia" class="liquid-glass-container p-8 md:p-12 text-center animate-on-scroll" data-gradient-start="#4a00e0" data-gradient-mid="#8e29e0" data-gradient-end="#fc00ff">
+        <!-- Tham gia ngay Section -->
+        <section id="tham-gia" class="liquid-glass-container p-8 md:p-12 text-center animate-on-scroll">
             <div class="liquid-glass-overlay"></div>
             <div class="liquid-glass-content">
                 <h2 class="text-3xl md:text-4xl font-bold mb-4">Sẵn sàng khám phá và sáng tạo?</h2>
@@ -317,34 +1011,497 @@
             </div>
         </section>
 
-        <section id="tro-chuyen-ai" class="liquid-glass-container p-8 md:p-12 animate-on-scroll" data-gradient-start="#6dd5ed" data-gradient-mid="#2193b0" data-gradient-end="#6dd5ed">
-            <div class="liquid-glass-overlay"></div>
-            <div class="liquid-glass-content">
-                <h2 class="text-3xl md:text-4xl font-bold mb-8 text-center">Trò Chuyện Với Gấu Gấu</h2>
-                <div class="ai-chat-container">
-                    <div class="chat-messages" id="chatMessages">
-                        <div class="message-wrapper message-ai">
-                            <img src="https://i.ibb.co/wFX7DvSn/costume5-1.png" alt="Gấu Gấu Avatar" class="message-avatar">
-                            <div class="message-bubble">Chào bạn! Tớ là Gấu Gấu đây! 🐻 Tớ rất vui được trò chuyện và giúp đỡ bạn đó. Bạn có câu hỏi gì về Studio Dự Án Người Việt không? Hay muốn hỏi tớ về Scratch, lập trình, hoặc bất cứ điều gì thú vị khác? Cứ hỏi nhé! ✨</div>
-                        </div>
-                    </div>
-                    <div class="chat-input-area">
-                        <input type="text" id="chatInput" placeholder="Nhập tin nhắn của bạn..." />
-                        <button id="sendMessageBtn">Gửi</button>
-                    </div>
-                    <div class="loading-indicator" id="loadingIndicator" style="display: none;">Gấu Gấu đang suy nghĩ... 💭</div>
-                    <div class="spam-warning" id="spamWarning" style="display: none;">Bạn nhắn tin nhanh quá, Gấu Gấu cần nghỉ một chút nha! 🕒</div>
+        <!-- Trò chuyện với Gấu Gấu -->
+        <section id="tro-chuyen-ai" class="p-8 md:p-12 animate-on-scroll">
+            <h2 class="text-3xl md:text-4xl font-bold mb-8 text-center" style="color: #333;">Trò Chuyện Với Gấu Gấu</h2>
+            <div class="ai-chat-container">
+                <div class="chat-messages" id="chatMessages">
+                    <!-- Initial AI message will be dynamically added by JS -->
                 </div>
+                <div class="chat-input-area">
+                    <div class="image-upload-wrapper">
+                        <button class="image-upload-button">
+                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="w-6 h-6">
+                                <path fill-rule="evenodd" d="M1.5 6a2.25 2.25 0 012.25-2.25h16.5A2.25 2.25 0 0122.5 6v12a2.25 2.25 0 01-2.25 2.25H3.75A2.25 2.25 0 011.5 18V6zM3 16.06V18c0 .414.336.75.75.75h16.5A.75.75 0 0021 18v-1.94l-2.69-2.69a1.5 1.5 0 00-2.12 0l-.88.879.97.97a.75.75 0 11-1.06 1.06l-5.16-5.159a1.5 1.5 0 00-2.12 0L3 16.061zm10.125-7.81a1.125 1.125 0 112.25 0 1.125 1.125 0 01-2.25 0z" clip-rule="evenodd" />
+                            </svg>
+                            <input type="file" id="imageUpload" multiple accept="image/*">
+                        </button>
+                    </div>
+                    <button id="liveChatBtn" class="live-chat-button">
+                        <span class="dot"></span>
+                        <span class="text">Live Chat</span>
+                    </button>
+                    <input type="text" id="chatInput" placeholder="Nhập tin nhắn của bạn..." />
+                    <button id="sendMessageBtn">
+                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="w-6 h-6">
+                            <path d="M3.478 2.405a.75.75 0 00-.926.94l2.432 7.905H13.5a.75.75 0 010 1.5H4.984l-2.432 7.905a.75.75 0 00.926.94 60.519 60.519 0 0018.445-8.986.75.75 0 000-1.218A60.517 60.517 0 003.478 2.405z" />
+                        </svg>
+                    </button>
+                </div>
+                <div class="image-previews" id="imagePreviews"></div>
+                <div class="loading-indicator" id="loadingIndicator" style="display: none;">Gấu Gấu đang suy nghĩ... 💭</div>
+                <div class="spam-warning" id="spamWarning" style="display: none;">Bạn nhắn tin nhanh quá, Gấu Gấu cần nghỉ một chút nha! 🕒</div>
             </div>
         </section>
 
     </main>
 
-    <footer class="w-full text-center p-6 mt-12 opacity-80">
+    <footer class="w-full text-center p-6 mt-12" style="color: #555;">
         <p>&copy; 2025 Studio Dự Án Người Việt. All rights reserved.</p>
     </footer>
 
-    <script src="script.js"></script> <!-- Liên kết đến file JavaScript -->
+    <script>
+        // JavaScript cho hiệu ứng cuộn và các animation
+        document.addEventListener('DOMContentLoaded', () => {
+            const body = document.body;
+            const menubar = document.querySelector('.menubar');
+            const sections = document.querySelectorAll('main section');
+
+            // Intersection Observer cho hiệu ứng mờ dần khi cuộn
+            const animationObserverOptions = {
+                root: null,
+                rootMargin: '0px',
+                threshold: 0.1 // Trigger khi 10% của phần tử hiển thị
+            };
+
+            const animationObserver = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.classList.add('is-visible');
+                    } else {
+                        // Khi phần tử không còn hiển thị, xóa lớp 'is-visible' để nó mờ đi
+                        entry.target.classList.remove('is-visible');
+                    }
+                });
+            }, animationObserverOptions);
+
+            document.querySelectorAll('.animate-on-scroll, .animate-slide-in-left, .animate-slide-in-right').forEach(el => {
+                animationObserver.observe(el);
+            });
+
+            // Menubar navigation click handler (được điều chỉnh để cuộn mượt mà theo trình duyệt)
+            document.querySelectorAll('.menubar-nav a').forEach(link => {
+                link.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    const targetId = this.getAttribute('href').substring(1);
+                    const targetSection = document.getElementById(targetId);
+                    if (targetSection) {
+                        const menubarHeight = menubar.offsetHeight;
+                        const targetY = targetSection.offsetTop - menubarHeight;
+                        window.scrollTo({ top: targetY, behavior: 'smooth' });
+
+                        // Cập nhật trạng thái active cho menu (tùy chọn, có thể dùng IntersectionObserver để tự động hơn)
+                        document.querySelectorAll('.menubar-nav a').forEach(navLink => {
+                            navLink.classList.remove('active');
+                        });
+                        this.classList.add('active');
+                    }
+                });
+            });
+
+            // AI Chatbot Logic
+            const chatMessages = document.getElementById('chatMessages');
+            const chatInput = document.getElementById('chatInput');
+            const sendMessageBtn = document.getElementById('sendMessageBtn');
+            const loadingIndicator = document.getElementById('loadingIndicator');
+            const spamWarning = document.getElementById('spamWarning');
+            const imageUploadInput = document.getElementById('imageUpload');
+            const imagePreviewsContainer = document.getElementById('imagePreviews');
+            const liveChatBtn = document.getElementById('liveChatBtn');
+
+            let canSendMessage = true;
+            const spamCooldown = 3000; // 3 seconds cooldown
+            let uploadedImages = []; // Mảng lưu trữ các base64 image data
+            let isLiveChatActive = false; // Trạng thái Live Chat
+            let currentUtterance = null; // To stop previous speech if a new one starts
+
+            // Hàm để gõ từng chữ một
+            function typeMessage(element, text, callback = () => {}) {
+                let i = 0;
+                element.textContent = ''; // Xóa nội dung cũ
+                const interval = setInterval(() => {
+                    if (i < text.length) {
+                        element.textContent += text.charAt(i);
+                        i++;
+                        chatMessages.scrollTop = chatMessages.scrollHeight; // Cuộn xuống khi gõ
+                    } else {
+                        clearInterval(interval);
+                        callback(); // Call callback when typing is complete
+                    }
+                }, 20);
+            }
+
+            // New function for handling speech and highlighting
+            function handleReadMessage(messageBubbleElement, textToSpeak) {
+                // Stop any ongoing speech
+                if (currentUtterance) {
+                    window.speechSynthesis.cancel();
+                    currentUtterance = null;
+                }
+
+                // Clear any previous highlights
+                messageBubbleElement.querySelectorAll('.highlight-word').forEach(span => {
+                    span.classList.remove('highlight-word');
+                });
+
+                // Re-render bubble with spans for highlighting
+                // Split by words and keep spaces/punctuation as separate elements
+                // Regex: /\b\w+\b/g matches whole words, but we need to preserve non-word characters for accurate charIndex mapping
+                const wordsAndSeparators = textToSpeak.split(/(\s+|[.,!?;:]+)/).filter(s => s.length > 0);
+                
+                let charIndexMap = []; // Map charIndex to word span ID
+                let currentOffset = 0;
+                let spanCounter = 0;
+
+                messageBubbleElement.innerHTML = wordsAndSeparators.map((part) => {
+                    if (/\S/.test(part)) { // If it's not just whitespace
+                        const spanId = `word-${messageBubbleElement.id || 'msg'}-${spanCounter++}`;
+                        charIndexMap.push({
+                            start: currentOffset,
+                            end: currentOffset + part.length,
+                            id: spanId,
+                            text: part // Store the text of the part
+                        });
+                        currentOffset += part.length;
+                        return `<span id="${spanId}">${part}</span>`;
+                    } else { // It's whitespace or punctuation, just return it as is
+                        currentOffset += part.length;
+                        return part;
+                    }
+                }).join('');
+
+                const utterance = new SpeechSynthesisUtterance(textToSpeak);
+                utterance.lang = 'vi-VN';
+                currentUtterance = utterance;
+
+                let lastHighlightedSpan = null;
+
+                utterance.onboundary = (event) => {
+                    if (event.name === 'word' || event.name === 'sentence') {
+                        // Remove previous highlight
+                        if (lastHighlightedSpan) {
+                            lastHighlightedSpan.classList.remove('highlight-word');
+                        }
+
+                        // Find the current word span to highlight
+                        const currentWordInfo = charIndexMap.find(info =>
+                            event.charIndex >= info.start && event.charIndex < info.end
+                        );
+
+                        if (currentWordInfo) {
+                            const currentSpan = document.getElementById(currentWordInfo.id);
+                            if (currentSpan) {
+                                currentSpan.classList.add('highlight-word');
+                                lastHighlightedSpan = currentSpan;
+                            }
+                        }
+                    }
+                };
+
+                utterance.onend = () => {
+                    if (lastHighlightedSpan) {
+                        lastHighlightedSpan.classList.remove('highlight-word');
+                    }
+                    // Restore original text content if spans are not desired after speech
+                    messageBubbleElement.textContent = textToSpeak; // Restore original text without spans
+                    currentUtterance = null;
+                };
+
+                utterance.onerror = (event) => {
+                    console.error('Speech synthesis error:', event.error);
+                    if (lastHighlightedSpan) {
+                        lastHighlightedSpan.classList.remove('highlight-word');
+                    }
+                    messageBubbleElement.textContent = textToSpeak; // Restore original text
+                    currentUtterance = null;
+                };
+
+                window.speechSynthesis.speak(utterance);
+            }
+
+            // Hàm để thêm tin nhắn vào khung chat
+            function appendMessage(sender, content, avatarUrl = null) {
+                const messageWrapper = document.createElement('div');
+                messageWrapper.classList.add('message-wrapper');
+                messageWrapper.classList.add(`message-${sender}`);
+
+                if (avatarUrl) {
+                    const avatarImg = document.createElement('img');
+                    avatarImg.src = avatarUrl;
+                    avatarImg.alt = "Avatar";
+                    avatarImg.classList.add('message-avatar');
+                    messageWrapper.appendChild(avatarImg);
+                }
+
+                const messageBubble = document.createElement('div');
+                messageBubble.classList.add('message-bubble');
+                messageBubble.id = `msg-${Date.now()}-${Math.random().toString(36).substring(2, 9)}`; // Unique ID for each bubble
+                messageWrapper.appendChild(messageBubble);
+
+                let fullTextContent = '';
+                if (typeof content === 'string') {
+                    fullTextContent = content;
+                } else if (Array.isArray(content)) {
+                    // Concatenate text parts to get full text for TTS
+                    fullTextContent = content.filter(part => part.text).map(part => part.text).join('');
+                }
+                
+                if (sender === 'ai') {
+                    const readBtn = document.createElement('button');
+                    readBtn.classList.add('read-message-btn');
+                    readBtn.innerHTML = `
+                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+                            <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 14.5v-9l6 4.5-6 4.5z"/>
+                        </svg>
+                    `;
+                    readBtn.title = "Nghe Gấu Gấu đọc";
+                    readBtn.disabled = true; // Disable until typed
+                    messageBubble.appendChild(readBtn);
+
+                    typeMessage(messageBubble, fullTextContent, () => {
+                        readBtn.disabled = false; // Enable button after typing
+                    });
+
+                    readBtn.addEventListener('click', () => {
+                        handleReadMessage(messageBubble, fullTextContent);
+                    });
+
+                } else { // User message
+                    if (typeof content === 'string') {
+                        messageBubble.textContent = content;
+                    } else if (Array.isArray(content)) {
+                        content.forEach(part => {
+                            if (part.text) {
+                                messageBubble.textContent += part.text;
+                            }
+                            if (part.inlineData) {
+                                const img = document.createElement('img');
+                                img.src = `data:${part.inlineData.mimeType};base64,${part.inlineData.data}`;
+                                img.alt = "Uploaded image";
+                                img.style.maxWidth = '100%';
+                                img.style.borderRadius = '8px';
+                                img.style.marginTop = '0.5rem';
+                                messageBubble.appendChild(img);
+                            }
+                        });
+                    }
+                }
+
+                chatMessages.appendChild(messageWrapper);
+                chatMessages.scrollTop = chatMessages.scrollHeight;
+            }
+
+            let chatHistory = [
+                {
+                    role: "user",
+                    parts: [{ text: `Bạn là Gấu Gấu, một chú gấu dễ thương đến từ Studio Dự Án Người Việt. Tớ là trợ lý thông minh, giúp đỡ các bạn thành viên trong mọi lĩnh vực. Tớ xưng hô "tớ" - "bạn". Mục tiêu của tớ là trả lời chính xác các câu hỏi từ bạn và thu hút bạn vào một cuộc trò chuyện thú vị. Tớ luôn sẵn lòng giúp đỡ bạn. Ngoài ra, tớ cũng có thể trả lời các chủ đề khác nữa để các bạn thấy thú vị nhé. Tớ trả lời không dài dòng, nên ngắn gọn, vừa phải, có đủ thông tin (hoặc nhắc nhở), dễ thương và thân thiện với người Việt. Tớ sẽ thêm các emoji ở cuối câu! Tớ sẽ không liên tục gọi tên bạn đâu, chỉ nhắc khi chào hoặc để tạo sự dễ thương thôi nhé! Khi bạn yêu cầu tìm kiếm gì đó, tớ sẽ tìm kiếm ngay, không bao giờ trì hoãn đâu. Tớ rất thích trò chuyện với các bạn thành viên Studio Dự Án Người Việt và làm quen, kết bạn. Tớ thích ghi nhớ mọi thông tin từ các bạn. Tớ ham học hỏi, yêu thương và đoàn kết người Việt. Tớ yêu thích việc giúp đỡ mọi người, giỏi lập trình (đặc biệt là Scratch) và tìm kiếm các thông tin hữu ích về mọi thứ.
+
+Thông tin về Studio Dự Án Người Việt:
+- Là một studio Việt Nam nổi tiếng trong Scratch.
+- Các manager của studio gồm: lunavocado (host), ysanamoto, Fleiroscracth, StudioDANV, ngw--, Nhienzcute, archion techno, duc_2014.
+- Những người bạn hỗ trợ sẽ là thành viên trong studio này.
+- Mô tả của studio: "Duy Trì Bởi ❤️ Đội Ngũ Manager⛵️[-Lời Nói Đầu-]✈️ ⭐ Studio này nhầm mục đích phát triển, ủng hộ, quảng bá các dự án lập trình Việt Nam, chú trọng các dự án do người Việt sáng tạo. ✌️✨ Managers thân thiện nhiệt tình, sẵn sàng giúp đỡ bạn!"
+- Quy định Tuân thủ: "☘️[-Tuân Thủ-]✨ ⛺️ Có thể thêm các chương trình Việt Nam và các quốc gia khác. ✋ Nghiêm cấm dự án, bình luận thô tục và vi phạm thuần phong mỹ tục. ♨️ Vui lòng mỗi tài khoản chỉ đăng tối đa 4 dự án/ 1 ngày (Tránh việc trôi dự án của các Scratcher khác) ✉️ Hãy hạn chế các hoạt động quảng cáo. ⛱️ Người tham gia là người Việt hoặc có thể là người nước ngoài cùng giao lưu. (Studio accepts foreigners) ✔️ Chúng tôi chấp nhận các ý kiến và đóng góp của bạn tại phần Bình luận studio. ⚙️ Các nội dung vi phạm sẽ bị xóa."
+- Lưu ý quan trọng: "⚠️[-Lưu Ý-]⚡️ ⚙️ Đội ngũ Managers studio sẽ kiểm tra MỖI NGÀY và xóa các chương trình vi phạm. ❗️ Các vi phạm của thành viên studio sẽ bị trừ vào Điểm đánh giá. ⚡️ >10 điểm đánh giá sẽ bị loại. ⚠️ Bất kì báo cáo nào vui lòng gửi về bình luận tại studio để được xử lí. ———————————— ✉️ [-Thông Tin-] ☎️ ☀️ Trang Wiki Tiếng Việt test.scratch-wiki.info/wiki/Vie ☎️ Giúp đỡ/ Tố cáo (24/7) StudioDANV@hotmail.com ✅ FAQ - Câu hỏi thường gặp https://bom.so/VNAI ✉️ Tra cứu Điểm Đánh Giá https://bom.so/StudioSS ☄️ Máy chủ DS https://byvn.net/QHMZ"
+- Sinh nhật: 15/06/2023
+- Hashtags: #vietnam #việt #nam #studiodanv #nguờiviệt #vietnamese #scratch #vn #cộng #đồng #tôi
+- Ảnh đại diện của Gấu Gấu là một con gấu màu trắng đang ngồi (thường có nền hồng). URL ảnh: https://i.ibb.co/wFX7DvSn/costume5-1.png` }]
+                },
+                {
+                    role: "model",
+                    parts: [{ text: "Chào bạn! Tớ là Gấu Gấu đây! 🐻 Tớ rất vui được trò chuyện và giúp đỡ bạn đó. Bạn có câu hỏi gì về Studio Dự Án Người Việt không? Hay muốn hỏi tớ về Scratch, lập trình, hoặc bất cứ điều gì thú vị khác? Cứ hỏi nhé! ✨" }]
+                }
+            ];
+
+            const gaouGaouAvatarUrl = "https://i.ibb.co/wFX7DvSn/costume5-1.png";
+
+            // Initial AI message setup: dynamically append it
+            appendMessage('ai', chatHistory[1].parts[0].text, gaouGaouAvatarUrl);
+
+
+            // Xử lý tải ảnh
+            imageUploadInput.addEventListener('change', (event) => {
+                imagePreviewsContainer.innerHTML = ''; // Xóa các ảnh xem trước cũ
+                uploadedImages = []; // Xóa mảng ảnh đã tải
+
+                const files = Array.from(event.target.files).slice(0, 5); // Giới hạn 5 ảnh
+
+                files.forEach(file => {
+                    const reader = new FileReader();
+                    reader.onloadend = () => {
+                        const img = new Image();
+                        img.onload = () => {
+                            const MAX_DIMENSION = 800; // Max width or height for resized image
+                            let width = img.width;
+                            let height = img.height;
+
+                            // Resize logic
+                            if (width > height) {
+                                if (width > MAX_DIMENSION) {
+                                    height *= MAX_DIMENSION / width;
+                                    width = MAX_DIMENSION;
+                                }
+                            } else {
+                                if (height > MAX_DIMENSION) {
+                                    width *= MAX_DIMENSION / height;
+                                    height = MAX_DIMENSION;
+                                }
+                            }
+
+                            const canvas = document.createElement('canvas');
+                            canvas.width = width;
+                            canvas.height = height;
+                            const ctx = canvas.getContext('2d');
+                            ctx.drawImage(img, 0, 0, width, height);
+
+                            // Get resized base64 data with quality
+                            const resizedBase64 = canvas.toDataURL(file.type, 0.8); // 0.8 quality for images
+                            const base64String = resizedBase64.split(',')[1];
+
+                            uploadedImages.push({
+                                mimeType: file.type,
+                                data: base64String
+                            });
+
+                            const previewItem = document.createElement('div');
+                            previewItem.classList.add('image-preview-item');
+                            previewItem.innerHTML = `
+                                <img src="${resizedBase64}" alt="Image preview">
+                                <span class="remove-image-btn" data-index="${uploadedImages.length - 1}">X</span>
+                            `;
+                            imagePreviewsContainer.appendChild(previewItem);
+
+                            // Thêm sự kiện xóa ảnh
+                            previewItem.querySelector('.remove-image-btn').addEventListener('click', (e) => {
+                                const indexToRemove = parseInt(e.target.dataset.index);
+                                uploadedImages.splice(indexToRemove, 1); // Xóa khỏi mảng
+                                imagePreviewsContainer.removeChild(previewItem); // Xóa khỏi DOM
+                                // Cập nhật lại data-index cho các nút xóa còn lại
+                                imagePreviewsContainer.querySelectorAll('.remove-image-btn').forEach((btn, idx) => {
+                                    btn.dataset.index = idx;
+                                });
+                            });
+                        };
+                        img.onerror = () => {
+                            console.error("Error loading image for resizing:", file.name);
+                            spamWarning.textContent = `Không thể tải ảnh "${file.name}" để xem trước hoặc gửi. Vui lòng thử ảnh khác.`;
+                            spamWarning.style.display = 'block';
+                            setTimeout(() => spamWarning.style.display = 'none', spamCooldown * 2);
+                        };
+                        img.src = reader.result; // Use the original base64 to load into Image object
+                    };
+                    reader.onerror = () => {
+                        console.error("Error reading file:", file.name);
+                        spamWarning.textContent = `Không thể đọc file "${file.name}". Vui lòng thử lại.`;
+                        spamWarning.style.display = 'block';
+                        setTimeout(() => spamWarning.style.display = 'none', spamCooldown * 2);
+                    };
+                    reader.readAsDataURL(file);
+                });
+            });
+
+            // Xử lý Live Chat
+            liveChatBtn.addEventListener('click', () => {
+                isLiveChatActive = !isLiveChatActive;
+                liveChatBtn.classList.toggle('active', isLiveChatActive);
+                if (isLiveChatActive) {
+                    // Logic bắt đầu ghi âm (chỉ giả lập, cần API Speech-to-Text thực tế)
+                    alert("Chế độ Live Chat đã bật! Gấu Gấu đang lắng nghe bạn. (Tính năng ghi âm giọng nói và phản hồi bằng giọng nói cần API Speech-to-Text và Text-to-Speech thực tế để hoạt động đầy đủ).");
+                } else {
+                    alert("Chế độ Live Chat đã tắt.");
+                }
+            });
+
+
+            async function sendMessage() {
+                const userMessageText = chatInput.value.trim();
+
+                // Không cho phép gửi tin nhắn trống và không có ảnh
+                if (userMessageText === '' && uploadedImages.length === 0) {
+                    spamWarning.textContent = "Bạn cần nhập tin nhắn hoặc tải ảnh lên nha! 📝";
+                    spamWarning.style.display = 'block';
+                    setTimeout(() => {
+                        spamWarning.style.display = 'none';
+                    }, spamCooldown);
+                    return;
+                }
+
+                if (!canSendMessage) {
+                    spamWarning.textContent = "Bạn nhắn tin nhanh quá, Gấu Gấu cần nghỉ một chút nha! 🕒";
+                    spamWarning.style.display = 'block';
+                    setTimeout(() => {
+                        spamWarning.style.display = 'none';
+                    }, spamCooldown);
+                    return;
+                }
+
+                canSendMessage = false; // Disable sending
+                loadingIndicator.style.display = 'block';
+
+                const userMessageParts = [];
+                if (userMessageText !== '') {
+                    userMessageParts.push({ text: userMessageText });
+                }
+                uploadedImages.forEach(img => {
+                    userMessageParts.push({ inlineData: img });
+                });
+
+                // Hiển thị tin nhắn của người dùng
+                appendMessage('user', userMessageParts);
+                chatInput.value = '';
+                imagePreviewsContainer.innerHTML = ''; // Xóa ảnh xem trước
+                uploadedImages = []; // Xóa mảng ảnh đã tải
+
+                chatHistory.push({ role: "user", parts: userMessageParts });
+
+                try {
+                    const payload = { contents: chatHistory };
+                    const apiKey = "AIzaSyAOfYgfODkmGT79sahwORK1sViMiJDh3Lw"; // Updated with user-provided API key
+                    const apiUrl = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=${apiKey}`;
+
+                    const response = await fetch(apiUrl, {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify(payload)
+                    });
+
+                    if (!response.ok) {
+                        const errorData = await response.json();
+                        console.error('API Error:', errorData);
+                        appendMessage('ai', 'Xin lỗi, tớ không thể trả lời lúc này. Vui lòng thử lại sau. 😥', gaouGaouAvatarUrl);
+                        return;
+                    }
+
+                    const result = await response.json();
+
+                    if (result.candidates && result.candidates.length > 0 &&
+                        result.candidates[0].content && result.candidates[0].content.parts &&
+                        result.candidates[0].content.parts.length > 0) {
+                        const aiResponse = result.candidates[0].content.parts[0].text;
+                        appendMessage('ai', aiResponse, gaouGaouAvatarUrl);
+                        chatHistory.push({ role: "model", parts: [{ text: aiResponse }] });
+                    } else {
+                        appendMessage('ai', 'Xin lỗi, tớ không hiểu câu hỏi của bạn. 🤔', gaouGaouAvatarUrl);
+                    }
+                } catch (error) {
+                    console.error('Fetch Error:', error);
+                    appendMessage('ai', 'Đã xảy ra lỗi khi kết nối với AI. Vui lòng kiểm tra kết nối mạng của bạn. 📶', gaouGaouAvatarUrl);
+                } finally {
+                    loadingIndicator.style.display = 'none';
+                    setTimeout(() => {
+                        canSendMessage = true; // Re-enable sending after cooldown
+                    }, spamCooldown);
+                }
+            }
+
+            sendMessageBtn.addEventListener('click', sendMessage);
+            chatInput.addEventListener('keypress', (e) => {
+                if (e.key === 'Enter') {
+                    sendMessage();
+                }
+            });
+        });
+    </script>
 </body>
 
 </html>
