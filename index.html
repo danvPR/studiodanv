@@ -58,11 +58,11 @@
             /* Easing mượt mà hơn */
             border: 1px solid rgba(0, 0, 0, 0.1);
             /* Đường viền rõ hơn */
+            transform-origin: center; /* Add transform-origin for centered scaling */
         }
 
         .liquid-glass-container:hover {
-            transform: translateY(-8px) scale(1.01);
-            /* Nâng và phóng to nhẹ */
+            transform: translateY(-4px) scale(1.005); /* Nâng và phóng to nhẹ hơn */
             box-shadow: 0px 30px calc(var(--outer-shadow-blur) * 1.5) rgba(0, 0, 0, 0.15);
             /* Bóng đổ mềm mại hơn */
             border: 1px solid rgba(0, 0, 0, 0.2);
@@ -1144,7 +1144,7 @@
     </header>
 
     <!-- Nội dung trang web giới thiệu Studio Scratch -->
-    <main class="w-full max-w-6xl mx-auto p-4 md:p-8 space-y-8 z-20 mt-16 overflow-x-hidden">
+    <main class="w-full max-w-6xl mx-auto p-4 md:p-8 space-y-12 z-20 mt-24 overflow-x-hidden">
 
         <!-- Hero Section -->
         <section id="hero" class="liquid-glass-container p-8 md:p-12 text-center animate-on-scroll">
@@ -1593,11 +1593,21 @@
 
             // New function for handling speech and highlighting
             function handleReadMessage(messageBubbleElement, textToSpeak) {
-                console.log("Attempting to speak:", textToSpeak); // Log the text being spoken
+                console.log('Text to speak:', textToSpeak); // Log the text to be spoken
+
                 // Stop any ongoing speech
                 if (currentUtterance) {
                     window.speechSynthesis.cancel();
                     currentUtterance = null;
+                }
+
+                // Check for voices
+                const voices = window.speechSynthesis.getVoices();
+                if (voices.length === 0) {
+                    spamWarning.textContent = "Không tìm thấy giọng nói nào. Vui lòng kiểm tra cài đặt trình duyệt của bạn. 🔇";
+                    spamWarning.style.display = 'block';
+                    setTimeout(() => spamWarning.style.display = 'none', spamCooldown * 3);
+                    return;
                 }
 
                 // Clear any previous highlights from all bubbles
@@ -1661,6 +1671,7 @@
                 let lastHighlightedSpan = null;
 
                 utterance.onstart = () => {
+                    console.log('SpeechSynthesis started.');
                     // When Gấu Gấu starts speaking, immediately stop user's mic if active
                     if (isLiveChatActive && recognition && (recognition.readyState === SpeechRecognition.RECORDING || recognition.readyState === SpeechRecognition.CONNECTING)) {
                         console.log('Gấu Gấu started speaking, stopping user mic.');
@@ -1692,6 +1703,7 @@
                 };
 
                 utterance.onend = () => {
+                    console.log('SpeechSynthesis ended.');
                     if (lastHighlightedSpan) {
                         lastHighlightedSpan.classList.remove('highlight-word');
                     }
@@ -1743,7 +1755,10 @@
                     }
                 };
 
-                window.speechSynthesis.speak(utterance);
+                // Small delay to ensure cancel() takes effect
+                setTimeout(() => {
+                    window.speechSynthesis.speak(utterance);
+                }, 50); // 50ms delay
             }
 
             // Hàm để thêm tin nhắn vào khung chat
@@ -2062,7 +2077,7 @@ Thông tin về Studio Dự Án Người Việt:
                                         liveChatText.textContent = "Đang nghe...";
                                     } catch (e) {
                                         console.error("Error restarting recognition onend:", e);
-                                        spamWarning.textContent = "Không thể bật lại mic. Vui lòng thử lại Live Chat. �";
+                                        spamWarning.textContent = "Không thể bật lại mic. Vui lòng thử lại Live Chat. 🔇";
                                         spamWarning.style.display = 'block';
                                         setTimeout(() => spamWarning.style.display = 'none', spamCooldown * 3);
                                     }
@@ -2221,12 +2236,7 @@ Thông tin về Studio Dự Án Người Việt:
                                 // Get the full text content from the message bubble for reading
                                 const aiResponseTextContent = Array.from(lastAiMessageBubble.querySelectorAll('.message-text-content, .scratch-code-block'))
                                     .map(el => el.textContent).join(' ');
-                                // Ensure text content is not empty or just whitespace before attempting to speak
-                                if (aiResponseTextContent.trim().length > 0) {
-                                    handleReadMessage(lastAiMessageBubble, aiResponseTextContent);
-                                } else {
-                                    console.warn("AI response text content is empty, skipping speech synthesis.");
-                                }
+                                handleReadMessage(lastAiMessageBubble, aiResponseTextContent);
                             }
                         }
 
@@ -2255,4 +2265,3 @@ Thông tin về Studio Dự Án Người Việt:
 </body>
 
 </html>
-�
