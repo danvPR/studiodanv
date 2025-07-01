@@ -733,29 +733,22 @@
             background-color: rgba(255, 255, 255, 0.9);
             /* Nền chatbox sáng hơn và gần như trong suốt */
             backdrop-filter: blur(15px);
-            /* Giảm blur để nhẹ nhàng hơn */
             -webkit-backdrop-filter: blur(15px);
 
             padding: 1.5rem;
             display: flex;
             flex-direction: column;
             width: 100%;
-            /* Mở rộng chiều ngang */
-            /* max-width: 700px; Đã bỏ max-width để nó rộng bằng các khung khác */
             min-height: 500px;
-            /* Tăng chiều cao khung chat */
             margin: 2rem auto;
             max-height: 80vh;
             color: #333;
-            /* Màu chữ tối hơn cho chatbox */
         }
 
         .chat-messages {
             flex-grow: 1;
             overflow-y: auto;
-            /* Sử dụng thanh trượt mặc định */
             padding-right: 1rem;
-            /* Cho khoảng trống thanh trượt */
             margin-bottom: 1rem;
             display: flex;
             flex-direction: column;
@@ -765,12 +758,11 @@
         .message-wrapper {
             display: flex;
             align-items: flex-end;
-            /* Align to bottom for avatar */
             gap: 0.5rem;
         }
 
         .message-user .message-wrapper {
-            justify-content: flex-end;
+            justify-content: flex-end; /* Căn phải tin nhắn người dùng */
         }
 
         .message-ai .message-wrapper {
@@ -779,69 +771,52 @@
 
         .message-avatar {
             width: 35px;
-            /* Kích thước avatar nhỏ trong chat */
             height: 35px;
             border-radius: 50%;
             object-fit: cover;
             border: 2px solid rgba(0, 0, 0, 0.1);
-            /* Viền tối hơn */
             flex-shrink: 0;
-            /* Ngăn avatar bị co lại */
         }
 
         .message-bubble {
             padding: 0.75rem 1rem;
             border-radius: 1.25rem;
             max-width: 70%;
-            /* Giảm độ dài của chat bubble */
             word-wrap: break-word;
             flex-shrink: 1;
-            /* Cho phép bubble co lại */
             color: #fff;
-            /* Màu chữ trắng cho bubble */
             position: relative;
-            /* Để chứa nút đọc */
         }
 
         .message-user .message-bubble {
             background-color: #3b82f6;
-            /* Blue cho user */
             border-bottom-right-radius: 0.25rem;
             text-align: right;
-            /* Canh phải nội dung tin nhắn người dùng */
         }
 
         .message-ai .message-bubble {
             background-color: #10b981;
-            /* Green cho AI */
             border-bottom-left-radius: 0.25rem;
             text-align: left;
-            /* Canh trái nội dung tin nhắn AI */
         }
 
         .chat-input-area {
             display: flex;
             gap: 0.5rem;
             flex-wrap: wrap;
-            /* Cho phép xuống dòng trên màn hình nhỏ */
             align-items: center;
-            /* Căn giữa các item theo chiều dọc */
         }
 
         .chat-input-area input[type="text"] {
             flex-grow: 1;
             padding: 0.75rem 1rem;
             border-radius: 9999px;
-            /* Full rounded */
             border: none;
             background-color: rgba(0, 0, 0, 0.1);
-            /* Nền input tối hơn */
             color: #333;
-            /* Màu chữ input tối hơn */
             outline: none;
             transition: background-color 0.3s ease;
             min-width: 150px;
-            /* Đảm bảo input không quá nhỏ */
         }
 
         .chat-input-area input[type="text"]:focus {
@@ -850,15 +825,10 @@
 
         .chat-input-area button {
             width: 60px;
-            /* Fixed width */
             height: 60px;
-            /* Fixed height */
             padding: 0;
-            /* Remove padding to let content center */
             border-radius: 50%;
-            /* Make them circular */
             display: flex;
-            /* Use flex to center icon */
             align-items: center;
             justify-content: center;
             color: #fff;
@@ -867,7 +837,6 @@
             cursor: pointer;
             transition: background-color 0.3s ease, transform 0.2s ease;
             flex-shrink: 0;
-            /* Ngăn button bị co lại */
         }
 
         .chat-input-area button:hover {
@@ -882,7 +851,6 @@
         /* Specific button colors */
         #sendMessageBtn {
             background-color: #3b82f6;
-            /* Blue for send */
         }
 
         #sendMessageBtn:hover {
@@ -891,7 +859,6 @@
 
         .image-upload-button {
             background-color: #4CAF50;
-            /* Green for upload */
         }
 
         .image-upload-button:hover {
@@ -905,12 +872,10 @@
             font-style: italic;
             opacity: 0.7;
             color: #333;
-            /* Màu chữ tối hơn */
         }
 
         .spam-warning {
             color: #d97706;
-            /* Màu vàng cam cho warning */
             text-align: center;
             font-size: 0.9rem;
             margin-top: 0.5rem;
@@ -920,7 +885,6 @@
         .image-upload-wrapper {
             position: relative;
             display: inline-block;
-            /* Đã bỏ margin-left để nó nằm sát các nút khác */
         }
 
         .image-upload-button input[type="file"] {
@@ -936,18 +900,17 @@
         .image-previews {
             display: flex;
             flex-wrap: wrap;
-            gap: 0.75rem; /* Tăng khoảng cách giữa các ảnh */
-            margin-top: 0.75rem; /* Tăng khoảng cách trên */
-            max-height: 200px; /* Tăng giới hạn chiều cao preview */
+            gap: 0.75rem;
+            margin-top: 0.75rem;
+            max-height: 200px;
             overflow-y: auto;
-            /* Thêm scroll nếu quá nhiều ảnh */
             padding-bottom: 0.5rem;
         }
 
         .image-preview-item {
             position: relative;
-            width: 120px; /* Tăng kích thước ảnh xem trước */
-            height: 120px; /* Tăng kích thước ảnh xem trước */
+            width: 120px;
+            height: 120px;
             border-radius: 8px;
             overflow: hidden;
             border: 1px solid rgba(0, 0, 0, 0.1);
@@ -980,19 +943,15 @@
         /* Live Chat Button */
         .live-chat-button {
             background-color: #ef4444;
-            /* Red color */
             color: white;
             border-radius: 50%;
             width: 60px;
-            /* Kích thước nút tròn */
             height: 60px;
             cursor: pointer;
             transition: background-color 0.3s ease, transform 0.2s ease, box-shadow 0.3s ease;
             box-shadow: 0 4px 10px rgba(239, 68, 68, 0.3);
             flex-shrink: 0;
-            /* Đã bỏ margin-left để nó nằm sát các nút khác */
             display: flex;
-            /* Use flex to center dot and text */
             flex-direction: column;
             align-items: center;
             justify-content: center;
@@ -1006,10 +965,8 @@
 
         .live-chat-button.active {
             background-color: #10b981;
-            /* Green when active */
             box-shadow: 0 4px 10px rgba(16, 185, 129, 0.3);
             animation: pulse 1.5s infinite;
-            /* Hiệu ứng nhấp nháy khi active */
         }
 
         @keyframes pulse {
@@ -1070,31 +1027,60 @@
         /* Highlight cho từ đang đọc */
         .highlight-word {
             background-color: #ffeb3b;
-            /* Bright yellow */
             color: #333;
-            /* Dark text for contrast */
             border-radius: 4px;
             padding: 2px 4px;
             margin: -2px -4px;
-            /* To prevent layout shift */
             transition: background-color 0.1s ease-in-out, color 0.1s ease-in-out;
             display: inline-block;
-            /* Essential for padding/margin to work */
         }
 
         /* Thumbnail dự án nổi bật */
         .project-thumbnail {
             width: 100%;
-            /* Đảm bảo ảnh chiếm hết chiều rộng container */
             height: 150px;
-            /* Chiều cao cố định cho thumbnail */
             object-fit: cover;
-            /* Đảm bảo ảnh không bị méo, cắt nếu cần */
             border-radius: 16px;
-            /* Bo tròn góc ảnh */
             margin-bottom: 1rem;
-            /* Khoảng cách với tiêu đề */
             box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        /* Styles cho khối mã Scratch */
+        .scratch-code-block {
+            display: block;
+            padding: 0.75rem 1rem; /* Tăng padding */
+            border-radius: 0.75rem; /* Bo tròn góc nhiều hơn */
+            margin-top: 0.75rem;
+            margin-bottom: 0.75rem;
+            font-family: 'Consolas', 'Monaco', monospace;
+            font-size: 0.9rem;
+            white-space: pre-wrap;
+            word-break: break-all;
+            color: white;
+            background-color: #222; /* Nền màu đen */
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3); /* Bóng đổ */
+        }
+
+        /* Màu sắc các khối Scratch */
+        .scratch-code-block.motion { background-color: #4C97FF; } /* Xanh dương */
+        .scratch-code-block.looks { background-color: #9966FF; } /* Tím */
+        .scratch-code-block.sound { background-color: #D42D7A; } /* Hồng đậm */
+        .scratch-code-block.event { background-color: #FFD500; } /* Vàng */
+        .scratch-code-block.control { background-color: #FFAB19; } /* Cam */
+        .scratch-code-block.sensing { background-color: #5CB1D6; } /* Xanh nhạt */
+        .scratch-code-block.operators { background-color: #33CC33; } /* Xanh lá */
+        .scratch-code-block.variables { background-color: #FF8C1A; } /* Cam đỏ */
+        .scratch-code-block.my_blocks { background-color: #FF6680; } /* Đỏ hồng */
+        .scratch-code-block.default { background-color: #333; } /* Mặc định cho code thường */
+
+        /* Style cho hyperlink */
+        .message-bubble a {
+            color: #3b82f6; /* Màu xanh cho link */
+            text-decoration: underline;
+            transition: color 0.2s ease;
+        }
+        .message-bubble a:hover {
+            color: #2563eb;
         }
     </style>
 </head>
@@ -1560,6 +1546,8 @@
 
             // Global variables for SpeechRecognition
             let recognition = null; // Declare recognition variable
+            const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+
 
             // Hàm để gõ từng chữ một
             function typeMessage(element, text, callback = () => { }) {
@@ -1645,6 +1633,15 @@
 
                 let lastHighlightedSpan = null;
 
+                utterance.onstart = () => {
+                    // When Gấu Gấu starts speaking, immediately stop user's mic if active
+                    if (isLiveChatActive && recognition && (recognition.readyState === SpeechRecognition.RECORDING || recognition.readyState === SpeechRecognition.CONNECTING)) {
+                        console.log('Gấu Gấu started speaking, stopping user mic.');
+                        recognition.stop();
+                        liveChatText.textContent = "Gấu Gấu nói...";
+                    }
+                };
+
                 utterance.onboundary = (event) => {
                     if (event.name === 'word' || event.name === 'sentence') {
                         // Remove previous highlight
@@ -1678,7 +1675,7 @@
                     }
                     currentUtterance = null;
                     // Re-enable mic after Gấu Gấu finishes speaking if live chat is active
-                    if (isLiveChatActive && recognition) {
+                    if (isLiveChatActive && recognition && recognition.readyState !== SpeechRecognition.RECORDING && recognition.readyState !== SpeechRecognition.CONNECTING) {
                         console.log('Gấu Gấu finished speaking, restarting SpeechRecognition...');
                         try {
                             recognition.start();
@@ -1703,7 +1700,7 @@
                     }
                     currentUtterance = null;
                     // Re-enable mic even on error if live chat is active
-                    if (isLiveChatActive && recognition) {
+                    if (isLiveChatActive && recognition && recognition.readyState !== SpeechRecognition.RECORDING && recognition.readyState !== SpeechRecognition.CONNECTING) {
                         console.log('Gấu Gấu speech error, restarting SpeechRecognition...');
                         try {
                             recognition.start();
@@ -1739,21 +1736,64 @@
                 messageBubble.id = `msg-${Date.now()}-${Math.random().toString(36).substring(2, 9)}`; // Unique ID for each bubble
                 messageWrapper.appendChild(messageBubble);
 
-                const textContentDiv = document.createElement('div');
-                textContentDiv.classList.add('message-text-content'); // New div for text content
-                textContentDiv.id = `text-content-${messageBubble.id}`; // Unique ID for text content div
-                messageBubble.appendChild(textContentDiv);
+                // Markdown and Code Block Rendering
+                if (sender === 'ai') {
+                    const parsedContent = parseMarkdownAndCodeBlocks(content);
+                    parsedContent.forEach(part => {
+                        if (part.type === 'text') {
+                            const textContentDiv = document.createElement('div');
+                            textContentDiv.classList.add('message-text-content');
+                            textContentDiv.id = `text-content-${messageBubble.id}`;
+                            messageBubble.appendChild(textContentDiv);
+                            typeMessage(textContentDiv, part.content, () => {
+                                // Enable read button after typing is complete
+                                const readBtn = messageBubble.querySelector('.read-message-btn');
+                                if (readBtn) readBtn.disabled = false;
+                            });
+                        } else if (part.type === 'code') {
+                            const codeBlock = document.createElement('pre');
+                            codeBlock.classList.add('scratch-code-block', part.language || 'default');
+                            codeBlock.textContent = part.content;
+                            messageBubble.appendChild(codeBlock);
+                        } else if (part.type === 'html') { // For bold/italic converted HTML and hyperlinks
+                            const htmlContentDiv = document.createElement('div');
+                            htmlContentDiv.classList.add('message-text-content');
+                            htmlContentDiv.innerHTML = part.content; // Use innerHTML for parsed Markdown and links
+                            messageBubble.appendChild(htmlContentDiv);
+                        }
+                    });
 
+                    const readBtn = document.createElement('button');
+                    readBtn.classList.add('read-message-btn');
+                    readBtn.innerHTML = `
+                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+                            <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 14.5v-9l6 4.5-6 4.5z"/>
+                        </svg>
+                    `;
+                    readBtn.title = "Nghe Gấu Gấu đọc";
+                    readBtn.disabled = true; // Disable until typed
+                    messageBubble.appendChild(readBtn);
 
-                let fullTextContent = '';
-                if (typeof content === 'string') {
-                    fullTextContent = content;
-                } else if (Array.isArray(content)) {
-                    // Concatenate text parts to get full text for TTS
-                    fullTextContent = content.filter(part => part.text).map(part => part.text).join('');
+                    // Get full text content for TTS (excluding code blocks for now, or just the text parts)
+                    // For TTS, we should extract plain text, not HTML.
+                    const fullTextForTTS = parsedContent.filter(p => p.type !== 'code').map(p => {
+                        // If it's HTML, create a temp div to get its textContent
+                        const tempDiv = document.createElement('div');
+                        tempDiv.innerHTML = p.content;
+                        return tempDiv.textContent || '';
+                    }).join(' ');
+                    readBtn.addEventListener('click', () => {
+                        handleReadMessage(messageBubble, fullTextForTTS);
+                    });
+
+                } else { // User message
+                    const textContentDiv = document.createElement('div');
+                    textContentDiv.classList.add('message-text-content');
+                    textContentDiv.textContent = typeof content === 'string' ? content : content.filter(part => part.text).map(part => part.text).join('');
+                    messageBubble.appendChild(textContentDiv);
 
                     // Add image elements directly to messageBubble for user messages
-                    if (sender === 'user') {
+                    if (Array.isArray(content)) {
                         content.forEach(part => {
                             if (part.inlineData) {
                                 const img = document.createElement('img');
@@ -1768,33 +1808,49 @@
                     }
                 }
 
-                if (sender === 'ai') {
-                    const readBtn = document.createElement('button');
-                    readBtn.classList.add('read-message-btn');
-                    readBtn.innerHTML = `
-                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
-                            <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 14.5v-9l6 4.5-6 4.5z"/>
-                        </svg>
-                    `;
-                    readBtn.title = "Nghe Gấu Gấu đọc";
-                    readBtn.disabled = true; // Disable until typed
-                    messageBubble.appendChild(readBtn); // Append button to messageBubble
-
-                    typeMessage(textContentDiv, fullTextContent, () => {
-                        readBtn.disabled = false; // Enable button after typing
-                    });
-
-                    readBtn.addEventListener('click', () => {
-                        handleReadMessage(messageBubble, fullTextContent);
-                    });
-
-                } else { // User message
-                    textContentDiv.textContent = fullTextContent;
-                }
-
                 chatMessages.appendChild(messageWrapper);
                 chatMessages.scrollTop = chatMessages.scrollHeight;
             }
+
+            // Function to parse Markdown and custom code blocks
+            function parseMarkdownAndCodeBlocks(text) {
+                const parts = [];
+                // Regex: ```lang content```
+                const codeBlockRegex = /```(\w+)?\s*([\s\S]*?)```/g;
+                let lastIndex = 0;
+                let match;
+
+                while ((match = codeBlockRegex.exec(text)) !== null) {
+                    // Add text before the code block, parsing for basic markdown and hyperlinks
+                    if (match.index > lastIndex) {
+                        parts.push({ type: 'html', content: parseBasicMarkdownAndLinks(text.substring(lastIndex, match.index)) });
+                    }
+
+                    // Add the code block
+                    const lang = match[1] ? match[1].toLowerCase() : 'default';
+                    const codeContent = match[2].trim();
+                    parts.push({ type: 'code', language: lang, content: codeContent });
+                    lastIndex = codeBlockRegex.lastIndex;
+                }
+
+                // Add any remaining text after the last code block, parsing for basic markdown and hyperlinks
+                if (lastIndex < text.length) {
+                    parts.push({ type: 'html', content: parseBasicMarkdownAndLinks(text.substring(lastIndex)) });
+                }
+                return parts;
+            }
+
+            // Function to parse basic Markdown (bold, italic) and hyperlinks
+            function parseBasicMarkdownAndLinks(text) {
+                // Hyperlinks: [text](url)
+                text = text.replace(/\[(.*?)\]\((.*?)\)/g, '<a href="$2" target="_blank" rel="noopener noreferrer">$1</a>');
+                // Bold: **text**
+                text = text.replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>');
+                // Italic: *text*
+                text = text.replace(/\*(.*?)\*/g, '<em>$1</em>');
+                return text;
+            }
+
 
             let chatHistory = [
                 {
@@ -1829,7 +1885,7 @@ Thông tin về Studio Dự Án Người Việt:
                 imagePreviewsContainer.innerHTML = ''; // Xóa các ảnh xem trước cũ
                 uploadedImages = []; // Xóa mảng ảnh đã tải
 
-                const files = Array.from(event.target.files).slice(0, 5); // Giới hạn 5 ảnh
+                const files = Array.from(event.target.files).slice(0, 2); // Giới hạn 2 ảnh
 
                 files.forEach(file => {
                     const reader = new FileReader();
@@ -1913,18 +1969,25 @@ Thông tin về Studio Dự Án Người Việt:
                 isLiveChatActive = !isLiveChatActive;
                 liveChatBtn.classList.toggle('active', isLiveChatActive);
 
-                if (isLiveChatActive) {
+                if (isLiveChatActive) { // Starting Live Chat
                     liveChatText.textContent = "Đang nghe...";
-                    liveChatDot.style.backgroundColor = 'white'; // Ensure dot is visible
+                    liveChatDot.style.backgroundColor = 'white';
+
                     try {
-                        // Request microphone access (not strictly needed for SpeechRecognition but good practice)
+                        // Request microphone access (necessary for SpeechRecognition)
                         await navigator.mediaDevices.getUserMedia({ audio: true });
 
-                        // Initialize SpeechRecognition
-                        const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
                         if (SpeechRecognition) {
+                            // If a recognition instance already exists and is active, stop it cleanly
+                            if (recognition && (recognition.readyState === SpeechRecognition.RECORDING || recognition.readyState === SpeechRecognition.CONNECTING)) {
+                                console.log("Recognition already active, stopping before new start.");
+                                recognition.stop(); // Stop current recognition
+                                // Wait a brief moment for it to fully stop before creating a new one
+                                await new Promise(resolve => setTimeout(resolve, 100)); // Small delay
+                            }
+
                             recognition = new SpeechRecognition();
-                            recognition.continuous = true; // Keep listening
+                            recognition.continuous = false; // Set to false to stop after each utterance
                             recognition.interimResults = false; // Only return final results
                             recognition.lang = 'vi-VN'; // Set language to Vietnamese
 
@@ -1932,28 +1995,42 @@ Thông tin về Studio Dự Án Người Việt:
                                 const last = event.results.length - 1;
                                 const transcript = event.results[last][0].transcript.trim();
                                 console.log('Speech recognized:', transcript);
-
                                 if (transcript) {
                                     chatInput.value = transcript; // Put recognized text into input field
-                                    sendMessage(); // Send the message
+                                }
+                            };
+
+                            recognition.onspeechend = () => {
+                                console.log('Speech ended, sending message...');
+                                if (chatInput.value.trim() !== '' || uploadedImages.length > 0) {
+                                    sendMessage(); // Send message when user stops speaking
+                                } else {
+                                    // If no speech detected and no images, just restart listening if active
+                                    if (isLiveChatActive && recognition && recognition.readyState !== SpeechRecognition.RECORDING && recognition.readyState !== SpeechRecognition.CONNECTING) {
+                                        try {
+                                            recognition.start();
+                                            liveChatText.textContent = "Đang nghe...";
+                                        } catch (e) {
+                                            console.error("Error restarting recognition onspeechend (no input):", e);
+                                        }
+                                    }
                                 }
                             };
 
                             recognition.onend = () => {
-                                // If live chat is still active, restart recognition for continuous listening
-                                if (isLiveChatActive) {
-                                    console.log('SpeechRecognition ended, restarting...');
+                                console.log('SpeechRecognition ended.');
+                                // This onend will fire when recognition.stop() is called or speech ends naturally.
+                                // We only want to restart if live chat is active AND Gấu Gấu is NOT currently speaking.
+                                // The restart after Gấu Gấu speaks is handled in utterance.onend.
+                                // If recognition stopped naturally (e.g., no speech detected for a while), and live chat is active, try to restart.
+                                if (isLiveChatActive && !currentUtterance && recognition && recognition.readyState !== SpeechRecognition.RECORDING && recognition.readyState !== SpeechRecognition.CONNECTING) {
+                                     console.log('Attempting to restart SpeechRecognition from onend (natural stop)...');
                                     try {
                                         recognition.start();
                                         liveChatText.textContent = "Đang nghe...";
                                     } catch (e) {
-                                        console.error("Error restarting recognition onend:", e);
-                                        spamWarning.textContent = "Không thể bật lại mic. Vui lòng thử lại Live Chat. 🔇";
-                                        spamWarning.style.display = 'block';
-                                        setTimeout(() => spamWarning.style.display = 'none', spamCooldown * 3);
+                                        console.error("Error restarting recognition onend (natural stop):", e);
                                     }
-                                } else {
-                                    console.log('SpeechRecognition stopped permanently.');
                                 }
                             };
 
@@ -1963,7 +2040,7 @@ Thông tin về Studio Dự Án Người Việt:
                                 spamWarning.style.display = 'block';
                                 setTimeout(() => spamWarning.style.display = 'none', spamCooldown * 3);
                                 // If error is not 'no-speech' and live chat is active, try to restart
-                                if (isLiveChatActive && event.error !== 'no-speech') {
+                                if (isLiveChatActive && event.error !== 'no-speech' && recognition && recognition.readyState !== SpeechRecognition.RECORDING && recognition.readyState !== SpeechRecognition.CONNECTING) {
                                     console.log('SpeechRecognition error, attempting restart...');
                                     try {
                                         recognition.start();
@@ -1977,12 +2054,12 @@ Thông tin về Studio Dự Án Người Việt:
                                 }
                             };
 
-                            recognition.start();
+                            recognition.start(); // Start the new recognition instance
                             spamWarning.textContent = "Gấu Gấu đã bật mic và đang lắng nghe bạn nói! Tớ sẽ đọc to phản hồi của mình nhé! 🎤 (Tính năng chuyển giọng nói thành văn bản có thể hoạt động không ổn định trên một số trình duyệt.)";
                             spamWarning.style.display = 'block';
-                            setTimeout(() => spamWarning.style.display = 'none', spamCooldown * 4); // Longer display for info
+                            setTimeout(() => spamWarning.style.display = 'none', spamCooldown * 4);
                         } else {
-                            spamWarning.textContent = "Trình duyệt của bạn không hỗ trợ nhận diện giọng nói. 😔";
+                            spamWarning.textContent = "Trình duyệt của bạn không hỗ trợ nhận diện giọng nói. �";
                             spamWarning.style.display = 'block';
                             setTimeout(() => spamWarning.style.display = 'none', spamCooldown * 3);
                             isLiveChatActive = false; // Reset state
@@ -1995,14 +2072,14 @@ Thông tin về Studio Dự Án Người Việt:
                         isLiveChatActive = false; // Reset state
                         liveChatBtn.classList.remove('active');
                         liveChatText.textContent = "Live Chat";
-                        spamWarning.textContent = "Không thể truy cập micrô. Vui lòng cấp quyền truy cập. �";
+                        spamWarning.textContent = "Không thể truy cập micrô. Vui lòng cấp quyền truy cập. 🚫";
                         spamWarning.style.display = 'block';
                         setTimeout(() => spamWarning.style.display = 'none', spamCooldown * 3);
                     }
-                } else {
+                } else { // Stopping Live Chat
                     if (recognition) {
-                        recognition.stop(); // Stop speech recognition
-                        recognition = null;
+                        recognition.stop(); // This will trigger onend, but onend should not restart now
+                        recognition = null; // Clear the object reference
                     }
                     if (currentUtterance) {
                         window.speechSynthesis.cancel();
@@ -2018,9 +2095,9 @@ Thông tin về Studio Dự Án Người Việt:
             async function sendMessage() {
                 const userMessageText = chatInput.value.trim();
 
-                // Kiểm tra giới hạn ảnh: nếu không có văn bản, cần ít nhất 2 ảnh
-                if (userMessageText === '' && uploadedImages.length > 0 && uploadedImages.length < 2) {
-                    spamWarning.textContent = "Nếu không có tin nhắn văn bản, bạn cần tải lên ít nhất 2 ảnh nha! 🖼️🖼️";
+                // Kiểm tra giới hạn ảnh: chỉ cho phép tối đa 2 ảnh
+                if (uploadedImages.length > 2) {
+                    spamWarning.textContent = "Bạn chỉ có thể gửi tối đa 2 ảnh mỗi lần nha! 🖼️🖼️";
                     spamWarning.style.display = 'block';
                     setTimeout(() => {
                         spamWarning.style.display = 'none';
@@ -2051,8 +2128,9 @@ Thông tin về Studio Dự Án Người Việt:
                 loadingIndicator.style.display = 'block';
 
                 // Pause speech recognition if active
-                if (isLiveChatActive && recognition) {
-                    recognition.stop();
+                if (isLiveChatActive && recognition && (recognition.readyState === SpeechRecognition.RECORDING || recognition.readyState === SpeechRecognition.CONNECTING)) {
+                    console.log('User sending message, stopping mic.');
+                    recognition.stop(); // Stop mic while Gấu Gấu processes
                     liveChatText.textContent = "Đang xử lý...";
                 }
 
@@ -2103,7 +2181,9 @@ Thông tin về Studio Dự Án Người Việt:
                         if (isLiveChatActive) {
                             const lastAiMessageBubble = chatMessages.querySelector('.message-ai:last-child .message-bubble');
                             if (lastAiMessageBubble) {
-                                const aiResponseTextContent = lastAiMessageBubble.querySelector('.message-text-content').textContent;
+                                // Get the full text content from the message bubble for reading
+                                const aiResponseTextContent = Array.from(lastAiMessageBubble.querySelectorAll('.message-text-content, .scratch-code-block'))
+                                    .map(el => el.textContent).join(' ');
                                 handleReadMessage(lastAiMessageBubble, aiResponseTextContent);
                             }
                         }
