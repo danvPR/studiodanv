@@ -24,13 +24,18 @@
             /* Tăng độ mờ của bóng đổ bên ngoài */
         }
 
-        html,
+        html {
+            margin: 0;
+            padding: 0;
+            overflow-x: hidden; /* Ẩn thanh trượt ngang cho toàn bộ tài liệu */
+            overflow-y: scroll; /* Buộc một thanh trượt dọc duy nhất cho toàn bộ tài liệu */
+            min-height: 100%; /* Đảm bảo html có chiều cao ít nhất 100% */
+        }
+
         body {
             margin: 0;
             padding: 0;
-            overflow-x: hidden;
-            /* Loại bỏ thanh trượt ngang */
-            min-height: 100vh;
+            min-height: 100%; /* Đảm bảo body có chiều cao ít nhất 100% */
             display: flex;
             flex-direction: column;
             align-items: center;
@@ -62,11 +67,9 @@
         }
 
         .liquid-glass-container:hover {
-            transform: translateY(-4px) scale(1.005); /* Nâng và phóng to nhẹ hơn */
-            box-shadow: 0px 30px calc(var(--outer-shadow-blur) * 1.5) rgba(0, 0, 0, 0.15);
-            /* Bóng đổ mềm mại hơn */
-            border: 1px solid rgba(0, 0, 0, 0.2);
-            /* Viền sáng hơn */
+            transform: translateY(-2px); /* Nâng nhẹ hơn, bỏ scale */
+            box-shadow: 0px 25px calc(var(--outer-shadow-blur) * 1.2) rgba(0, 0, 0, 0.12); /* Bóng đổ mềm mại hơn */
+            border: 1px solid rgba(0, 0, 0, 0.15); /* Viền sáng hơn */
         }
 
         /* Lớp overlay tạo hiệu ứng kính */
@@ -574,6 +577,92 @@
             width: 100%;
         }
 
+        /* Mobile Menu */
+        .mobile-menu-button {
+            background: none;
+            border: none;
+            color: #333;
+            font-size: 2rem;
+            cursor: pointer;
+            display: none; /* Ẩn trên desktop theo mặc định */
+        }
+
+        .mobile-menu-overlay {
+            /* Mặc định ẩn hoàn toàn trên mọi kích thước */
+            display: none;
+            visibility: hidden;
+            pointer-events: none;
+            transform: translateX(100%); /* Đảm bảo ẩn khỏi màn hình */
+            transition: transform 0.3s ease-in-out;
+        }
+
+        @media (max-width: 767px) {
+            .menubar-nav {
+                display: none; /* Ẩn nav desktop trên mobile */
+            }
+
+            .mobile-menu-button {
+                display: block; /* Hiện hamburger trên mobile */
+            }
+
+            .mobile-menu-overlay {
+                position: fixed;
+                top: 0;
+                left: 0;
+                width: 100vw;
+                height: 100vh;
+                background-color: rgba(255, 255, 255, 0.95);
+                backdrop-filter: blur(20px);
+                -webkit-backdrop-filter: blur(20px);
+                z-index: 1001;
+                display: flex; /* Hiện lại trên mobile */
+                flex-direction: column;
+                align-items: center;
+                justify-content: center;
+            }
+
+            .mobile-menu-overlay.active {
+                transform: translateX(0); /* Hiện ra */
+                visibility: visible; /* Hiện hoàn toàn khi active */
+                pointer-events: auto; /* Cho phép tương tác khi active */
+            }
+
+            .mobile-menu-overlay .close-button {
+                position: absolute;
+                top: 1rem; /* Giảm khoảng cách từ trên xuống */
+                right: 1rem; /* Giảm khoảng cách từ phải sang */
+                background: none;
+                border: none;
+                color: #333;
+                font-size: 2.5rem;
+                cursor: pointer;
+                padding: 0.5rem; /* Tăng padding để dễ bấm hơn */
+            }
+
+            .mobile-menu-overlay ul {
+                list-style: none;
+                padding: 0;
+                text-align: center;
+            }
+
+            .mobile-menu-overlay li {
+                margin-bottom: 1.5rem;
+            }
+
+            .mobile-menu-overlay a {
+                color: #333;
+                font-size: 1.8rem;
+                font-weight: 600;
+                text-decoration: none;
+                transition: color 0.2s ease;
+            }
+
+            .mobile-menu-overlay a:hover {
+                color: #3b82f6;
+            }
+        }
+
+
         /* Styles cho phần chia đôi màn hình */
         .split-section {
             display: flex;
@@ -728,41 +817,111 @@
         }
 
         /* AI Chat Specific Styles */
-        .ai-chat-container {
-            /* Đã loại bỏ liquid-glass-container và liquid-glass-overlay ở đây */
-            border-radius: 40px;
-            box-shadow: 0px 10px 30px rgba(0, 0, 0, 0.1);
-            /* Bóng đổ nhẹ hơn */
-            border: 1px solid rgba(0, 0, 0, 0.1);
-            background-color: rgba(255, 255, 255, 0.9);
-            /* Nền chatbox sáng hơn và gần như trong suốt */
-            backdrop-filter: blur(15px);
-            -webkit-backdrop-filter: blur(15px);
+        .ai-chat-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            background-color: rgba(0, 0, 0, 0.7); /* Nền tối mờ */
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            z-index: 2000; /* Cao hơn mọi thứ */
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.3s ease-in-out;
+        }
 
-            padding: 1.5rem;
+        .ai-chat-overlay.active {
+            opacity: 1;
+            pointer-events: auto;
+        }
+
+        .ai-chat-container {
+            border-radius: 20px; /* Giảm bo tròn để trông gọn gàng hơn trên mobile */
+            box-shadow: 0px 5px 20px rgba(0, 0, 0, 0.3); /* Giảm bóng đổ */
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            background-color: rgba(255, 255, 255, 0.9);
+            padding: 1rem; /* Giảm padding tổng thể */
             display: flex;
             flex-direction: column;
-            width: 100%;
-            min-height: 500px;
-            margin: 2rem auto;
-            max-height: 80vh;
+            width: 95%; /* Rộng hơn trên mobile */
+            max-width: 600px; /* Giới hạn chiều rộng trên desktop */
+            min-height: 450px; /* Giảm min-height */
+            max-height: 95vh; /* Tối ưu chiều cao trên mobile */
+            color: #333;
+            position: relative; /* Dành cho nút đóng */
+        }
+        
+        @media (min-width: 768px) {
+            .ai-chat-container {
+                border-radius: 40px;
+                box-shadow: 0px 10px 30px rgba(0, 0, 0, 0.3);
+                padding: 1.5rem;
+                max-width: 700px;
+                min-height: 500px;
+                max-height: 90vh;
+            }
+        }
+
+        .ai-chat-close-button {
+            position: absolute;
+            top: 0.5rem; /* Điều chỉnh vị trí nút X */
+            right: 0.5rem; /* Điều chỉnh vị trí nút X */
+            background: none;
+            border: none;
+            font-size: 1.8rem; /* Giảm kích thước nút X */
+            color: #666;
+            cursor: pointer;
+            transition: color 0.2s ease;
+            padding: 0.3rem; /* Thêm padding để dễ bấm */
+        }
+
+        .ai-chat-close-button:hover {
             color: #333;
         }
+
+        .ai-chat-avatar-center {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            margin-bottom: 0.75rem; /* Giảm margin */
+        }
+
+        .ai-chat-avatar-center img {
+            width: 80px; /* Giảm kích thước avatar */
+            height: 80px; /* Giảm kích thước avatar */
+            border-radius: 50%;
+            object-fit: cover;
+            border: 3px solid #3b82f6;
+            box-shadow: 0 0 10px rgba(59, 130, 246, 0.5); /* Giảm bóng đổ */
+        }
+
+        .ai-chat-avatar-center p {
+            font-size: 1.1rem; /* Giảm kích thước chữ */
+            font-weight: bold;
+            margin-top: 0.4rem; /* Giảm margin */
+            color: #3b82f6;
+        }
+
 
         .chat-messages {
             flex-grow: 1;
             overflow-y: auto;
-            padding-right: 1rem;
-            margin-bottom: 1rem;
+            padding-right: 0.5rem; /* Giảm padding để tránh thanh cuộn kép */
+            margin-bottom: 0.75rem; /* Giảm margin */
             display: flex;
             flex-direction: column;
-            gap: 0.75rem;
+            gap: 0.6rem; /* Giảm khoảng cách giữa các tin nhắn */
         }
 
         .message-wrapper {
             display: flex;
             align-items: flex-end;
-            gap: 0.5rem;
+            gap: 0.4rem; /* Giảm khoảng cách giữa avatar và bubble */
         }
 
         .message-user .message-wrapper {
@@ -774,8 +933,8 @@
         }
 
         .message-avatar {
-            width: 35px;
-            height: 35px;
+            width: 30px; /* Giảm kích thước avatar tin nhắn */
+            height: 30px; /* Giảm kích thước avatar tin nhắn */
             border-radius: 50%;
             object-fit: cover;
             border: 2px solid rgba(0, 0, 0, 0.1);
@@ -783,24 +942,25 @@
         }
 
         .message-bubble {
-            padding: 0.75rem 1rem;
-            border-radius: 1.25rem;
-            max-width: 70%;
+            padding: 0.6rem 0.9rem; /* Giảm padding bubble */
+            border-radius: 1rem; /* Giảm bo tròn bubble */
+            max-width: 75%; /* Tăng max-width để tận dụng không gian */
             word-wrap: break-word;
             flex-shrink: 1;
             color: #fff;
             position: relative;
+            font-size: 0.95rem; /* Điều chỉnh kích thước font */
         }
 
         .message-user .message-bubble {
             background-color: #3b82f6;
-            border-bottom-right-radius: 0.25rem;
+            border-bottom-right-radius: 0.2rem; /* Giảm bo tròn góc dưới */
             text-align: right;
         }
 
         .message-ai .message-bubble {
             background-color: #10b981;
-            border-bottom-left-radius: 0.25rem;
+            border-bottom-left-radius: 0.2rem; /* Giảm bo tròn góc dưới */
             text-align: left;
         }
         
@@ -811,21 +971,22 @@
 
         .chat-input-area {
             display: flex;
-            gap: 0.5rem;
+            gap: 0.4rem; /* Giảm khoảng cách giữa các phần tử input */
             flex-wrap: wrap;
             align-items: center;
         }
 
         .chat-input-area input[type="text"] {
             flex-grow: 1;
-            padding: 0.75rem 1rem;
+            padding: 0.6rem 0.9rem; /* Giảm padding input */
             border-radius: 9999px;
             border: none;
             background-color: rgba(0, 0, 0, 0.1);
             color: #333;
             outline: none;
             transition: background-color 0.3s ease;
-            min-width: 150px;
+            min-width: 120px; /* Giảm min-width cho input */
+            font-size: 0.95rem;
         }
 
         .chat-input-area input[type="text"]:focus {
@@ -833,8 +994,8 @@
         }
 
         .chat-input-area button {
-            width: 60px;
-            height: 60px;
+            width: 48px; /* Giảm kích thước nút */
+            height: 48px; /* Giảm kích thước nút */
             padding: 0;
             border-radius: 50%;
             display: flex;
@@ -846,6 +1007,13 @@
             cursor: pointer;
             transition: background-color 0.3s ease, transform 0.2s ease;
             flex-shrink: 0;
+        }
+        
+        @media (min-width: 768px) {
+            .chat-input-area button {
+                width: 60px;
+                height: 60px;
+            }
         }
 
         .chat-input-area button:hover {
@@ -909,18 +1077,18 @@
         .image-previews {
             display: flex;
             flex-wrap: wrap;
-            gap: 0.75rem;
-            margin-top: 0.75rem;
-            max-height: 200px;
+            gap: 0.6rem; /* Giảm gap */
+            margin-top: 0.6rem; /* Giảm margin */
+            max-height: 150px; /* Giảm max-height */
             overflow-y: auto;
-            padding-bottom: 0.5rem;
+            padding-bottom: 0.4rem; /* Giảm padding */
         }
 
         .image-preview-item {
             position: relative;
-            width: 120px;
-            height: 120px;
-            border-radius: 8px;
+            width: 90px; /* Giảm kích thước ảnh preview */
+            height: 90px; /* Giảm kích thước ảnh preview */
+            border-radius: 6px; /* Giảm bo tròn */
             overflow: hidden;
             border: 1px solid rgba(0, 0, 0, 0.1);
             flex-shrink: 0;
@@ -934,23 +1102,23 @@
 
         .remove-image-btn {
             position: absolute;
-            top: 2px;
-            right: 2px;
+            top: 1px; /* Điều chỉnh vị trí nút xóa */
+            right: 1px; /* Điều chỉnh vị trí nút xóa */
             background-color: rgba(255, 0, 0, 0.7);
             color: white;
             border-radius: 50%;
-            width: 20px;
-            height: 20px;
+            width: 18px; /* Giảm kích thước nút xóa */
+            height: 18px; /* Giảm kích thước nút xóa */
             display: flex;
             align-items: center;
             justify-content: center;
-            font-size: 0.8rem;
+            font-size: 0.7rem; /* Giảm kích thước font nút xóa */
             cursor: pointer;
             z-index: 10;
         }
 
-        /* Live Chat Button */
-        .live-chat-button {
+        /* Main Gấu Gấu Button (on main page) */
+        #gaugauMainBtn {
             background-color: #ef4444;
             color: white;
             border-radius: 50%;
@@ -964,17 +1132,21 @@
             flex-direction: column;
             align-items: center;
             justify-content: center;
+            position: fixed; /* Nút Live Chat cố định ở góc dưới bên phải */
+            bottom: 2rem;
+            right: 2rem;
+            z-index: 1500; /* Đảm bảo nút này luôn ở trên cùng */
         }
 
-        .live-chat-button:hover {
+        #gaugauMainBtn:hover {
             background-color: #dc2626;
             transform: translateY(-2px);
             box-shadow: 0 6px 15px rgba(239, 68, 68, 0.4);
         }
 
-        .live-chat-button.active {
+        #gaugauMainBtn.active {
             background-color: #10b981;
-            box-shadow: 0 4px 10px rgba(16, 185, 129, 0.3);
+            box-shadow: 0 0 0 0 rgba(16, 185, 129, 0.4);
             animation: pulse 1.5s infinite;
         }
 
@@ -992,7 +1164,7 @@
             }
         }
 
-        .live-chat-button .dot {
+        #gaugauMainBtn .dot {
             width: 10px;
             height: 10px;
             background-color: white;
@@ -1000,20 +1172,53 @@
             margin-bottom: 4px;
         }
 
-        .live-chat-button .text {
+        #gaugauMainBtn .text {
             font-size: 0.7rem;
             line-height: 1;
+        }
+
+        /* Nút bật/tắt mic trong chat */
+        #micToggleBtn {
+            background-color: #f59e0b; /* Màu cam */
+            color: white;
+            border-radius: 50%;
+            width: 48px; /* Giảm kích thước nút */
+            height: 48px; /* Giảm kích thước nút */
+            cursor: pointer;
+            transition: background-color 0.3s ease, transform 0.2s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+            font-size: 1.8rem; /* Giảm kích thước emoji mic */
+        }
+        
+        @media (min-width: 768px) {
+            #micToggleBtn {
+                width: 60px;
+                height: 60px;
+                font-size: 2rem;
+            }
+        }
+
+        #micToggleBtn.active {
+            background-color: #10b981; /* Màu xanh khi active */
+        }
+
+        #micToggleBtn:hover {
+            background-color: #d97706;
+            transform: translateY(-2px);
         }
 
         /* Nút đọc tin nhắn (Text-to-Speech) */
         .read-message-btn {
             position: absolute;
-            bottom: 4px;
-            right: 4px;
+            bottom: 2px; /* Điều chỉnh vị trí nút đọc */
+            right: 2px; /* Điều chỉnh vị trí nút đọc */
             background-color: rgba(255, 255, 255, 0.3);
             border-radius: 50%;
-            width: 24px;
-            height: 24px;
+            width: 20px; /* Giảm kích thước nút đọc */
+            height: 20px; /* Giảm kích thước nút đọc */
             display: flex;
             align-items: center;
             justify-content: center;
@@ -1028,8 +1233,8 @@
         }
 
         .read-message-btn svg {
-            width: 16px;
-            height: 16px;
+            width: 14px; /* Giảm kích thước icon */
+            height: 14px; /* Giảm kích thước icon */
             fill: white;
         }
 
@@ -1130,21 +1335,37 @@
             <div class="menubar-logo">
                 <img src="https://i.postimg.cc/x87pGPGS/PNG-2.png" alt="Studio Dự Án Người Việt Logo">
             </div>
-            <nav class="menubar-nav">
+            <nav class="menubar-nav hidden md:flex"> <!-- Ẩn trên mobile, hiện trên desktop -->
                 <ul>
                     <li><a href="#hero">Giới Thiệu</a></li>
                     <li><a href="#du-an-noi-bat">Dự Án Nổi Bật</a></li>
                     <li><a href="#quy-dinh">Quy Định</a></li>
                     <li><a href="#ban-quan-ly">Ban Quản Lý</a></li>
-                    <li><a href="#danh-gia">Đánh Giá</a></li> <!-- Moved before Gấu Gấu -->
-                    <li><a href="#tro-chuyen-ai">Gấu Gấu</a></li>
+                    <li><a href="#danh-gia">Đánh Giá</a></li>
+                    <!-- Đã loại bỏ tùy chọn "Gấu Gấu" -->
                 </ul>
             </nav>
+            <button class="mobile-menu-button md:hidden" id="mobileMenuButton">
+                ☰
+            </button>
         </div>
     </header>
 
+    <!-- Mobile Menu Overlay -->
+    <div class="mobile-menu-overlay" id="mobileMenuOverlay">
+        <button class="close-button" id="closeMobileMenu">X</button>
+        <ul>
+            <li><a href="#hero">Giới Thiệu</a></li>
+            <li><a href="#du-an-noi-bat">Dự Án Nổi Bật</a></li>
+            <li><a href="#quy-dinh">Quy Định</a></li>
+            <li><a href="#ban-quan-ly">Ban Quản Lý</a></li>
+            <li><a href="#danh-gia">Đánh Giá</a></li>
+            <!-- Đã loại bỏ tùy chọn "Gấu Gấu" -->
+        </ul>
+    </div>
+
     <!-- Nội dung trang web giới thiệu Studio Scratch -->
-    <main class="w-full max-w-6xl mx-auto p-4 md:p-8 space-y-12 z-20 mt-24 overflow-x-hidden">
+    <main class="w-full max-w-6xl mx-auto p-4 md:p-8 space-y-8 z-20 mt-16">
 
         <!-- Hero Section -->
         <section id="hero" class="liquid-glass-container p-8 md:p-12 text-center animate-on-scroll">
@@ -1265,7 +1486,6 @@
                         class="text-blue-600 hover:text-blue-800 transition-colors duration-200">Xem dự án</a>
                 </div>
             </div>
-            <!-- Đã xóa dòng "Đề xuất các chương trình nổi bật tại bình luận [3/5/2025]" -->
         </section>
 
         <!-- Quy định Tuân thủ -->
@@ -1458,51 +1678,60 @@
             </div>
         </section>
 
-        <!-- Trò chuyện với Gấu Gấu -->
-        <section id="tro-chuyen-ai" class="p-8 md:p-12 animate-on-scroll">
-            <h2 class="text-3xl md:text-4xl font-bold mb-8 text-center" style="color: #333;">Trò Chuyện Với Gấu Gấu</h2>
-            <div class="ai-chat-container">
-                <div class="chat-messages" id="chatMessages">
-                    <!-- Initial AI message will be dynamically added by JS -->
-                </div>
-                <div class="chat-input-area">
-                    <div class="flex gap-2">
-                        <div class="image-upload-wrapper">
-                            <button class="image-upload-button">
-                                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor"
-                                    class="w-6 h-6">
-                                    <path fill-rule="evenodd"
-                                        d="M1.5 6a2.25 2.25 0 012.25-2.25h16.5A2.25 2.25 0 0122.5 6v12a2.25 2.25 0 01-2.25 2.25H3.75A2.25 2.25 0 011.5 18V6zM3 16.06V18c0 .414.336.75.75.75h16.5A.75.75 0 0021 18v-1.94l-2.69-2.69a1.5 1.5 0 00-2.12 0l-.88.879.97.97a.75.75 0 11-1.06 1.06l-5.16-5.159a1.5 1.5 0 00-2.12 0L3 16.061zm10.125-7.81a1.125 1.125 0 112.25 0 1.125 1.125 0 01-2.25 0z"
-                                        clip-rule="evenodd" />
-                                </svg>
-                                <input type="file" id="imageUpload" multiple accept="image/*">
-                            </button>
-                        </div>
-                        <button id="liveChatBtn" class="live-chat-button">
-                            <span class="dot"></span>
-                            <span class="text">Live Chat</span>
-                        </button>
-                    </div>
-                    <input type="text" id="chatInput" placeholder="Nhập tin nhắn của bạn..." />
-                    <button id="sendMessageBtn">
-                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor"
-                            class="w-6 h-6">
-                            <path
-                                d="M3.478 2.405a.75.75 0 00-.926.94l2.432 7.905H13.5a.75.75 0 010 1.5H4.984l-2.432 7.905a.75.75 0 00.926.94 60.519 60.519 0 0018.445-8.986.75.75 0 000-1.218A60.517 60.517 0 003.478 2.405z" />
-                        </svg>
-                    </button>
-                </div>
-                <div class="image-previews" id="imagePreviews"></div>
-                <div class="loading-indicator" id="loadingIndicator" style="display: none;">Gấu Gấu đang suy nghĩ... 💭</div>
-                <div class="spam-warning" id="spamWarning" style="display: none;">Bạn nhắn tin nhanh quá, Gấu Gấu cần nghỉ một chút nha! 🕒</div>
-            </div>
-        </section>
-
     </main>
 
     <footer class="w-full text-center p-6 mt-12" style="color: #555;">
         <p>&copy; 2025 Studio Dự Án Người Việt. All rights reserved.</p>
     </footer>
+
+    <!-- Nút Gấu Gấu chính trên trang -->
+    <button id="gaugauMainBtn">
+        <span class="dot"></span>
+        <span class="text">Gấu Gấu</span>
+    </button>
+
+    <!-- Overlay cho AI Chat -->
+    <div id="aiChatOverlay" class="ai-chat-overlay">
+        <div class="ai-chat-container">
+            <button id="aiChatCloseBtn" class="ai-chat-close-button">X</button>
+            <div class="ai-chat-avatar-center">
+                <img src="https://i.ibb.co/wFX7DvSn/costume5-1.png" alt="Gấu Gấu Avatar">
+                <p>Gấu Gấu</p>
+            </div>
+            <div class="chat-messages" id="chatMessages">
+                <!-- Initial AI message will be dynamically added by JS -->
+            </div>
+            <div class="chat-input-area">
+                <div class="flex gap-2">
+                    <div class="image-upload-wrapper">
+                        <button class="image-upload-button">
+                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor"
+                                class="w-6 h-6">
+                                <path fill-rule="evenodd"
+                                    d="M1.5 6a2.25 2.25 0 012.25-2.25h16.5A2.25 2.25 0 0122.5 6v12a2.25 2.25 0 01-2.25 2.25H3.75A2.25 2.25 0 011.5 18V6zM3 16.06V18c0 .414.336.75.75.75h16.5A.75.75 0 0021 18v-1.94l-2.69-2.69a1.5 1.5 0 00-2.12 0l-.88.879.97.97a.75.75 0 11-1.06 1.06l-5.16-5.159a1.5 1.5 0 00-2.12 0L3 16.061zm10.125-7.81a1.125 1.125 0 112.25 0 1.125 1.125 0 01-2.25 0z"
+                                    clip-rule="evenodd" />
+                            </svg>
+                            <input type="file" id="imageUpload" multiple accept="image/*">
+                        </button>
+                    </div>
+                    <button id="micToggleBtn">
+                        🎙️
+                    </button>
+                </div>
+                <input type="text" id="chatInput" placeholder="Nhập tin nhắn của bạn..." />
+                <button id="sendMessageBtn">
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor"
+                        class="w-6 h-6">
+                        <path
+                            d="M3.478 2.405a.75.75 0 00-.926.94l2.432 7.905H13.5a.75.75 0 010 1.5H4.984l-2.432 7.905a.75.75 0 00.926.94 60.519 60.519 0 0018.445-8.986.75.75 0 000-1.218A60.517 60.517 0 003.478 2.405z" />
+                    </svg>
+                </button>
+            </div>
+            <div class="image-previews" id="imagePreviews"></div>
+            <div class="loading-indicator" id="loadingIndicator" style="display: none;">Gấu Gấu đang suy nghĩ... 💭</div>
+            <div class="spam-warning" id="spamWarning" style="display: none;">Bạn nhắn tin nhanh quá, Gấu Gấu cần nghỉ một chút nha! 🕒</div>
+        </div>
+    </div>
 
     <script>
         // JavaScript cho hiệu ứng cuộn và các animation
@@ -1553,7 +1782,38 @@
                 });
             });
 
+            // Mobile Menu Logic
+            const mobileMenuButton = document.getElementById('mobileMenuButton');
+            const mobileMenuOverlay = document.getElementById('mobileMenuOverlay');
+            const closeMobileMenuButton = document.getElementById('closeMobileMenu');
+
+            mobileMenuButton.addEventListener('click', () => {
+                mobileMenuOverlay.classList.add('active');
+            });
+
+            closeMobileMenuButton.addEventListener('click', () => {
+                mobileMenuOverlay.classList.remove('active');
+            });
+
+            mobileMenuOverlay.querySelectorAll('a').forEach(link => {
+                link.addEventListener('click', function (e) {
+                    e.preventDefault();
+                    const targetId = this.getAttribute('href').substring(1);
+                    const targetSection = document.getElementById(targetId);
+                    if (targetSection) {
+                        const menubarHeight = menubar.offsetHeight;
+                        const targetY = targetSection.offsetTop - menubarHeight;
+                        window.scrollTo({ top: targetY, behavior: 'smooth' });
+                        mobileMenuOverlay.classList.remove('active'); // Close menu after clicking
+                    }
+                });
+            });
+
+
             // AI Chatbot Logic
+            const gaugauMainBtn = document.getElementById('gaugauMainBtn');
+            const aiChatOverlay = document.getElementById('aiChatOverlay');
+            const aiChatCloseBtn = document.getElementById('aiChatCloseBtn');
             const chatMessages = document.getElementById('chatMessages');
             const chatInput = document.getElementById('chatInput');
             const sendMessageBtn = document.getElementById('sendMessageBtn');
@@ -1561,7 +1821,7 @@
             const spamWarning = document.getElementById('spamWarning');
             const imageUploadInput = document.getElementById('imageUpload');
             const imagePreviewsContainer = document.getElementById('imagePreviews');
-            const liveChatBtn = document.getElementById('liveChatBtn');
+            const micToggleBtn = document.getElementById('micToggleBtn');
 
             let canSendMessage = true;
             const spamCooldown = 3000; // 3 seconds cooldown
@@ -1573,6 +1833,7 @@
             // Global variables for SpeechRecognition
             let recognition = null; // Declare recognition variable
             const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+            const SpeechSynthesisUtterance = window.SpeechSynthesisUtterance || window.webkitSpeechSynthesisUtterance;
 
 
             // Hàm để gõ từng chữ một
@@ -1601,10 +1862,9 @@
                     currentUtterance = null;
                 }
 
-                // Check for voices
-                const voices = window.speechSynthesis.getVoices();
-                if (voices.length === 0) {
-                    spamWarning.textContent = "Không tìm thấy giọng nói nào. Vui lòng kiểm tra cài đặt trình duyệt của bạn. 🔇";
+                // Check for SpeechSynthesis API support
+                if (!('speechSynthesis' in window)) {
+                    spamWarning.textContent = "Trình duyệt của bạn không hỗ trợ phát âm thanh. 🔇";
                     spamWarning.style.display = 'block';
                     setTimeout(() => spamWarning.style.display = 'none', spamCooldown * 3);
                     return;
@@ -1623,7 +1883,6 @@
                 });
 
 
-                // Create a temporary div to parse the text with spans
                 const tempTextDiv = document.createElement('div');
                 tempTextDiv.id = `text-content-${messageBubbleElement.id}`; // Unique ID for text content div
                 tempTextDiv.classList.add('message-text-content'); // Add class for styling
@@ -1663,7 +1922,6 @@
                     messageBubbleElement.prepend(tempTextDiv);
                 }
 
-
                 const utterance = new SpeechSynthesisUtterance(textToSpeak);
                 utterance.lang = 'vi-VN';
                 currentUtterance = utterance;
@@ -1676,7 +1934,7 @@
                     if (isLiveChatActive && recognition && (recognition.readyState === SpeechRecognition.RECORDING || recognition.readyState === SpeechRecognition.CONNECTING)) {
                         console.log('Gấu Gấu started speaking, stopping user mic.');
                         recognition.stop();
-                        liveChatText.textContent = "Gấu Gấu nói...";
+                        micToggleBtn.textContent = "🎙️"; // Reset mic icon
                     }
                 };
 
@@ -1719,7 +1977,7 @@
                         console.log('Gấu Gấu finished speaking, restarting SpeechRecognition...');
                         try {
                             recognition.start();
-                            liveChatText.textContent = "Đang nghe...";
+                            micToggleBtn.classList.add('active'); // Set mic active icon
                         } catch (e) {
                             console.error("Error restarting recognition:", e);
                             spamWarning.textContent = "Không thể bật lại mic. Vui lòng thử lại Live Chat. 🔇";
@@ -1745,7 +2003,7 @@
                         console.log('Gấu Gấu speech error, restarting SpeechRecognition...');
                         try {
                             recognition.start();
-                            liveChatText.textContent = "Đang nghe...";
+                            micToggleBtn.classList.add('active'); // Set mic active icon
                         } catch (e) {
                             console.error("Error restarting recognition after error:", e);
                             spamWarning.textContent = "Không thể bật lại mic sau lỗi phát âm. Vui lòng thử lại Live Chat. 🔇";
@@ -1757,7 +2015,23 @@
 
                 // Small delay to ensure cancel() takes effect
                 setTimeout(() => {
-                    window.speechSynthesis.speak(utterance);
+                    // Check if voices are loaded before speaking
+                    const voices = window.speechSynthesis.getVoices();
+                    if (voices.length === 0) {
+                        // If voices are not yet loaded, wait for them
+                        window.speechSynthesis.onvoiceschanged = () => {
+                            const updatedVoices = window.speechSynthesis.getVoices();
+                            if (updatedVoices.length > 0) {
+                                window.speechSynthesis.speak(utterance);
+                            } else {
+                                spamWarning.textContent = "Không tìm thấy giọng nói nào. Vui lòng kiểm tra cài đặt trình duyệt của bạn. 🔇";
+                                spamWarning.style.display = 'block';
+                                setTimeout(() => spamWarning.style.display = 'none', spamCooldown * 3);
+                            }
+                        };
+                    } else {
+                        window.speechSynthesis.speak(utterance);
+                    }
                 }, 50); // 50ms delay
             }
 
@@ -1931,6 +2205,27 @@ Thông tin về Studio Dự Án Người Việt:
             // Initial AI message setup: dynamically append it
             appendMessage('ai', chatHistory[1].parts[0].text, gaouGaouAvatarUrl);
 
+            // Toggle AI Chat Overlay
+            gaugauMainBtn.addEventListener('click', () => {
+                aiChatOverlay.classList.add('active');
+                chatMessages.scrollTop = chatMessages.scrollHeight; // Scroll to bottom when opening
+            });
+
+            aiChatCloseBtn.addEventListener('click', () => {
+                aiChatOverlay.classList.remove('active');
+                // When closing chat, stop mic and speech synthesis
+                if (recognition) {
+                    recognition.stop();
+                    recognition = null;
+                }
+                if (currentUtterance) {
+                    window.speechSynthesis.cancel();
+                    currentUtterance = null;
+                }
+                isLiveChatActive = false;
+                micToggleBtn.classList.remove('active');
+            });
+
 
             // Xử lý tải ảnh
             imageUploadInput.addEventListener('change', (event) => {
@@ -2014,16 +2309,12 @@ Thông tin về Studio Dự Án Người Việt:
             });
 
             // Xử lý Live Chat
-            const liveChatText = liveChatBtn.querySelector('.text');
-            const liveChatDot = liveChatBtn.querySelector('.dot');
-
-            liveChatBtn.addEventListener('click', async () => {
+            micToggleBtn.addEventListener('click', async () => {
                 isLiveChatActive = !isLiveChatActive;
-                liveChatBtn.classList.toggle('active', isLiveChatActive);
+                micToggleBtn.classList.toggle('active', isLiveChatActive);
 
                 if (isLiveChatActive) { // Starting Live Chat
-                    liveChatText.textContent = "Đang nghe...";
-                    liveChatDot.style.backgroundColor = 'white';
+                    micToggleBtn.textContent = "🔴"; // Mic active indicator
                     isWaitingForAIResponse = false; // Ensure this is false when starting live chat
 
                     try {
@@ -2055,6 +2346,7 @@ Thông tin về Studio Dự Án Người Việt:
 
                             recognition.onspeechend = () => {
                                 console.log('Speech ended, sending message...');
+                                // This fires when user stops speaking. We want to send the message.
                                 if (chatInput.value.trim() !== '' || uploadedImages.length > 0) {
                                     sendMessage(); // Send message when user stops speaking
                                 } else {
@@ -2074,13 +2366,15 @@ Thông tin về Studio Dự Án Người Việt:
                                      console.log('Attempting to restart SpeechRecognition from onend (natural stop/manual stop not for AI response)...');
                                     try {
                                         recognition.start();
-                                        liveChatText.textContent = "Đang nghe...";
+                                        micToggleBtn.classList.add('active'); // Set mic active icon
                                     } catch (e) {
                                         console.error("Error restarting recognition onend:", e);
                                         spamWarning.textContent = "Không thể bật lại mic. Vui lòng thử lại Live Chat. 🔇";
                                         spamWarning.style.display = 'block';
                                         setTimeout(() => spamWarning.style.display = 'none', spamCooldown * 3);
                                     }
+                                } else if (!isLiveChatActive) {
+                                    micToggleBtn.textContent = "🎙️"; // Reset mic icon when live chat is off
                                 }
                             };
 
@@ -2094,13 +2388,15 @@ Thông tin về Studio Dự Án Người Việt:
                                     console.log('SpeechRecognition error, attempting restart...');
                                     try {
                                         recognition.start();
-                                        liveChatText.textContent = "Đang nghe...";
+                                        micToggleBtn.classList.add('active'); // Set mic active icon
                                     } catch (e) {
                                         console.error("Error restarting recognition after error:", e);
                                         spamWarning.textContent = "Không thể bật lại mic sau lỗi. Vui lòng thử lại Live Chat. 🔇";
                                         spamWarning.style.display = 'block';
                                         setTimeout(() => spamWarning.style.display = 'none', spamCooldown * 3);
                                     }
+                                } else if (!isLiveChatActive) {
+                                    micToggleBtn.textContent = "🎙️"; // Reset mic icon when live chat is off
                                 }
                             };
 
@@ -2113,15 +2409,15 @@ Thông tin về Studio Dự Án Người Việt:
                             spamWarning.style.display = 'block';
                             setTimeout(() => spamWarning.style.display = 'none', spamCooldown * 3);
                             isLiveChatActive = false; // Reset state
-                            liveChatBtn.classList.remove('active');
-                            liveChatText.textContent = "Live Chat";
+                            micToggleBtn.classList.remove('active');
+                            micToggleBtn.textContent = "🎙️"; // Reset mic icon
                         }
 
                     } catch (err) {
                         console.error("Error accessing microphone:", err);
                         isLiveChatActive = false; // Reset state
-                        liveChatBtn.classList.remove('active');
-                        liveChatText.textContent = "Live Chat";
+                        micToggleBtn.classList.remove('active');
+                        micToggleBtn.textContent = "🎙️"; // Reset mic icon
                         spamWarning.textContent = "Không thể truy cập micrô. Vui lòng cấp quyền truy cập. 🚫";
                         spamWarning.style.display = 'block';
                         setTimeout(() => spamWarning.style.display = 'none', spamCooldown * 3);
@@ -2136,8 +2432,8 @@ Thông tin về Studio Dự Án Người Việt:
                         currentUtterance = null;
                     }
                     isWaitingForAIResponse = false; // Reset flag when live chat is turned off
-                    liveChatText.textContent = "Live Chat";
-                    liveChatDot.style.backgroundColor = 'white'; // Reset dot color
+                    micToggleBtn.classList.remove('active');
+                    micToggleBtn.textContent = "🎙️"; // Reset mic icon
                     console.log("Live Chat deactivated.");
                 }
             });
@@ -2183,7 +2479,8 @@ Thông tin về Studio Dự Án Người Việt:
                 if (isLiveChatActive && recognition && (recognition.readyState === SpeechRecognition.RECORDING || recognition.readyState === SpeechRecognition.CONNECTING)) {
                     console.log('User sending message, stopping mic.');
                     recognition.stop(); // Stop mic while Gấu Gấu processes
-                    liveChatText.textContent = "Đang xử lý...";
+                    micToggleBtn.textContent = "🎙️"; // Reset mic icon when mic is stopped
+                    micToggleBtn.classList.remove('active'); // Remove active class
                 }
 
                 const userMessageParts = [];
@@ -2204,7 +2501,7 @@ Thông tin về Studio Dự Án Người Việt:
 
                 try {
                     const payload = { contents: chatHistory };
-                    const apiKey = "AIzaSyAOfYgfODkmGT79sahwORK1sViMiJDh3Lw"; // Updated with user-provided API key
+                    const apiKey = ""; // If you want to use models other than gemini-2.0-flash or imagen-3.0-generate-002, provide an API key here. Otherwise, leave this as-is.
                     const apiUrl = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=${apiKey}`;
 
                     const response = await fetch(apiUrl, {
@@ -2236,16 +2533,65 @@ Thông tin về Studio Dự Án Người Việt:
                                 // Get the full text content from the message bubble for reading
                                 const aiResponseTextContent = Array.from(lastAiMessageBubble.querySelectorAll('.message-text-content, .scratch-code-block'))
                                     .map(el => el.textContent).join(' ');
-                                handleReadMessage(lastAiMessageBubble, aiResponseTextContent);
+                                // Ensure text content is not empty or just whitespace before attempting to speak
+                                if (aiResponseTextContent.trim().length > 0) {
+                                    handleReadMessage(lastAiMessageBubble, aiResponseTextContent);
+                                } else {
+                                    console.warn("AI response text content is empty, skipping speech synthesis.");
+                                    isWaitingForAIResponse = false; // No speech, so not waiting for it
+                                    // Manually restart mic if live chat is active and no speech
+                                    if (isLiveChatActive && recognition && recognition.readyState !== SpeechRecognition.RECORDING && recognition.readyState !== SpeechRecognition.CONNECTING) {
+                                        console.log('AI response empty, restarting SpeechRecognition...');
+                                        try {
+                                            recognition.start();
+                                            micToggleBtn.classList.add('active');
+                                        } catch (e) {
+                                            console.error("Error restarting recognition after empty AI response:", e);
+                                            spamWarning.textContent = "Không thể bật lại mic. Vui lòng thử lại Live Chat. 🔇";
+                                            spamWarning.style.display = 'block';
+                                            setTimeout(() => spamWarning.style.display = 'none', spamCooldown * 3);
+                                        }
+                                    }
+                                }
                             }
+                        } else {
+                            isWaitingForAIResponse = false; // Not in live chat, so not waiting for speech
                         }
 
                     } else {
                         appendMessage('ai', 'Xin lỗi, tớ không hiểu câu hỏi của bạn. 🤔', gaouGaouAvatarUrl);
+                        isWaitingForAIResponse = false; // AI response empty, not waiting
+                        // Manually restart mic if live chat is active and no speech
+                        if (isLiveChatActive && recognition && recognition.readyState !== SpeechRecognition.RECORDING && recognition.readyState !== SpeechRecognition.CONNECTING) {
+                            console.log('AI response empty, restarting SpeechRecognition...');
+                            try {
+                                recognition.start();
+                                micToggleBtn.classList.add('active');
+                            } catch (e) {
+                                console.error("Error restarting recognition after empty AI response:", e);
+                                spamWarning.textContent = "Không thể bật lại mic. Vui lòng thử lại Live Chat. 🔇";
+                                spamWarning.style.display = 'block';
+                                setTimeout(() => spamWarning.style.display = 'none', spamCooldown * 3);
+                            }
+                        }
                     }
                 } catch (error) {
                     console.error('Fetch Error:', error);
                     appendMessage('ai', 'Đã xảy ra lỗi khi kết nối với AI. Vui lòng kiểm tra kết nối mạng của bạn. 📶', gaouGaouAvatarUrl);
+                    isWaitingForAIResponse = false; // Error, not waiting
+                    // Manually restart mic if live chat is active and error
+                    if (isLiveChatActive && recognition && recognition.readyState !== SpeechRecognition.RECORDING && recognition.readyState !== SpeechRecognition.CONNECTING) {
+                        console.log('AI response error, restarting SpeechRecognition...');
+                        try {
+                            recognition.start();
+                            micToggleBtn.classList.add('active');
+                        } catch (e) {
+                            console.error("Error restarting recognition after AI response error:", e);
+                            spamWarning.textContent = "Không thể bật lại mic. Vui lòng thử lại Live Chat. �";
+                            spamWarning.style.display = 'block';
+                            setTimeout(() => spamWarning.style.display = 'none', spamCooldown * 3);
+                        }
+                    }
                 } finally {
                     loadingIndicator.style.display = 'none';
                     setTimeout(() => {
@@ -2265,3 +2611,4 @@ Thông tin về Studio Dự Án Người Việt:
 </body>
 
 </html>
+�
