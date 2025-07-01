@@ -1,1 +1,5 @@
-# studiodanv
+# TRANG WEB STUDIO DỰ ÁN NGƯỜI VIỆT
+
+ĐÂY LÀ MÃ NGUỒN MỞ CỦA TRANG WEB STUDIO DỰ ÁN NGƯỜI VIỆT THUỘC BẢN QUYỀN CỦA [STUDIO DỰ ÁN NGƯỜI VIỆT](https://scratch.mit.edu/studios/33509364/) VÀ NHÓM PHÁT TRIỂN C.T MIZITION VIỆT NAM. NGHIÊM CẤM HÀNH VI SAO CHÉP, SỬ DỤNG KHI CHƯA CÓ SỰ CHO PHÉP.
+
+_Cảm ơn Scr_
