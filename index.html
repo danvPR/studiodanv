@@ -11,24 +11,31 @@
         /* Định nghĩa các biến CSS cho hiệu ứng kính */
         :root {
             --tint-color: 255, 255, 255;
-            --tint-opacity: 0.1; /* Độ trong suốt tinh tế */
-            --frost-blur: 30px; /* Tăng độ mờ sương để nổi bật và mượt mà hơn */
-            --outer-shadow-blur: 60px; /* Tăng độ mờ của bóng đổ bên ngoài */
+            --tint-opacity: 0.1;
+            /* Độ trong suốt tinh tế */
+            --frost-blur: 30px;
+            /* Tăng độ mờ sương để nổi bật và mượt mà hơn */
+            --outer-shadow-blur: 60px;
+            /* Tăng độ mờ của bóng đổ bên ngoài */
         }
 
         html,
         body {
             margin: 0;
             padding: 0;
-            overflow-x: hidden; /* Loại bỏ thanh trượt ngang */
+            overflow-x: hidden;
+            /* Loại bỏ thanh trượt ngang */
             min-height: 100vh;
             display: flex;
             flex-direction: column;
             align-items: center;
             justify-content: flex-start;
-            background-color: #ffffff; /* Nền màu trắng */
-            font-family: 'Open Sans', sans-serif; /* Sử dụng font Open Sans */
-            color: #333; /* Màu chữ tối hơn cho nền trắng */
+            background-color: #ffffff;
+            /* Nền màu trắng */
+            font-family: 'Open Sans', sans-serif;
+            /* Sử dụng font Open Sans */
+            color: #333;
+            /* Màu chữ tối hơn cho nền trắng */
             position: relative;
             /* Đã bỏ animation chuyển màu nền */
         }
@@ -37,18 +44,25 @@
         /* Lớp container cho các phần tử có hiệu ứng Liquid Glass */
         .liquid-glass-container {
             position: relative;
-            border-radius: 40px; /* Bo tròn góc nhiều hơn nữa */
+            border-radius: 40px;
+            /* Bo tròn góc nhiều hơn nữa */
             overflow: hidden;
             isolation: isolate;
-            box-shadow: 0px 20px var(--outer-shadow-blur) rgba(0, 0, 0, 0.1); /* Bóng đổ nhẹ hơn cho nền trắng */
-            transition: all 0.6s cubic-bezier(0.25, 0.8, 0.25, 1); /* Easing mượt mà hơn */
-            border: 1px solid rgba(0, 0, 0, 0.1); /* Đường viền rõ hơn */
+            box-shadow: 0px 20px var(--outer-shadow-blur) rgba(0, 0, 0, 0.1);
+            /* Bóng đổ nhẹ hơn cho nền trắng */
+            transition: all 0.6s cubic-bezier(0.25, 0.8, 0.25, 1);
+            /* Easing mượt mà hơn */
+            border: 1px solid rgba(0, 0, 0, 0.1);
+            /* Đường viền rõ hơn */
         }
 
         .liquid-glass-container:hover {
-            transform: translateY(-8px) scale(1.01); /* Nâng và phóng to nhẹ */
-            box-shadow: 0px 30px calc(var(--outer-shadow-blur) * 1.5) rgba(0, 0, 0, 0.15); /* Bóng đổ mềm mại hơn */
-            border: 1px solid rgba(0, 0, 0, 0.2); /* Viền sáng hơn */
+            transform: translateY(-8px) scale(1.01);
+            /* Nâng và phóng to nhẹ */
+            box-shadow: 0px 30px calc(var(--outer-shadow-blur) * 1.5) rgba(0, 0, 0, 0.15);
+            /* Bóng đổ mềm mại hơn */
+            border: 1px solid rgba(0, 0, 0, 0.2);
+            /* Viền sáng hơn */
         }
 
         /* Lớp overlay tạo hiệu ứng kính */
@@ -56,7 +70,8 @@
             position: absolute;
             inset: 0;
             z-index: -1;
-            border-radius: 40px; /* Phù hợp với container */
+            border-radius: 40px;
+            /* Phù hợp với container */
             background-color: rgba(var(--tint-color), var(--tint-opacity));
             backdrop-filter: blur(var(--frost-blur));
             -webkit-backdrop-filter: blur(var(--frost-blur));
@@ -76,7 +91,8 @@
             z-index: 0;
             pointer-events: none;
             overflow: hidden;
-            filter: blur(8px); /* Làm mờ nhẹ toàn bộ container blob */
+            filter: blur(8px);
+            /* Làm mờ nhẹ toàn bộ container blob */
         }
 
         .blob {
@@ -84,89 +100,365 @@
             /* Màu blob điều chỉnh để hiển thị trên nền trắng */
             background: radial-gradient(circle, rgba(150, 180, 255, 0.2) 0%, rgba(150, 180, 255, 0) 70%);
             border-radius: 50%;
-            animation-duration: 20s; /* Tăng tốc độ animation */
+            animation-duration: 20s;
+            /* Tăng tốc độ animation */
             animation-iteration-count: infinite;
             animation-timing-function: ease-in-out;
-            opacity: 0.9; /* Tăng opacity để rõ ràng hơn */
-            will-change: transform, opacity; /* Tối ưu hóa hiệu suất animation */
+            opacity: 0.9;
+            /* Tăng opacity để rõ ràng hơn */
+            will-change: transform, opacity;
+            /* Tối ưu hóa hiệu suất animation */
         }
 
         /* Định nghĩa nhiều animation hơn cho blob */
         @keyframes float1 {
-            0% { transform: translate(0, 0) scale(1); opacity: 0.8; }
-            25% { transform: translate(28vw, 38vh) scale(1.3); opacity: 0.9; }
-            50% { transform: translate(18vw, 68vh) scale(0.95); opacity: 0.7; }
-            75% { transform: translate(48vw, 28vh) scale(1.2); opacity: 0.95; }
-            100% { transform: translate(0, 0) scale(1); opacity: 0.8; }
+            0% {
+                transform: translate(0, 0) scale(1);
+                opacity: 0.8;
+            }
+
+            25% {
+                transform: translate(28vw, 38vh) scale(1.3);
+                opacity: 0.9;
+            }
+
+            50% {
+                transform: translate(18vw, 68vh) scale(0.95);
+                opacity: 0.7;
+            }
+
+            75% {
+                transform: translate(48vw, 28vh) scale(1.2);
+                opacity: 0.95;
+            }
+
+            100% {
+                transform: translate(0, 0) scale(1);
+                opacity: 0.8;
+            }
         }
 
         @keyframes float2 {
-            0% { transform: translate(0, 0) scale(0.9); opacity: 0.7; }
-            30% { transform: translate(-22vw, 48vh) scale(1.2); opacity: 0.8; }
-            60% { transform: translate(-12vw, 18vh) scale(1.0); opacity: 0.75; }
-            100% { transform: translate(0, 0) scale(0.9); opacity: 0.7; }
+            0% {
+                transform: translate(0, 0) scale(0.9);
+                opacity: 0.7;
+            }
+
+            30% {
+                transform: translate(-22vw, 48vh) scale(1.2);
+                opacity: 0.8;
+            }
+
+            60% {
+                transform: translate(-12vw, 18vh) scale(1.0);
+                opacity: 0.75;
+            }
+
+            100% {
+                transform: translate(0, 0) scale(0.9);
+                opacity: 0.7;
+            }
         }
 
         @keyframes float3 {
-            0% { transform: translate(0, 0) scale(1.2); opacity: 0.9; }
-            40% { transform: translate(38vw, -28vh) scale(0.95); opacity: 0.8; }
-            80% { transform: translate(18vw, -58vh) scale(1.3); opacity: 0.98; }
-            100% { transform: translate(0, 0) scale(1.2); opacity: 0.9; }
+            0% {
+                transform: translate(0, 0) scale(1.2);
+                opacity: 0.9;
+            }
+
+            40% {
+                transform: translate(38vw, -28vh) scale(0.95);
+                opacity: 0.8;
+            }
+
+            80% {
+                transform: translate(18vw, -58vh) scale(1.3);
+                opacity: 0.98;
+            }
+
+            100% {
+                transform: translate(0, 0) scale(1.2);
+                opacity: 0.9;
+            }
         }
 
         @keyframes float4 {
-            0% { transform: translate(0, 0) scale(1.0); opacity: 0.6; }
-            50% { transform: translate(-28vw, -38vh) scale(1.2); opacity: 0.7; }
-            100% { transform: translate(0, 0) scale(1.0); opacity: 0.6; }
+            0% {
+                transform: translate(0, 0) scale(1.0);
+                opacity: 0.6;
+            }
+
+            50% {
+                transform: translate(-28vw, -38vh) scale(1.2);
+                opacity: 0.7;
+            }
+
+            100% {
+                transform: translate(0, 0) scale(1.0);
+                opacity: 0.6;
+            }
         }
 
         @keyframes float5 {
-            0% { transform: translate(0, 0) scale(1.3); opacity: 0.9; }
-            35% { transform: translate(58vw, 18vh) scale(0.95); opacity: 0.78; }
-            70% { transform: translate(28vw, -48vh) scale(1.2); opacity: 0.85; }
-            100% { transform: translate(0, 0) scale(1.3); opacity: 0.9; }
+            0% {
+                transform: translate(0, 0) scale(1.3);
+                opacity: 0.9;
+            }
+
+            35% {
+                transform: translate(58vw, 18vh) scale(0.95);
+                opacity: 0.78;
+            }
+
+            70% {
+                transform: translate(28vw, -48vh) scale(1.2);
+                opacity: 0.85;
+            }
+
+            100% {
+                transform: translate(0, 0) scale(1.3);
+                opacity: 0.9;
+            }
         }
 
         @keyframes float6 {
-            0% { transform: translate(0, 0) scale(0.8); opacity: 0.6; }
-            45% { transform: translate(-38vw, 28vh) scale(1.1); opacity: 0.7; }
-            90% { transform: translate(-18vw, -18vh) scale(0.9); opacity: 0.65; }
-            100% { transform: translate(0, 0) scale(0.8); opacity: 0.6; }
+            0% {
+                transform: translate(0, 0) scale(0.8);
+                opacity: 0.6;
+            }
+
+            45% {
+                transform: translate(-38vw, 28vh) scale(1.1);
+                opacity: 0.7;
+            }
+
+            90% {
+                transform: translate(-18vw, -18vh) scale(0.9);
+                opacity: 0.65;
+            }
+
+            100% {
+                transform: translate(0, 0) scale(0.8);
+                opacity: 0.6;
+            }
         }
 
         /* Vị trí và kích thước ban đầu của các blob */
-        .blob-1 { top: 10%; left: 5%; width: 300px; height: 300px; animation-name: float1; animation-duration: 25s; animation-delay: 0s; }
-        .blob-2 { top: 50%; right: 10%; width: 220px; height: 220px; animation-name: float2; animation-duration: 20s; animation-delay: 5s; }
-        .blob-3 { bottom: 20%; left: 15%; width: 380px; height: 380px; animation-name: float3; animation-duration: 28s; animation-delay: 10s; }
-        .blob-4 { top: 30%; left: 40%; width: 160px; height: 160px; animation-name: float4; animation-duration: 18s; animation-delay: 2s; }
-        .blob-5 { bottom: 5%; right: 5%; width: 280px; height: 280px; animation-name: float5; animation-duration: 23s; animation-delay: 7s; }
-        .blob-6 { top: 70%; left: 60%; width: 200px; height: 200px; animation-name: float6; animation-duration: 21s; animation-delay: 12s; }
-        .blob-7 { top: 15%; right: 25%; width: 250px; height: 250px; animation-name: float1; animation-duration: 26s; animation-delay: 3s; }
-        .blob-8 { bottom: 30%; right: 30%; width: 180px; height: 180px; animation-name: float2; animation-duration: 19s; animation-delay: 8s; }
-        .blob-9 { top: 60%; left: 5%; width: 270px; height: 270px; animation-name: float3; animation-duration: 24s; animation-delay: 15s; }
-        .blob-10 { bottom: 10%; left: 50%; width: 220px; height: 220px; animation-name: float4; animation-duration: 22s; animation-delay: 1s; }
-        .blob-11 { top: 5%; left: 70%; width: 350px; height: 350px; animation-name: float5; animation-duration: 29s; animation-delay: 6s; }
-        .blob-12 { bottom: 40%; right: 40%; width: 170px; height: 170px; animation-name: float6; animation-duration: 17s; animation-delay: 11s; }
-        .blob-13 { top: 20%; left: 80%; width: 190px; height: 190px; animation-name: float1; animation-duration: 20s; animation-delay: 4s; }
-        .blob-14 { bottom: 15%; left: 70%; width: 260px; height: 260px; animation-name: float2; animation-duration: 23s; animation-delay: 9s; }
-        .blob-15 { top: 40%; right: 5%; width: 290px; height: 290px; animation-name: float3; animation-duration: 27s; animation-delay: 14s; }
-        .blob-16 { bottom: 50%; left: 45%; width: 130px; height: 130px; animation-name: float4; animation-duration: 16s; animation-delay: 0.5s; }
-        .blob-17 { top: 25%; left: 15%; width: 150px; height: 150px; animation-name: float5; animation-duration: 24s; animation-delay: 2.5s; }
-        .blob-18 { bottom: 25%; right: 15%; width: 210px; height: 210px; animation-name: float6; animation-duration: 26s; animation-delay: 7.5s; }
-        .blob-19 { top: 45%; left: 55%; width: 100px; height: 100px; animation-name: float1; animation-duration: 18s; animation-delay: 10.5s; }
-        .blob-20 { bottom: 35%; left: 35%; width: 190px; height: 190px; animation-name: float2; animation-duration: 20s; animation-delay: 13.5s; }
+        .blob-1 {
+            top: 10%;
+            left: 5%;
+            width: 300px;
+            height: 300px;
+            animation-name: float1;
+            animation-duration: 25s;
+            animation-delay: 0s;
+        }
+
+        .blob-2 {
+            top: 50%;
+            right: 10%;
+            width: 220px;
+            height: 220px;
+            animation-name: float2;
+            animation-duration: 20s;
+            animation-delay: 5s;
+        }
+
+        .blob-3 {
+            bottom: 20%;
+            left: 15%;
+            width: 380px;
+            height: 380px;
+            animation-name: float3;
+            animation-duration: 28s;
+            animation-delay: 10s;
+        }
+
+        .blob-4 {
+            top: 30%;
+            left: 40%;
+            width: 160px;
+            height: 160px;
+            animation-name: float4;
+            animation-duration: 18s;
+            animation-delay: 2s;
+        }
+
+        .blob-5 {
+            bottom: 5%;
+            right: 5%;
+            width: 280px;
+            height: 280px;
+            animation-name: float5;
+            animation-duration: 23s;
+            animation-delay: 7s;
+        }
+
+        .blob-6 {
+            top: 70%;
+            left: 60%;
+            width: 200px;
+            height: 200px;
+            animation-name: float6;
+            animation-duration: 21s;
+            animation-delay: 12s;
+        }
+
+        .blob-7 {
+            top: 15%;
+            right: 25%;
+            width: 250px;
+            height: 250px;
+            animation-name: float1;
+            animation-duration: 26s;
+            animation-delay: 3s;
+        }
+
+        .blob-8 {
+            bottom: 30%;
+            right: 30%;
+            width: 180px;
+            height: 180px;
+            animation-name: float2;
+            animation-duration: 19s;
+            animation-delay: 8s;
+        }
+
+        .blob-9 {
+            top: 60%;
+            left: 5%;
+            width: 270px;
+            height: 270px;
+            animation-name: float3;
+            animation-duration: 24s;
+            animation-delay: 15s;
+        }
+
+        .blob-10 {
+            bottom: 10%;
+            left: 50%;
+            width: 220px;
+            height: 220px;
+            animation-name: float4;
+            animation-duration: 22s;
+            animation-delay: 1s;
+        }
+
+        .blob-11 {
+            top: 5%;
+            left: 70%;
+            width: 350px;
+            height: 350px;
+            animation-name: float5;
+            animation-duration: 29s;
+            animation-delay: 6s;
+        }
+
+        .blob-12 {
+            bottom: 40%;
+            right: 40%;
+            width: 170px;
+            height: 170px;
+            animation-name: float6;
+            animation-duration: 17s;
+            animation-delay: 11s;
+        }
+
+        .blob-13 {
+            top: 20%;
+            left: 80%;
+            width: 190px;
+            height: 190px;
+            animation-name: float1;
+            animation-duration: 20s;
+            animation-delay: 4s;
+        }
+
+        .blob-14 {
+            bottom: 15%;
+            left: 70%;
+            width: 260px;
+            height: 260px;
+            animation-name: float2;
+            animation-duration: 23s;
+            animation-delay: 9s;
+        }
+
+        .blob-15 {
+            top: 40%;
+            right: 5%;
+            width: 290px;
+            height: 290px;
+            animation-name: float3;
+            animation-duration: 27s;
+            animation-delay: 14s;
+        }
+
+        .blob-16 {
+            bottom: 50%;
+            left: 45%;
+            width: 130px;
+            height: 130px;
+            animation-name: float4;
+            animation-duration: 16s;
+            animation-delay: 0.5s;
+        }
+
+        .blob-17 {
+            top: 25%;
+            left: 15%;
+            width: 150px;
+            height: 150px;
+            animation-name: float5;
+            animation-duration: 24s;
+            animation-delay: 2.5s;
+        }
+
+        .blob-18 {
+            bottom: 25%;
+            right: 15%;
+            width: 210px;
+            height: 210px;
+            animation-name: float6;
+            animation-duration: 26s;
+            animation-delay: 7.5s;
+        }
+
+        .blob-19 {
+            top: 45%;
+            left: 55%;
+            width: 100px;
+            height: 100px;
+            animation-name: float1;
+            animation-duration: 18s;
+            animation-delay: 10.5s;
+        }
+
+        .blob-20 {
+            bottom: 35%;
+            left: 35%;
+            width: 190px;
+            height: 190px;
+            animation-name: float2;
+            animation-duration: 20s;
+            animation-delay: 13.5s;
+        }
 
 
         /* Animation cho các phần tử UI khi cuộn */
         .animate-on-scroll {
-            opacity: 0.2; /* Mặc định là mờ đi */
-            transform: translateY(50px); /* Dịch chuyển nhẹ khi mờ */
+            opacity: 0.2;
+            /* Mặc định là mờ đi */
+            transform: translateY(50px);
+            /* Dịch chuyển nhẹ khi mờ */
             transition: opacity 1s cubic-bezier(0.25, 0.8, 0.25, 1), transform 1s cubic-bezier(0.25, 0.8, 0.25, 1);
         }
 
         .animate-on-scroll.is-visible {
-            opacity: 1; /* Rõ nét khi hiển thị */
-            transform: translateY(0); /* Về vị trí ban đầu */
+            opacity: 1;
+            /* Rõ nét khi hiển thị */
+            transform: translateY(0);
+            /* Về vị trí ban đầu */
         }
 
         /* Các hiệu ứng slide-in cũng sẽ mờ đi khi không hiển thị */
@@ -175,6 +467,7 @@
             transform: translateX(-100px);
             transition: opacity 1s cubic-bezier(0.25, 0.8, 0.25, 1), transform 1s cubic-bezier(0.25, 0.8, 0.25, 1);
         }
+
         .animate-slide-in-left.is-visible {
             opacity: 1;
             transform: translateX(0);
@@ -185,6 +478,7 @@
             transform: translateX(100px);
             transition: opacity 1s cubic-bezier(0.25, 0.8, 0.25, 1), transform 1s cubic-bezier(0.25, 0.8, 0.25, 1);
         }
+
         .animate-slide-in-right.is-visible {
             opacity: 1;
             transform: translateX(0);
@@ -205,10 +499,12 @@
             border-bottom-right-radius: 40px;
             border-top-left-radius: 0;
             border-top-right-radius: 0;
-            box-shadow: 0px 5px 20px rgba(0, 0, 0, 0.1); /* Bóng đổ nhẹ hơn */
+            box-shadow: 0px 5px 20px rgba(0, 0, 0, 0.1);
+            /* Bóng đổ nhẹ hơn */
             transition: all 0.3s ease-in-out;
             perspective: 1000px;
-            background-color: rgba(255, 255, 255, 0.8); /* Nền menubar sáng hơn */
+            background-color: rgba(255, 255, 255, 0.8);
+            /* Nền menubar sáng hơn */
         }
 
         .menubar .liquid-glass-overlay {
@@ -216,13 +512,15 @@
             border-bottom-right-radius: 40px;
             border-top-left-radius: 0;
             border-top-right-radius: 0;
-            background-color: rgba(var(--tint-color), 0.05); /* Overlay trong suốt hơn cho menubar */
+            background-color: rgba(var(--tint-color), 0.05);
+            /* Overlay trong suốt hơn cho menubar */
         }
 
         .menubar-logo {
             display: flex;
             align-items: center;
         }
+
         .menubar-logo img {
             width: 375px;
             height: 49px;
@@ -236,7 +534,8 @@
         }
 
         .menubar-nav a {
-            color: #333; /* Màu chữ tối hơn cho menu */
+            color: #333;
+            /* Màu chữ tối hơn cho menu */
             font-weight: 500;
             font-size: 1rem;
             transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
@@ -244,12 +543,14 @@
             text-decoration: none;
             opacity: 0.8;
             white-space: nowrap;
-            text-transform: capitalize; /* Viết hoa chữ cái đầu */
+            text-transform: capitalize;
+            /* Viết hoa chữ cái đầu */
         }
 
         .menubar-nav a:hover {
             opacity: 1;
-            text-shadow: 0 0 8px rgba(0, 0, 0, 0.2); /* Bóng chữ tối hơn */
+            text-shadow: 0 0 8px rgba(0, 0, 0, 0.2);
+            /* Bóng chữ tối hơn */
         }
 
         .menubar-nav a::after {
@@ -260,7 +561,8 @@
             bottom: -5px;
             left: 50%;
             transform: translateX(-50%);
-            background-color: #3b82f6; /* Màu xanh nổi bật */
+            background-color: #3b82f6;
+            /* Màu xanh nổi bật */
             transition: width 0.3s ease-in-out;
         }
 
@@ -271,7 +573,8 @@
         /* Styles cho phần chia đôi màn hình */
         .split-section {
             display: flex;
-            flex-direction: column; /* Mặc định là cột trên mobile */
+            flex-direction: column;
+            /* Mặc định là cột trên mobile */
             gap: 2rem;
             padding: 2rem;
             text-align: center;
@@ -279,7 +582,8 @@
 
         @media (min-width: 768px) {
             .split-section {
-                flex-direction: row; /* Chia 2 cột trên desktop */
+                flex-direction: row;
+                /* Chia 2 cột trên desktop */
                 text-align: left;
             }
         }
@@ -288,10 +592,12 @@
             flex: 1;
             padding: 2rem;
             border-radius: 24px;
-            background: rgba(0, 0, 0, 0.05); /* Nền trong suốt nhẹ cho nền trắng */
+            background: rgba(0, 0, 0, 0.05);
+            /* Nền trong suốt nhẹ cho nền trắng */
             box-shadow: 0 5px 20px rgba(0, 0, 0, 0.1);
             transition: all 0.3s ease-in-out;
-            color: #333; /* Màu chữ tối hơn */
+            color: #333;
+            /* Màu chữ tối hơn */
         }
 
         .split-half:hover {
@@ -304,55 +610,82 @@
             height: 90px;
             border-radius: 50%;
             object-fit: cover;
-            margin: 0 auto 1rem auto; /* Canh giữa avatar */
-            border: 3px solid rgba(0, 0, 0, 0.2); /* Viền tối hơn */
+            margin: 0 auto 1rem auto;
+            /* Canh giữa avatar */
+            border: 3px solid rgba(0, 0, 0, 0.2);
+            /* Viền tối hơn */
             transition: transform 0.3s ease-in-out;
         }
+
         .manager-avatar:hover {
             transform: scale(1.1);
         }
 
         /* Styles riêng cho Studio Host */
         .host-avatar {
-            width: 120px; /* Lớn hơn */
+            width: 120px;
+            /* Lớn hơn */
             height: 120px;
-            border-width: 5px; /* Viền dày hơn */
-            border-color: #3b82f6; /* Màu xanh nổi bật */
-            box-shadow: 0 0 20px rgba(59, 130, 246, 0.3); /* Bóng đổ phát sáng */
+            border-width: 5px;
+            /* Viền dày hơn */
+            border-color: #3b82f6;
+            /* Màu xanh nổi bật */
+            box-shadow: 0 0 20px rgba(59, 130, 246, 0.3);
+            /* Bóng đổ phát sáng */
         }
+
         .host-name {
-            font-size: 2.5rem; /* Kích thước chữ lớn hơn */
-            color: #3b82f6; /* Màu xanh nổi bật */
-            text-shadow: 0 0 15px rgba(59, 130, 246, 0.4); /* Bóng chữ phát sáng */
+            font-size: 2.5rem;
+            /* Kích thước chữ lớn hơn */
+            color: #3b82f6;
+            /* Màu xanh nổi bật */
+            text-shadow: 0 0 15px rgba(59, 130, 246, 0.4);
+            /* Bóng chữ phát sáng */
         }
 
         /* Other Managers in a single row - Carousel styles */
         .other-managers-container {
             display: flex;
             flex-wrap: nowrap;
-            overflow: hidden; /* Hide scrollbar and content outside */
-            position: relative; /* For animation */
-            width: 100%; /* Take full width of its parent */
-            padding-bottom: 1rem; /* Space for potential scrollbar if overflow is visible */
+            overflow: hidden;
+            /* Hide scrollbar and content outside */
+            position: relative;
+            /* For animation */
+            width: 100%;
+            /* Take full width of its parent */
+            padding-bottom: 1rem;
+            /* Space for potential scrollbar if overflow is visible */
         }
 
         .other-managers-track {
             display: flex;
-            animation: scrollManagers 30s linear infinite; /* Animation for continuous scroll */
-            will-change: transform; /* Optimize for animation */
+            animation: scrollManagers 30s linear infinite;
+            /* Animation for continuous scroll */
+            will-change: transform;
+            /* Optimize for animation */
         }
 
         .manager-item {
-            flex-shrink: 0; /* Prevent items from shrinking */
-            width: 120px; /* Fixed width for each manager item */
+            flex-shrink: 0;
+            /* Prevent items from shrinking */
+            width: 120px;
+            /* Fixed width for each manager item */
             text-align: center;
-            margin-right: 1.5rem; /* Gap between items */
+            margin-right: 1.5rem;
+            /* Gap between items */
         }
 
         /* Keyframes for manager carousel */
         @keyframes scrollManagers {
-            0% { transform: translateX(0); }
-            100% { transform: translateX(-50%); } /* Scroll half the content width to loop seamlessly */
+            0% {
+                transform: translateX(0);
+            }
+
+            100% {
+                transform: translateX(-50%);
+            }
+
+            /* Scroll half the content width to loop seamlessly */
         }
 
 
@@ -373,7 +706,8 @@
             left: 50%;
             width: 0;
             height: 0;
-            background: rgba(0, 0, 0, 0.1); /* Màu tối hơn cho hiệu ứng button trên nền trắng */
+            background: rgba(0, 0, 0, 0.1);
+            /* Màu tối hơn cho hiệu ứng button trên nền trắng */
             border-radius: 50%;
             transform: translate(-50%, -50%);
             transition: width 0.4s ease-out, height 0.4s ease-out;
@@ -393,27 +727,35 @@
         .ai-chat-container {
             /* Đã loại bỏ liquid-glass-container và liquid-glass-overlay ở đây */
             border-radius: 40px;
-            box-shadow: 0px 10px 30px rgba(0, 0, 0, 0.1); /* Bóng đổ nhẹ hơn */
+            box-shadow: 0px 10px 30px rgba(0, 0, 0, 0.1);
+            /* Bóng đổ nhẹ hơn */
             border: 1px solid rgba(0, 0, 0, 0.1);
-            background-color: rgba(255, 255, 255, 0.9); /* Nền chatbox sáng hơn và gần như trong suốt */
-            backdrop-filter: blur(15px); /* Giảm blur để nhẹ nhàng hơn */
+            background-color: rgba(255, 255, 255, 0.9);
+            /* Nền chatbox sáng hơn và gần như trong suốt */
+            backdrop-filter: blur(15px);
+            /* Giảm blur để nhẹ nhàng hơn */
             -webkit-backdrop-filter: blur(15px);
 
             padding: 1.5rem;
             display: flex;
             flex-direction: column;
-            width: 100%; /* Mở rộng chiều ngang */
+            width: 100%;
+            /* Mở rộng chiều ngang */
             /* max-width: 700px; Đã bỏ max-width để nó rộng bằng các khung khác */
-            min-height: 500px; /* Tăng chiều cao khung chat */
+            min-height: 500px;
+            /* Tăng chiều cao khung chat */
             margin: 2rem auto;
             max-height: 80vh;
-            color: #333; /* Màu chữ tối hơn cho chatbox */
+            color: #333;
+            /* Màu chữ tối hơn cho chatbox */
         }
 
         .chat-messages {
             flex-grow: 1;
-            overflow-y: auto; /* Sử dụng thanh trượt mặc định */
-            padding-right: 1rem; /* Cho khoảng trống thanh trượt */
+            overflow-y: auto;
+            /* Sử dụng thanh trượt mặc định */
+            padding-right: 1rem;
+            /* Cho khoảng trống thanh trượt */
             margin-bottom: 1rem;
             display: flex;
             flex-direction: column;
@@ -422,7 +764,8 @@
 
         .message-wrapper {
             display: flex;
-            align-items: flex-end; /* Align to bottom for avatar */
+            align-items: flex-end;
+            /* Align to bottom for avatar */
             gap: 0.5rem;
         }
 
@@ -435,53 +778,70 @@
         }
 
         .message-avatar {
-            width: 35px; /* Kích thước avatar nhỏ trong chat */
+            width: 35px;
+            /* Kích thước avatar nhỏ trong chat */
             height: 35px;
             border-radius: 50%;
             object-fit: cover;
-            border: 2px solid rgba(0, 0, 0, 0.1); /* Viền tối hơn */
-            flex-shrink: 0; /* Ngăn avatar bị co lại */
+            border: 2px solid rgba(0, 0, 0, 0.1);
+            /* Viền tối hơn */
+            flex-shrink: 0;
+            /* Ngăn avatar bị co lại */
         }
 
         .message-bubble {
             padding: 0.75rem 1rem;
             border-radius: 1.25rem;
-            max-width: 70%; /* Giảm độ dài của chat bubble */
+            max-width: 70%;
+            /* Giảm độ dài của chat bubble */
             word-wrap: break-word;
-            flex-shrink: 1; /* Cho phép bubble co lại */
-            color: #fff; /* Màu chữ trắng cho bubble */
-            position: relative; /* Để chứa nút đọc */
+            flex-shrink: 1;
+            /* Cho phép bubble co lại */
+            color: #fff;
+            /* Màu chữ trắng cho bubble */
+            position: relative;
+            /* Để chứa nút đọc */
         }
 
         .message-user .message-bubble {
-            background-color: #3b82f6; /* Blue cho user */
+            background-color: #3b82f6;
+            /* Blue cho user */
             border-bottom-right-radius: 0.25rem;
-            text-align: right; /* Canh phải nội dung tin nhắn người dùng */
+            text-align: right;
+            /* Canh phải nội dung tin nhắn người dùng */
         }
 
         .message-ai .message-bubble {
-            background-color: #10b981; /* Green cho AI */
+            background-color: #10b981;
+            /* Green cho AI */
             border-bottom-left-radius: 0.25rem;
-            text-align: left; /* Canh trái nội dung tin nhắn AI */
+            text-align: left;
+            /* Canh trái nội dung tin nhắn AI */
         }
 
         .chat-input-area {
             display: flex;
             gap: 0.5rem;
-            flex-wrap: wrap; /* Cho phép xuống dòng trên màn hình nhỏ */
-            align-items: center; /* Căn giữa các item theo chiều dọc */
+            flex-wrap: wrap;
+            /* Cho phép xuống dòng trên màn hình nhỏ */
+            align-items: center;
+            /* Căn giữa các item theo chiều dọc */
         }
 
         .chat-input-area input[type="text"] {
             flex-grow: 1;
             padding: 0.75rem 1rem;
-            border-radius: 9999px; /* Full rounded */
+            border-radius: 9999px;
+            /* Full rounded */
             border: none;
-            background-color: rgba(0, 0, 0, 0.1); /* Nền input tối hơn */
-            color: #333; /* Màu chữ input tối hơn */
+            background-color: rgba(0, 0, 0, 0.1);
+            /* Nền input tối hơn */
+            color: #333;
+            /* Màu chữ input tối hơn */
             outline: none;
             transition: background-color 0.3s ease;
-            min-width: 150px; /* Đảm bảo input không quá nhỏ */
+            min-width: 150px;
+            /* Đảm bảo input không quá nhỏ */
         }
 
         .chat-input-area input[type="text"]:focus {
@@ -489,11 +849,16 @@
         }
 
         .chat-input-area button {
-            width: 60px; /* Fixed width */
-            height: 60px; /* Fixed height */
-            padding: 0; /* Remove padding to let content center */
-            border-radius: 50%; /* Make them circular */
-            display: flex; /* Use flex to center icon */
+            width: 60px;
+            /* Fixed width */
+            height: 60px;
+            /* Fixed height */
+            padding: 0;
+            /* Remove padding to let content center */
+            border-radius: 50%;
+            /* Make them circular */
+            display: flex;
+            /* Use flex to center icon */
             align-items: center;
             justify-content: center;
             color: #fff;
@@ -501,7 +866,8 @@
             border: none;
             cursor: pointer;
             transition: background-color 0.3s ease, transform 0.2s ease;
-            flex-shrink: 0; /* Ngăn button bị co lại */
+            flex-shrink: 0;
+            /* Ngăn button bị co lại */
         }
 
         .chat-input-area button:hover {
@@ -515,15 +881,19 @@
 
         /* Specific button colors */
         #sendMessageBtn {
-            background-color: #3b82f6; /* Blue for send */
+            background-color: #3b82f6;
+            /* Blue for send */
         }
+
         #sendMessageBtn:hover {
             background-color: #2563eb;
         }
 
         .image-upload-button {
-            background-color: #4CAF50; /* Green for upload */
+            background-color: #4CAF50;
+            /* Green for upload */
         }
+
         .image-upload-button:hover {
             background-color: #45a049;
         }
@@ -534,11 +904,13 @@
             padding: 0.5rem;
             font-style: italic;
             opacity: 0.7;
-            color: #333; /* Màu chữ tối hơn */
+            color: #333;
+            /* Màu chữ tối hơn */
         }
 
         .spam-warning {
-            color: #d97706; /* Màu vàng cam cho warning */
+            color: #d97706;
+            /* Màu vàng cam cho warning */
             text-align: center;
             font-size: 0.9rem;
             margin-top: 0.5rem;
@@ -564,17 +936,18 @@
         .image-previews {
             display: flex;
             flex-wrap: wrap;
-            gap: 0.5rem;
-            margin-top: 0.5rem;
-            max-height: 120px; /* Giới hạn chiều cao preview */
-            overflow-y: auto; /* Thêm scroll nếu quá nhiều ảnh */
+            gap: 0.75rem; /* Tăng khoảng cách giữa các ảnh */
+            margin-top: 0.75rem; /* Tăng khoảng cách trên */
+            max-height: 200px; /* Tăng giới hạn chiều cao preview */
+            overflow-y: auto;
+            /* Thêm scroll nếu quá nhiều ảnh */
             padding-bottom: 0.5rem;
         }
 
         .image-preview-item {
             position: relative;
-            width: 80px;
-            height: 80px;
+            width: 120px; /* Tăng kích thước ảnh xem trước */
+            height: 120px; /* Tăng kích thước ảnh xem trước */
             border-radius: 8px;
             overflow: hidden;
             border: 1px solid rgba(0, 0, 0, 0.1);
@@ -606,17 +979,20 @@
 
         /* Live Chat Button */
         .live-chat-button {
-            background-color: #ef4444; /* Red color */
+            background-color: #ef4444;
+            /* Red color */
             color: white;
             border-radius: 50%;
-            width: 60px; /* Kích thước nút tròn */
+            width: 60px;
+            /* Kích thước nút tròn */
             height: 60px;
             cursor: pointer;
             transition: background-color 0.3s ease, transform 0.2s ease, box-shadow 0.3s ease;
             box-shadow: 0 4px 10px rgba(239, 68, 68, 0.3);
             flex-shrink: 0;
             /* Đã bỏ margin-left để nó nằm sát các nút khác */
-            display: flex; /* Use flex to center dot and text */
+            display: flex;
+            /* Use flex to center dot and text */
             flex-direction: column;
             align-items: center;
             justify-content: center;
@@ -629,15 +1005,25 @@
         }
 
         .live-chat-button.active {
-            background-color: #10b981; /* Green when active */
+            background-color: #10b981;
+            /* Green when active */
             box-shadow: 0 4px 10px rgba(16, 185, 129, 0.3);
-            animation: pulse 1.5s infinite; /* Hiệu ứng nhấp nháy khi active */
+            animation: pulse 1.5s infinite;
+            /* Hiệu ứng nhấp nháy khi active */
         }
 
         @keyframes pulse {
-            0% { box-shadow: 0 0 0 0 rgba(16, 185, 129, 0.4); }
-            70% { box-shadow: 0 0 0 10px rgba(16, 185, 129, 0); }
-            100% { box-shadow: 0 0 0 0 rgba(16, 185, 129, 0); }
+            0% {
+                box-shadow: 0 0 0 0 rgba(16, 185, 129, 0.4);
+            }
+
+            70% {
+                box-shadow: 0 0 0 10px rgba(16, 185, 129, 0);
+            }
+
+            100% {
+                box-shadow: 0 0 0 0 rgba(16, 185, 129, 0);
+            }
         }
 
         .live-chat-button .dot {
@@ -683,22 +1069,31 @@
 
         /* Highlight cho từ đang đọc */
         .highlight-word {
-            background-color: #ffeb3b; /* Bright yellow */
-            color: #333; /* Dark text for contrast */
+            background-color: #ffeb3b;
+            /* Bright yellow */
+            color: #333;
+            /* Dark text for contrast */
             border-radius: 4px;
             padding: 2px 4px;
-            margin: -2px -4px; /* To prevent layout shift */
+            margin: -2px -4px;
+            /* To prevent layout shift */
             transition: background-color 0.1s ease-in-out, color 0.1s ease-in-out;
-            display: inline-block; /* Essential for padding/margin to work */
+            display: inline-block;
+            /* Essential for padding/margin to work */
         }
 
         /* Thumbnail dự án nổi bật */
         .project-thumbnail {
-            width: 100%; /* Đảm bảo ảnh chiếm hết chiều rộng container */
-            height: 150px; /* Chiều cao cố định cho thumbnail */
-            object-fit: cover; /* Đảm bảo ảnh không bị méo, cắt nếu cần */
-            border-radius: 16px; /* Bo tròn góc ảnh */
-            margin-bottom: 1rem; /* Khoảng cách với tiêu đề */
+            width: 100%;
+            /* Đảm bảo ảnh chiếm hết chiều rộng container */
+            height: 150px;
+            /* Chiều cao cố định cho thumbnail */
+            object-fit: cover;
+            /* Đảm bảo ảnh không bị méo, cắt nếu cần */
+            border-radius: 16px;
+            /* Bo tròn góc ảnh */
+            margin-bottom: 1rem;
+            /* Khoảng cách với tiêu đề */
             box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
         }
     </style>
@@ -764,11 +1159,14 @@
                     Nơi phát triển, ủng hộ, quảng bá các dự án lập trình Việt Nam, chú trọng các dự án do người Việt sáng tạo.
                 </p>
                 <div class="flex flex-col sm:flex-row justify-center items-center gap-4">
-                    <button onclick="window.open('https://scratch.mit.edu/studios/33509364', '_blank')" class="px-8 py-4 bg-blue-500 text-white font-bold text-lg rounded-full shadow-lg hover:bg-blue-600 transition-colors duration-300 transform hover:scale-105 animated-button">
+                    <button onclick="window.open('https://scratch.mit.edu/studios/33509364', '_blank')"
+                        class="px-8 py-4 bg-blue-500 text-white font-bold text-lg rounded-full shadow-lg hover:bg-blue-600 transition-colors duration-300 transform hover:scale-105 animated-button">
                         Tham gia Studio ngay!
                     </button>
-                    <button onclick="window.open('https://discord.gg/6hkPzynTgt', '_blank')" class="px-8 py-4 bg-indigo-600 text-white font-bold text-lg rounded-full shadow-lg hover:bg-indigo-700 transition-colors duration-300 transform hover:scale-105 animated-button flex items-center gap-2">
-                        <img src="https://static.vecteezy.com/system/resources/previews/023/986/880/non_2x/discord-logo-discord-logo-transparent-discord-icon-transparent-free-free-png.png" alt="Discord Logo" class="h-6 w-6">
+                    <button onclick="window.open('https://discord.gg/6hkPzynTgt', '_blank')"
+                        class="px-8 py-4 bg-indigo-600 text-white font-bold text-lg rounded-full shadow-lg hover:bg-indigo-700 transition-colors duration-300 transform hover:scale-105 animated-button flex items-center gap-2">
+                        <img src="https://static.vecteezy.com/system/resources/previews/023/986/880/non_2x/discord-logo-discord-logo-transparent-discord-icon-transparent-free-free-png.png"
+                            alt="Discord Logo" class="h-6 w-6">
                         Tham gia Discord
                     </button>
                 </div>
@@ -779,10 +1177,13 @@
         <section id="gioi-thieu" class="p-8 md:p-12 text-center bg-transparent animate-on-scroll">
             <h2 class="text-3xl md:text-4xl font-bold mb-8">Lời Nói Đầu</h2>
             <p class="opacity-80 text-lg max-w-3xl mx-auto">
-                Studio này nhằm mục đích phát triển, ủng hộ, quảng bá các dự án lập trình Việt Nam, chú trọng các dự án do người Việt sáng tạo. Chúng tôi tin rằng mỗi dự án Scratch là một hạt giống sáng tạo, và với sự hỗ trợ đúng đắn, chúng có thể nảy mầm thành những tác phẩm tuyệt vời.
+                Studio này nhằm mục đích phát triển, ủng hộ, quảng bá các dự án lập trình Việt Nam, chú trọng các dự án do
+                người Việt sáng tạo. Chúng tôi tin rằng mỗi dự án Scratch là một hạt giống sáng tạo, và với sự hỗ trợ đúng
+                đắn, chúng có thể nảy mầm thành những tác phẩm tuyệt vời.
             </p>
             <p class="opacity-80 text-lg max-w-3xl mx-auto mt-4">
-                ✌️✨ Đội ngũ Managers của chúng tôi luôn thân thiện, nhiệt tình và sẵn sàng giúp đỡ bạn trong hành trình sáng tạo trên Scratch. Hãy cùng nhau xây dựng một cộng đồng vững mạnh và đầy cảm hứng!
+                ✌️✨ Đội ngũ Managers của chúng tôi luôn thân thiện, nhiệt tình và sẵn sàng giúp đỡ bạn trong hành trình sáng
+                tạo trên Scratch. Hãy cùng nhau xây dựng một cộng đồng vững mạnh và đầy cảm hứng!
             </p>
         </section>
 
@@ -814,46 +1215,56 @@
             <div class="liquid-glass-container p-6 text-center animate-on-scroll animate-delay-200">
                 <div class="liquid-glass-overlay"></div>
                 <div class="liquid-glass-content">
-                    <img src="https://i.ibb.co/8LCN4NKX/1154145707-282x210.png" alt="Thumbnail Dead rails" class="project-thumbnail mx-auto">
+                    <img src="https://i.ibb.co/8LCN4NKX/1154145707-282x210.png" alt="Thumbnail Dead rails"
+                        class="project-thumbnail mx-auto">
                     <h3 class="text-2xl font-bold mb-2">⛰️ Dead rails</h3>
                     <p class="opacity-80 mb-4">Một dự án Scratch sáng tạo với đường ray và thây ma.</p>
-                    <a href="https://scratch.mit.edu/projects/1154145707/" target="_blank" class="text-blue-600 hover:text-blue-800 transition-colors duration-200">Xem dự án</a>
+                    <a href="https://scratch.mit.edu/projects/1154145707/" target="_blank"
+                        class="text-blue-600 hover:text-blue-800 transition-colors duration-200">Xem dự án</a>
                 </div>
             </div>
             <div class="liquid-glass-container p-6 text-center animate-on-scroll animate-delay-400">
                 <div class="liquid-glass-overlay"></div>
                 <div class="liquid-glass-content">
-                    <img src="https://i.ibb.co/b5Nc7sp3/PNG-2.png" alt="Thumbnail AI LÀ NGHÌN PHÚ" class="project-thumbnail mx-auto">
+                    <img src="https://i.ibb.co/b5Nc7sp3/PNG-2.png" alt="Thumbnail AI LÀ NGHÌN PHÚ"
+                        class="project-thumbnail mx-auto">
                     <h3 class="text-2xl font-bold mb-2">⛲️ AI LÀ NGHÌN PHÚ</h3>
                     <p class="opacity-80 mb-4">Trò chơi đố vui trí tuệ đặc trưng trên truyền hình.</p>
-                    <a href="https://scratch.mit.edu/projects/1067950299" target="_blank" class="text-blue-600 hover:text-blue-800 transition-colors duration-200">Xem dự án</a>
+                    <a href="https://scratch.mit.edu/projects/1067950299" target="_blank"
+                        class="text-blue-600 hover:text-blue-800 transition-colors duration-200">Xem dự án</a>
                 </div>
             </div>
             <div class="liquid-glass-container p-6 text-center animate-on-scroll animate-delay-600">
                 <div class="liquid-glass-overlay"></div>
                 <div class="liquid-glass-content">
-                    <img src="https://i.ibb.co/PzrM5C9L/image.png" alt="Thumbnail Grace - Roblox V0.1.4" class="project-thumbnail mx-auto">
+                    <img src="https://i.ibb.co/PzrM5C9L/image.png" alt="Thumbnail Grace - Roblox V0.1.4"
+                        class="project-thumbnail mx-auto">
                     <h3 class="text-2xl font-bold mb-2">⛽️ Grace - Roblox V0.1.4</h3>
                     <p class="opacity-80 mb-4">Phiên bản Roblox độc đáo trên Scratch.</p>
-                    <a href="https://scratch.mit.edu/projects/1119305171" target="_blank" class="text-blue-600 hover:text-blue-800 transition-colors duration-200">Xem dự án</a>
+                    <a href="https://scratch.mit.edu/projects/1119305171" target="_blank"
+                        class="text-blue-600 hover:text-blue-800 transition-colors duration-200">Xem dự án</a>
                 </div>
             </div>
             <div class="liquid-glass-container p-6 text-center animate-on-scroll animate-delay-800">
                 <div class="liquid-glass-overlay"></div>
                 <div class="liquid-glass-content">
-                    <img src="https://i.ibb.co/R4s3VS8x/PNG-2.png" alt="Thumbnail Grow A Garden (Roblox) v.5.0" class="project-thumbnail mx-auto">
+                    <img src="https://i.ibb.co/R4s3VS8x/PNG-2.png" alt="Thumbnail Grow A Garden (Roblox) v.5.0"
+                        class="project-thumbnail mx-auto">
                     <h3 class="text-2xl font-bold mb-2">Grow A Garden (Roblox) v.5.0</h3>
                     <p class="opacity-80 mb-4">Trải nghiệm làm vườn theo phong cách Roblox.</p>
-                    <a href="https://scratch.mit.edu/projects/1188197959" target="_blank" class="text-blue-600 hover:text-blue-800 transition-colors duration-200">Xem dự án</a>
+                    <a href="https://scratch.mit.edu/projects/1188197959" target="_blank"
+                        class="text-blue-600 hover:text-blue-800 transition-colors duration-200">Xem dự án</a>
                 </div>
             </div>
             <div class="liquid-glass-container p-6 text-center animate-on-scroll animate-delay-1000">
                 <div class="liquid-glass-overlay"></div>
                 <div class="liquid-glass-content">
-                    <img src="https://i.ibb.co/4nRCCN9S/PNG-2.png" alt="Thumbnail Lootify V1.3" class="project-thumbnail mx-auto">
+                    <img src="https://i.ibb.co/4nRCCN9S/PNG-2.png" alt="Thumbnail Lootify V1.3"
+                        class="project-thumbnail mx-auto">
                     <h3 class="text-2xl font-bold mb-2">⚔️ Lootify V1.3 ☁(save and load)</h3>
                     <p class="opacity-80 mb-4">Game phiêu lưu đặc trưng thể loại mới.</p>
-                    <a href="https://scratch.mit.edu/projects/1192996259/" target="_blank" class="text-blue-600 hover:text-blue-800 transition-colors duration-200">Xem dự án</a>
+                    <a href="https://scratch.mit.edu/projects/1192996259/" target="_blank"
+                        class="text-blue-600 hover:text-blue-800 transition-colors duration-200">Xem dự án</a>
                 </div>
             </div>
             <!-- Đã xóa dòng "Đề xuất các chương trình nổi bật tại bình luận [3/5/2025]" -->
@@ -867,9 +1278,11 @@
                 <ul class="list-disc list-inside space-y-3 text-lg opacity-90 max-w-4xl mx-auto text-left">
                     <li>⛺️ Có thể thêm các chương trình Việt Nam và các quốc gia khác.</li>
                     <li>✋ Nghiêm cấm dự án, bình luận thô tục và vi phạm thuần phong mỹ tục.</li>
-                    <li>♨️ Vui lòng mỗi tài khoản chỉ đăng tối đa 4 dự án/ 1 ngày (Tránh việc trôi dự án của các Scratcher khác)</li>
+                    <li>♨️ Vui lòng mỗi tài khoản chỉ đăng tối đa 4 dự án/ 1 ngày (Tránh việc trôi dự án của các Scratcher
+                        khác)</li>
                     <li>✉️ Hãy hạn chế các hoạt động quảng cáo.</li>
-                    <li>⛱️ Người tham gia là người Việt hoặc có thể là người nước ngoài cùng giao lưu. (Studio accepts foreigners)</li>
+                    <li>⛱️ Người tham gia là người Việt hoặc có thể là người nước ngoài cùng giao lưu. (Studio accepts
+                        foreigners)</li>
                     <li>✔️ Chúng tôi chấp nhận các ý kiến và đóng góp của bạn tại phần Bình luận studio.</li>
                     <li>⚙️ Các nội dung vi phạm sẽ bị xóa.</li>
                 </ul>
@@ -895,7 +1308,8 @@
 
                 <div class="text-center mb-12 animate-on-scroll animate-delay-200">
                     <a href="https://scratch.mit.edu/users/lunavocado/" target="_blank" class="block">
-                        <img src="https://cdn2.scratch.mit.edu/get_image/user/124521217_90x90.png" alt="lunavocado Avatar" class="manager-avatar host-avatar mx-auto mb-4">
+                        <img src="https://cdn2.scratch.mit.edu/get_image/user/124521217_90x90.png" alt="lunavocado Avatar"
+                            class="manager-avatar host-avatar mx-auto mb-4">
                         <p class="font-extrabold host-name mb-1">lunavocado</p>
                         <p class="text-xl opacity-90">(Studio Host)</p>
                     </a>
@@ -906,85 +1320,99 @@
                     <div class="other-managers-track">
                         <div class="manager-item">
                             <a href="https://scratch.mit.edu/users/Fleiroscracth/" target="_blank" class="block">
-                                <img src="https://cdn2.scratch.mit.edu/get_image/user/124495990_90x90.png" alt="Fleiroscracth Avatar" class="manager-avatar mx-auto mb-2">
+                                <img src="https://cdn2.scratch.mit.edu/get_image/user/124495990_90x90.png"
+                                    alt="Fleiroscracth Avatar" class="manager-avatar mx-auto mb-2">
                                 <p class="text-lg font-semibold">Fleiroscracth</p>
                             </a>
                         </div>
                         <div class="manager-item">
                             <a href="https://scratch.mit.edu/users/StudioDANV/" target="_blank" class="block">
-                                <img src="https://uploads.scratch.mit.edu/get_image/user/149945770_90x90.png" alt="StudioDANV Avatar" class="manager-avatar mx-auto mb-2">
+                                <img src="https://uploads.scratch.mit.edu/get_image/user/149945770_90x90.png"
+                                    alt="StudioDANV Avatar" class="manager-avatar mx-auto mb-2">
                                 <p class="text-lg font-semibold">StudioDANV</p>
                             </a>
                         </div>
                         <div class="manager-item">
                             <a href="https://scratch.mit.edu/users/ngw--/" target="_blank" class="block">
-                                <img src="https://cdn2.scratch.mit.edu/get_image/user/133312821_90x90.png" alt="ngw-- Avatar" class="manager-avatar mx-auto mb-2">
+                                <img src="https://cdn2.scratch.mit.edu/get_image/user/133312821_90x90.png" alt="ngw-- Avatar"
+                                    class="manager-avatar mx-auto mb-2">
                                 <p class="text-lg font-semibold">ngw--</p>
                             </a>
                         </div>
                         <div class="manager-item">
                             <a href="https://scratch.mit.edu/users/Nhienzcute/" target="_blank" class="block">
-                                <img src="https://cdn2.scratch.mit.edu/get_image/user/133904533_90x90.png" alt="Nhienzcute Avatar" class="manager-avatar mx-auto mb-2">
+                                <img src="https://cdn2.scratch.mit.edu/get_image/user/133904533_90x90.png"
+                                    alt="Nhienzcute Avatar" class="manager-avatar mx-auto mb-2">
                                 <p class="text-lg font-semibold">Nhienzcute</p>
                             </a>
                         </div>
                         <div class="manager-item">
                             <a href="https://scratch.mit.edu/users/ArchionTechno/" target="_blank" class="block">
-                                <img src="https://cdn2.scratch.mit.edu/get_image/user/148565311_90x90.png" alt="ArchionTechno Avatar" class="manager-avatar mx-auto mb-2">
+                                <img src="https://cdn2.scratch.mit.edu/get_image/user/148565311_90x90.png"
+                                    alt="ArchionTechno Avatar" class="manager-avatar mx-auto mb-2">
                                 <p class="text-lg font-semibold">ArchionTechno</p>
                             </a>
                         </div>
                         <div class="manager-item">
                             <a href="https://scratch.mit.edu/users/Ysanamoto/" target="_blank" class="block">
-                                <img src="https://cdn2.scratch.mit.edu/get_image/user/135593853_90x90.png" alt="Ysanamoto Avatar" class="manager-avatar mx-auto mb-2">
+                                <img src="https://cdn2.scratch.mit.edu/get_image/user/135593853_90x90.png"
+                                    alt="Ysanamoto Avatar" class="manager-avatar mx-auto mb-2">
                                 <p class="text-lg font-semibold">Ysanamoto</p>
                             </a>
                         </div>
                         <div class="manager-item">
                             <a href="https://scratch.mit.edu/users/daothanhhai1192/" target="_blank" class="block">
-                                <img src="https://cdn2.scratch.mit.edu/get_image/user/126227518_90x90.png" alt="daothanhhai1192 Avatar" class="manager-avatar mx-auto mb-2">
+                                <img src="https://cdn2.scratch.mit.edu/get_image/user/126227518_90x90.png"
+                                    alt="daothanhhai1192 Avatar" class="manager-avatar mx-auto mb-2">
                                 <p class="text-lg font-semibold">daothanhhai1192</p>
                             </a>
                         </div>
                         <div class="manager-item">
                             <a href="https://scratch.mit.edu/users/Fleiroscracth/" target="_blank" class="block">
-                                <img src="https://cdn2.scratch.mit.edu/get_image/user/124495990_90x90.png" alt="Fleiroscracth Avatar" class="manager-avatar mx-auto mb-2">
+                                <img src="https://cdn2.scratch.mit.edu/get_image/user/124495990_90x90.png"
+                                    alt="Fleiroscracth Avatar" class="manager-avatar mx-auto mb-2">
                                 <p class="text-lg font-semibold">Fleiroscracth</p>
                             </a>
                         </div>
                         <div class="manager-item">
                             <a href="https://scratch.mit.edu/users/StudioDANV/" target="_blank" class="block">
-                                <img src="https://uploads.scratch.mit.edu/get_image/user/149945770_90x90.png" alt="StudioDANV Avatar" class="manager-avatar mx-auto mb-2">
+                                <img src="https://uploads.scratch.mit.edu/get_image/user/149945770_90x90.png"
+                                    alt="StudioDANV Avatar" class="manager-avatar mx-auto mb-2">
                                 <p class="text-lg font-semibold">StudioDANV</p>
                             </a>
                         </div>
                         <div class="manager-item">
                             <a href="https://scratch.mit.edu/users/ngw--/" target="_blank" class="block">
-                                <img src="https://cdn2.scratch.mit.edu/get_image/user/133312821_90x90.png" alt="ngw-- Avatar" class="manager-avatar mx-auto mb-2">
+                                <img src="https://cdn2.scratch.mit.edu/get_image/user/133312821_90x90.png" alt="ngw-- Avatar"
+                                    class="manager-avatar mx-auto mb-2">
                                 <p class="text-lg font-semibold">ngw--</p>
                             </a>
                         </div>
                         <div class="manager-item">
                             <a href="https://scratch.mit.edu/users/Nhienzcute/" target="_blank" class="block">
-                                <img src="https://cdn2.scratch.mit.edu/get_image/user/133904533_90x90.png" alt="Nhienzcute Avatar" class="manager-avatar mx-auto mb-2">
+                                <img src="https://cdn2.scratch.mit.edu/get_image/user/133904533_90x90.png"
+                                    alt="Nhienzcute Avatar" class="manager-avatar mx-auto mb-2">
                                 <p class="text-lg font-semibold">Nhienzcute</p>
                             </a>
                         </div>
                         <div class="manager-item">
                             <a href="https://scratch.mit.edu/users/ArchionTechno/" target="_blank" class="block">
-                                <img src="https://cdn2.scratch.mit.edu/get_image/user/148565311_90x90.png" alt="ArchionTechno Avatar" class="manager-avatar mx-auto mb-2">
+                                <img src="https://cdn2.scratch.mit.edu/get_image/user/148565311_90x90.png"
+                                    alt="ArchionTechno Avatar" class="manager-avatar mx-auto mb-2">
                                 <p class="text-lg font-semibold">ArchionTechno</p>
                             </a>
                         </div>
                         <div class="manager-item">
                             <a href="https://scratch.mit.edu/users/Ysanamoto/" target="_blank" class="block">
-                                <img src="https://cdn2.scratch.mit.edu/get_image/user/135593853_90x90.png" alt="Ysanamoto Avatar" class="manager-avatar mx-auto mb-2">
+                                <img src="https://cdn2.scratch.mit.edu/get_image/user/135593853_90x90.png"
+                                    alt="Ysanamoto Avatar" class="manager-avatar mx-auto mb-2">
                                 <p class="text-lg font-semibold">Ysanamoto</p>
                             </a>
                         </div>
                         <div class="manager-item">
                             <a href="https://scratch.mit.edu/users/daothanhhai1192/" target="_blank" class="block">
-                                <img src="https://cdn2.scratch.mit.edu/get_image/user/126227518_90x90.png" alt="daothanhhai1192 Avatar" class="manager-avatar mx-auto mb-2">
+                                <img src="https://cdn2.scratch.mit.edu/get_image/user/126227518_90x90.png"
+                                    alt="daothanhhai1192 Avatar" class="manager-avatar mx-auto mb-2">
                                 <p class="text-lg font-semibold">daothanhhai1192</p>
                             </a>
                         </div>
@@ -1005,11 +1433,14 @@
                     Tham gia cộng đồng của chúng tôi ngay hôm nay và cùng nhau phát triển các dự án Scratch tuyệt vời!
                 </p>
                 <div class="flex flex-col sm:flex-row justify-center items-center gap-4">
-                    <button onclick="window.open('https://scratch.mit.edu/studios/33509364', '_blank')" class="px-8 py-4 bg-blue-500 text-white font-bold text-lg rounded-full shadow-lg hover:bg-blue-600 transition-colors duration-300 transform hover:scale-105 animated-button">
+                    <button onclick="window.open('https://scratch.mit.edu/studios/33509364', '_blank')"
+                        class="px-8 py-4 bg-blue-500 text-white font-bold text-lg rounded-full shadow-lg hover:bg-blue-600 transition-colors duration-300 transform hover:scale-105 animated-button">
                         Đến Studio trên Scratch
                     </button>
-                    <button onclick="window.open('https://discord.gg/6hkPzynTgt', '_blank')" class="px-8 py-4 bg-indigo-600 text-white font-bold text-lg rounded-full shadow-lg hover:bg-indigo-700 transition-colors duration-300 transform hover:scale-105 animated-button flex items-center gap-2">
-                        <img src="https://static.vecteezy.com/system/resources/previews/023/986/880/non_2x/discord-logo-discord-logo-transparent-discord-icon-transparent-free-free-png.png" alt="Discord Logo" class="h-6 w-6">
+                    <button onclick="window.open('https://discord.gg/6hkPzynTgt', '_blank')"
+                        class="px-8 py-4 bg-indigo-600 text-white font-bold text-lg rounded-full shadow-lg hover:bg-indigo-700 transition-colors duration-300 transform hover:scale-105 animated-button flex items-center gap-2">
+                        <img src="https://static.vecteezy.com/system/resources/previews/023/986/880/non_2x/discord-logo-discord-logo-transparent-discord-icon-transparent-free-free-png.png"
+                            alt="Discord Logo" class="h-6 w-6">
                         Tham gia Discord
                     </button>
                 </div>
@@ -1027,8 +1458,11 @@
                     <div class="flex gap-2">
                         <div class="image-upload-wrapper">
                             <button class="image-upload-button">
-                                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="w-6 h-6">
-                                    <path fill-rule="evenodd" d="M1.5 6a2.25 2.25 0 012.25-2.25h16.5A2.25 2.25 0 0122.5 6v12a2.25 2.25 0 01-2.25 2.25H3.75A2.25 2.25 0 011.5 18V6zM3 16.06V18c0 .414.336.75.75.75h16.5A.75.75 0 0021 18v-1.94l-2.69-2.69a1.5 1.5 0 00-2.12 0l-.88.879.97.97a.75.75 0 11-1.06 1.06l-5.16-5.159a1.5 1.5 0 00-2.12 0L3 16.061zm10.125-7.81a1.125 1.125 0 112.25 0 1.125 1.125 0 01-2.25 0z" clip-rule="evenodd" />
+                                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor"
+                                    class="w-6 h-6">
+                                    <path fill-rule="evenodd"
+                                        d="M1.5 6a2.25 2.25 0 012.25-2.25h16.5A2.25 2.25 0 0122.5 6v12a2.25 2.25 0 01-2.25 2.25H3.75A2.25 2.25 0 011.5 18V6zM3 16.06V18c0 .414.336.75.75.75h16.5A.75.75 0 0021 18v-1.94l-2.69-2.69a1.5 1.5 0 00-2.12 0l-.88.879.97.97a.75.75 0 11-1.06 1.06l-5.16-5.159a1.5 1.5 0 00-2.12 0L3 16.061zm10.125-7.81a1.125 1.125 0 112.25 0 1.125 1.125 0 01-2.25 0z"
+                                        clip-rule="evenodd" />
                                 </svg>
                                 <input type="file" id="imageUpload" multiple accept="image/*">
                             </button>
@@ -1040,8 +1474,10 @@
                     </div>
                     <input type="text" id="chatInput" placeholder="Nhập tin nhắn của bạn..." />
                     <button id="sendMessageBtn">
-                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="w-6 h-6">
-                            <path d="M3.478 2.405a.75.75 0 00-.926.94l2.432 7.905H13.5a.75.75 0 010 1.5H4.984l-2.432 7.905a.75.75 0 00.926.94 60.519 60.519 0 0018.445-8.986.75.75 0 000-1.218A60.517 60.517 0 003.478 2.405z" />
+                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor"
+                            class="w-6 h-6">
+                            <path
+                                d="M3.478 2.405a.75.75 0 00-.926.94l2.432 7.905H13.5a.75.75 0 010 1.5H4.984l-2.432 7.905a.75.75 0 00.926.94 60.519 60.519 0 0018.445-8.986.75.75 0 000-1.218A60.517 60.517 0 003.478 2.405z" />
                         </svg>
                     </button>
                 </div>
@@ -1088,7 +1524,7 @@
 
             // Menubar navigation click handler (được điều chỉnh để cuộn mượt mà theo trình duyệt)
             document.querySelectorAll('.menubar-nav a').forEach(link => {
-                link.addEventListener('click', function(e) {
+                link.addEventListener('click', function (e) {
                     e.preventDefault();
                     const targetId = this.getAttribute('href').substring(1);
                     const targetSection = document.getElementById(targetId);
@@ -1122,12 +1558,11 @@
             let isLiveChatActive = false; // Trạng thái Live Chat
             let currentUtterance = null; // To stop previous speech if a new one starts
 
-            // Global variables for MediaRecorder
-            let mediaRecorder = null;
-            let audioChunks = [];
+            // Global variables for SpeechRecognition
+            let recognition = null; // Declare recognition variable
 
             // Hàm để gõ từng chữ một
-            function typeMessage(element, text, callback = () => {}) {
+            function typeMessage(element, text, callback = () => { }) {
                 let i = 0;
                 element.textContent = ''; // Xóa nội dung cũ
                 const interval = setInterval(() => {
@@ -1242,6 +1677,19 @@
                         finalContentDiv.textContent = textToSpeak;
                     }
                     currentUtterance = null;
+                    // Re-enable mic after Gấu Gấu finishes speaking if live chat is active
+                    if (isLiveChatActive && recognition) {
+                        console.log('Gấu Gấu finished speaking, restarting SpeechRecognition...');
+                        try {
+                            recognition.start();
+                            liveChatText.textContent = "Đang nghe...";
+                        } catch (e) {
+                            console.error("Error restarting recognition:", e);
+                            spamWarning.textContent = "Không thể bật lại mic. Vui lòng thử lại Live Chat. 🔇";
+                            spamWarning.style.display = 'block';
+                            setTimeout(() => spamWarning.style.display = 'none', spamCooldown * 3);
+                        }
+                    }
                 };
 
                 utterance.onerror = (event) => {
@@ -1254,6 +1702,19 @@
                         errorContentDiv.textContent = textToSpeak; // Restore original text
                     }
                     currentUtterance = null;
+                    // Re-enable mic even on error if live chat is active
+                    if (isLiveChatActive && recognition) {
+                        console.log('Gấu Gấu speech error, restarting SpeechRecognition...');
+                        try {
+                            recognition.start();
+                            liveChatText.textContent = "Đang nghe...";
+                        } catch (e) {
+                            console.error("Error restarting recognition after speech error:", e);
+                            spamWarning.textContent = "Không thể bật lại mic sau lỗi phát âm. Vui lòng thử lại Live Chat. 🔇";
+                            spamWarning.style.display = 'block';
+                            setTimeout(() => spamWarning.style.display = 'none', spamCooldown * 3);
+                        }
+                    }
                 };
 
                 window.speechSynthesis.speak(utterance);
@@ -1445,49 +1906,103 @@ Thông tin về Studio Dự Án Người Việt:
             });
 
             // Xử lý Live Chat
+            const liveChatText = liveChatBtn.querySelector('.text');
+            const liveChatDot = liveChatBtn.querySelector('.dot');
+
             liveChatBtn.addEventListener('click', async () => {
                 isLiveChatActive = !isLiveChatActive;
                 liveChatBtn.classList.toggle('active', isLiveChatActive);
-
-                const liveChatText = liveChatBtn.querySelector('.text');
-                const liveChatDot = liveChatBtn.querySelector('.dot');
 
                 if (isLiveChatActive) {
                     liveChatText.textContent = "Đang nghe...";
                     liveChatDot.style.backgroundColor = 'white'; // Ensure dot is visible
                     try {
-                        const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
-                        mediaRecorder = new MediaRecorder(stream);
-                        audioChunks = [];
+                        // Request microphone access (not strictly needed for SpeechRecognition but good practice)
+                        await navigator.mediaDevices.getUserMedia({ audio: true });
 
-                        mediaRecorder.ondataavailable = (event) => {
-                            audioChunks.push(event.data);
-                        };
+                        // Initialize SpeechRecognition
+                        const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+                        if (SpeechRecognition) {
+                            recognition = new SpeechRecognition();
+                            recognition.continuous = true; // Keep listening
+                            recognition.interimResults = false; // Only return final results
+                            recognition.lang = 'vi-VN'; // Set language to Vietnamese
 
-                        mediaRecorder.onstop = () => {
-                            const audioBlob = new Blob(audioChunks, { type: 'audio/webm' });
-                            console.log("Audio recording stopped. Blob size:", audioBlob.size);
-                            // No actual Speech-to-Text processing here due to API limitations.
-                            // User will still type their messages.
-                        };
+                            recognition.onresult = (event) => {
+                                const last = event.results.length - 1;
+                                const transcript = event.results[last][0].transcript.trim();
+                                console.log('Speech recognized:', transcript);
 
-                        mediaRecorder.start();
-                        console.log("Microphone access granted. Recording started.");
-                        spamWarning.textContent = "Gấu Gấu đã bật mic để lắng nghe bạn. Xin lưu ý: Gấu Gấu chưa thể xử lý giọng nói trực tiếp, nhưng sẽ đọc to phản hồi của mình khi bạn gửi tin nhắn! 🎤";
-                        spamWarning.style.display = 'block';
-                        setTimeout(() => spamWarning.style.display = 'none', spamCooldown * 3); // Longer display for info
+                                if (transcript) {
+                                    chatInput.value = transcript; // Put recognized text into input field
+                                    sendMessage(); // Send the message
+                                }
+                            };
+
+                            recognition.onend = () => {
+                                // If live chat is still active, restart recognition for continuous listening
+                                if (isLiveChatActive) {
+                                    console.log('SpeechRecognition ended, restarting...');
+                                    try {
+                                        recognition.start();
+                                        liveChatText.textContent = "Đang nghe...";
+                                    } catch (e) {
+                                        console.error("Error restarting recognition onend:", e);
+                                        spamWarning.textContent = "Không thể bật lại mic. Vui lòng thử lại Live Chat. 🔇";
+                                        spamWarning.style.display = 'block';
+                                        setTimeout(() => spamWarning.style.display = 'none', spamCooldown * 3);
+                                    }
+                                } else {
+                                    console.log('SpeechRecognition stopped permanently.');
+                                }
+                            };
+
+                            recognition.onerror = (event) => {
+                                console.error('Speech recognition error:', event.error);
+                                spamWarning.textContent = `Lỗi nhận diện giọng nói: ${event.error}. Vui lòng thử lại. 🔇`;
+                                spamWarning.style.display = 'block';
+                                setTimeout(() => spamWarning.style.display = 'none', spamCooldown * 3);
+                                // If error is not 'no-speech' and live chat is active, try to restart
+                                if (isLiveChatActive && event.error !== 'no-speech') {
+                                    console.log('SpeechRecognition error, attempting restart...');
+                                    try {
+                                        recognition.start();
+                                        liveChatText.textContent = "Đang nghe...";
+                                    } catch (e) {
+                                        console.error("Error restarting recognition after error:", e);
+                                        spamWarning.textContent = "Không thể bật lại mic sau lỗi. Vui lòng thử lại Live Chat. 🔇";
+                                        spamWarning.style.display = 'block';
+                                        setTimeout(() => spamWarning.style.display = 'none', spamCooldown * 3);
+                                    }
+                                }
+                            };
+
+                            recognition.start();
+                            spamWarning.textContent = "Gấu Gấu đã bật mic và đang lắng nghe bạn nói! Tớ sẽ đọc to phản hồi của mình nhé! 🎤 (Tính năng chuyển giọng nói thành văn bản có thể hoạt động không ổn định trên một số trình duyệt.)";
+                            spamWarning.style.display = 'block';
+                            setTimeout(() => spamWarning.style.display = 'none', spamCooldown * 4); // Longer display for info
+                        } else {
+                            spamWarning.textContent = "Trình duyệt của bạn không hỗ trợ nhận diện giọng nói. 😔";
+                            spamWarning.style.display = 'block';
+                            setTimeout(() => spamWarning.style.display = 'none', spamCooldown * 3);
+                            isLiveChatActive = false; // Reset state
+                            liveChatBtn.classList.remove('active');
+                            liveChatText.textContent = "Live Chat";
+                        }
+
                     } catch (err) {
                         console.error("Error accessing microphone:", err);
                         isLiveChatActive = false; // Reset state
                         liveChatBtn.classList.remove('active');
                         liveChatText.textContent = "Live Chat";
-                        spamWarning.textContent = "Không thể truy cập micrô. Vui lòng cấp quyền truy cập. 🚫";
+                        spamWarning.textContent = "Không thể truy cập micrô. Vui lòng cấp quyền truy cập. �";
                         spamWarning.style.display = 'block';
                         setTimeout(() => spamWarning.style.display = 'none', spamCooldown * 3);
                     }
                 } else {
-                    if (mediaRecorder && mediaRecorder.state === 'recording') {
-                        mediaRecorder.stop();
+                    if (recognition) {
+                        recognition.stop(); // Stop speech recognition
+                        recognition = null;
                     }
                     if (currentUtterance) {
                         window.speechSynthesis.cancel();
@@ -1502,6 +2017,16 @@ Thông tin về Studio Dự Án Người Việt:
 
             async function sendMessage() {
                 const userMessageText = chatInput.value.trim();
+
+                // Kiểm tra giới hạn ảnh: nếu không có văn bản, cần ít nhất 2 ảnh
+                if (userMessageText === '' && uploadedImages.length > 0 && uploadedImages.length < 2) {
+                    spamWarning.textContent = "Nếu không có tin nhắn văn bản, bạn cần tải lên ít nhất 2 ảnh nha! 🖼️🖼️";
+                    spamWarning.style.display = 'block';
+                    setTimeout(() => {
+                        spamWarning.style.display = 'none';
+                    }, spamCooldown * 2);
+                    return;
+                }
 
                 // Không cho phép gửi tin nhắn trống và không có ảnh
                 if (userMessageText === '' && uploadedImages.length === 0) {
@@ -1524,6 +2049,12 @@ Thông tin về Studio Dự Án Người Việt:
 
                 canSendMessage = false; // Disable sending
                 loadingIndicator.style.display = 'block';
+
+                // Pause speech recognition if active
+                if (isLiveChatActive && recognition) {
+                    recognition.stop();
+                    liveChatText.textContent = "Đang xử lý...";
+                }
 
                 const userMessageParts = [];
                 if (userMessageText !== '') {
@@ -1602,3 +2133,4 @@ Thông tin về Studio Dự Án Người Việt:
 </body>
 
 </html>
+�
