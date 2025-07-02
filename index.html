@@ -764,8 +764,7 @@
             width: 120px;
             /* Fixed width for each manager item */
             text-align: center;
-            margin-right: 1.5rem;
-            /* Gap between items */
+            margin-right: 2rem; /* Increased from 1.5rem */
         }
 
         /* Keyframes for manager carousel */
@@ -1268,10 +1267,9 @@
             margin-bottom: 0.75rem;
             font-family: 'Consolas', 'Monaco', monospace;
             font-size: 0.9rem;
-            white-space: pre-wrap;
+            white-space: pre-wrap; /* Giữ nguyên khoảng trắng và xuống dòng */
             word-break: break-all;
             color: white; /* Mặc định chữ trắng */
-            background-color: #000; /* Nền màu đen */
             box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3); /* Bóng đổ */
         }
 
@@ -1579,7 +1577,8 @@
                             </a>
                         </div>
                         <div class="manager-item">
-                            <a href="https://scratch.mit.edu/users/daothanhhai1192/" target="_blank" class="block">
+                            <!-- Đã sửa lỗi dính chữ bằng cách tăng margin-right cho manager-item -->
+                            <a href="https://scratch.mit.edu/users/daothanhhai1192/" target="_blank" class="block"> 
                                 <img src="https://cdn2.scratch.mit.edu/get_image/user/126227518_90x90.png"
                                     alt="daothanhhai1192 Avatar" class="manager-avatar mx-auto mb-2">
                                 <p class="text-lg font-semibold">daothanhhai1192</p>
@@ -2052,8 +2051,7 @@
                 const messageBubble = document.createElement('div');
                 messageBubble.classList.add('message-bubble');
                 messageBubble.id = `msg-${Date.now()}-${Math.random().toString(36).substring(2, 9)}`; // Unique ID for each bubble
-                messageWrapper.appendChild(messageBubble);
-
+                
                 // Markdown and Code Block Rendering
                 if (sender === 'ai') {
                     const parsedContent = parseMarkdownAndCodeBlocks(content);
@@ -2092,7 +2090,7 @@
                     const readBtn = document.createElement('button');
                     readBtn.classList.add('read-message-btn');
                     readBtn.innerHTML = `
-                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor">
                             <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 14.5v-9l6 4.5-6 4.5z"/>
                         </svg>
                     `;
@@ -2125,6 +2123,8 @@
                         });
                     }
                 }
+                
+                messageWrapper.appendChild(messageBubble); // Append bubble to wrapper
 
                 chatMessages.appendChild(messageWrapper);
                 chatMessages.scrollTop = chatMessages.scrollHeight;
@@ -2176,12 +2176,20 @@
                     parts: [{ text: `Bạn là Gấu Gấu, một chú gấu dễ thương đến từ Studio Dự Án Người Việt. Tớ là trợ lý thông minh, giúp đỡ các bạn thành viên trong mọi lĩnh vực. Tớ xưng hô "tớ" - "bạn". Mục tiêu của tớ là trả lời chính xác các câu hỏi từ bạn và thu hút bạn vào một cuộc trò chuyện thú vị. Tớ luôn sẵn lòng giúp đỡ bạn. Ngoài ra, tớ cũng có thể trả lời các chủ đề khác nữa để các bạn thấy thú vị nhé. Tớ trả lời không dài dòng, nên ngắn gọn, vừa phải, có đủ thông tin (hoặc nhắc nhở), dễ thương và thân thiện với người Việt. Tớ sẽ thêm các emoji ở cuối câu! Tớ sẽ không liên tục gọi tên bạn đâu, chỉ nhắc khi chào hoặc để tạo sự dễ thương thôi nhé! Khi bạn yêu cầu tìm kiếm gì đó, tớ sẽ tìm kiếm ngay, không bao giờ trì hoãn đâu. Tớ rất thích trò chuyện với các bạn thành viên Studio Dự Án Người Việt và làm quen, kết bạn. Tớ thích ghi nhớ mọi thông tin từ các bạn. Tớ ham học hỏi, yêu thương và đoàn kết người Việt. Tớ yêu thích việc giúp đỡ mọi người, giỏi lập trình (đặc biệt là Scratch) và tìm kiếm các thông tin hữu ích về mọi thứ.
 
 **Lưu ý quan trọng về cách tớ hiển thị các khối lệnh Scratch:**
-Khi bạn muốn tớ mô phỏng một khối lệnh hoặc đoạn mã Scratch, hãy yêu cầu tớ sử dụng cú pháp: \`\`\`<tên_khối> nội dung_lệnh \`\`\`
+Khi bạn muốn tớ mô phỏng một khối lệnh hoặc đoạn mã Scratch, để mỗi khối có màu sắc và khung riêng biệt, bạn hãy yêu cầu tớ mô tả từng khối lệnh một. Tớ sẽ tự động thụt lề các khối lệnh con để dễ nhìn.
 Ví dụ:
-- Để mô phỏng một khối sự kiện màu vàng: \`\`\`event khi bấm vào lá cờ xanh\`\`\`
-- Để mô phỏng một khối biến màu cam: \`\`\`variables đặt biến của tôi thành 0\`\`\`
-- Để mô phỏng một khối chuyển động màu xanh dương: \`\`\`motion di chuyển 10 bước\`\`\`
-Các khối này sẽ có nền màu đen, góc bo tròn, bóng đổ, và chữ màu trắng, với màu sắc đặc trưng của khối Scratch làm nền.
+- Để mô phỏng một khối sự kiện màu vàng:
+  \`\`\`event khi bấm vào lá cờ xanh\`\`\`
+- Để mô phỏng một chuỗi các khối lệnh lồng nhau (mỗi khối một màu):
+  \`\`\`control lặp lại 10 lần\`\`\`
+      \`\`\`motion di chuyển 10 bước\`\`\`
+      \`\`\`looks thay đổi hiệu ứng màu một lượng 25\`\`\`
+  (Mỗi dòng lệnh trên sẽ xuất hiện trong một khung riêng với màu sắc tương ứng của khối lệnh đó.)
+- Để mô phỏng một khối biến màu cam:
+  \`\`\`variables đặt biến của tôi thành 0\`\`\`
+- Để mô phỏng một khối chuyển động màu xanh dương:
+  \`\`\`motion di chuyển 10 bước\`\`\`
+Các khối này sẽ có nền màu đặc trưng của khối Scratch đó, góc bo tròn, bóng đổ, và chữ màu trắng.
 
 Thông tin về Studio Dự Án Người Việt:
 - Là một studio Việt Nam nổi tiếng trong Scratch.
@@ -2216,7 +2224,7 @@ Thông tin về Studio Dự Án Người Việt:
                 // When closing chat, stop mic and speech synthesis
                 if (recognition) {
                     recognition.stop();
-                    recognition = null;
+                    recognition = null; // Clear recognition object
                 }
                 if (currentUtterance) {
                     window.speechSynthesis.cancel();
@@ -2391,7 +2399,7 @@ Thông tin về Studio Dự Án Người Việt:
                                         micToggleBtn.classList.add('active'); // Set mic active icon
                                     } catch (e) {
                                         console.error("Error restarting recognition after error:", e);
-                                        spamWarning.textContent = "Không thể bật lại mic sau lỗi. Vui lòng thử lại Live Chat. 🔇";
+                                        spamWarning.textContent = "Không thể bật lại mic sau lỗi. Vui lòng thử lại Live Chat. �";
                                         spamWarning.style.display = 'block';
                                         setTimeout(() => spamWarning.style.display = 'none', spamCooldown * 3);
                                     }
@@ -2611,3 +2619,4 @@ Thông tin về Studio Dự Án Người Việt:
 </body>
 
 </html>
+�
