@@ -67,9 +67,9 @@
         }
 
         .liquid-glass-container:hover {
-            transform: translateY(-2px); /* Nâng nhẹ hơn, bỏ scale */
-            box-shadow: 0px 25px calc(var(--outer-shadow-blur) * 1.2) rgba(0, 0, 0, 0.12); /* Bóng đổ mềm mại hơn */
-            border: 1px solid rgba(0, 0, 0, 0.15); /* Viền sáng hơn */
+            transform: translateY(-5px) scale(1.01); /* Nâng nhẹ hơn và phóng to nhẹ */
+            box-shadow: 0px 30px calc(var(--outer-shadow-blur) * 1.5) rgba(0, 0, 0, 0.15); /* Bóng đổ mềm mại hơn */
+            border: 1px solid rgba(0, 0, 0, 0.18); /* Viền sáng hơn */
         }
 
         /* Lớp overlay tạo hiệu ứng kính */
@@ -633,8 +633,8 @@
                 right: 1rem; /* Giảm khoảng cách từ phải sang */
                 background: none;
                 border: none;
-                color: #333;
                 font-size: 2.5rem;
+                color: #333;
                 cursor: pointer;
                 padding: 0.5rem; /* Tăng padding để dễ bấm hơn */
             }
@@ -737,47 +737,31 @@
         }
 
         /* Other Managers in a single row - Carousel styles */
-        .other-managers-container {
+        .horizontal-scroll-container {
             display: flex;
-            flex-wrap: nowrap;
-            overflow: hidden;
-            /* Hide scrollbar and content outside */
-            position: relative;
-            /* For animation */
-            width: 100%;
-            /* Take full width of its parent */
+            overflow-x: auto;
+            /* Cho phép cuộn ngang */
+            -webkit-overflow-scrolling: touch;
+            /* Cuộn mượt trên iOS */
+            gap: 1.5rem;
+            /* Khoảng cách giữa các manager */
             padding-bottom: 1rem;
-            /* Space for potential scrollbar if overflow is visible */
+            /* Đủ không gian cho thanh cuộn */
+            scrollbar-width: none; /* Ẩn thanh trượt cho Firefox */
         }
 
-        .other-managers-track {
-            display: flex;
-            animation: scrollManagers 30s linear infinite;
-            /* Animation for continuous scroll */
-            will-change: transform;
-            /* Optimize for animation */
+        /* Ẩn thanh trượt cho Webkit (Chrome, Safari) */
+        .horizontal-scroll-container::-webkit-scrollbar {
+            display: none;
         }
 
-        .manager-item {
+        .horizontal-scroll-container .manager-item {
             flex-shrink: 0;
-            /* Prevent items from shrinking */
-            width: 120px;
-            /* Fixed width for each manager item */
+            /* Ngăn các item co lại */
+            width: 150px;
+            /* Chiều rộng cố định cho mỗi manager item */
             text-align: center;
-            margin-right: 2rem; /* Increased from 1.5rem */
-        }
-
-        /* Keyframes for manager carousel */
-        @keyframes scrollManagers {
-            0% {
-                transform: translateX(0);
-            }
-
-            100% {
-                transform: translateX(-50%);
-            }
-
-            /* Scroll half the content width to loop seamlessly */
+            padding: 1rem 0; /* Thêm padding để tạo khoảng trống */
         }
 
 
@@ -1121,8 +1105,8 @@
             background-color: #ef4444;
             color: white;
             border-radius: 50%;
-            width: 60px;
-            height: 60px;
+            width: 90px; /* Increased size */
+            height: 90px; /* Increased size */
             cursor: pointer;
             transition: background-color 0.3s ease, transform 0.2s ease, box-shadow 0.3s ease;
             box-shadow: 0 4px 10px rgba(239, 68, 68, 0.3);
@@ -1163,17 +1147,18 @@
             }
         }
 
-        #gaugauMainBtn .dot {
-            width: 10px;
-            height: 10px;
-            background-color: white;
+        #gaugauMainBtn img {
+            width: 50px; /* Avatar size within button */
+            height: 50px; /* Avatar size within button */
             border-radius: 50%;
-            margin-bottom: 4px;
+            object-fit: cover;
+            margin-bottom: 4px; /* Space between image and text */
         }
 
         #gaugauMainBtn .text {
-            font-size: 0.7rem;
+            font-size: 0.8rem; /* Slightly larger text */
             line-height: 1;
+            font-weight: bold; /* Make text bold */
         }
 
         /* Nút bật/tắt mic trong chat */
@@ -1224,17 +1209,14 @@
             cursor: pointer;
             opacity: 0.7;
             transition: opacity 0.2s ease, background-color 0.2s ease;
+            font-size: 0.8rem; /* Kích thước font cho emoji loa */
+            line-height: 1; /* Đảm bảo emoji căn giữa */
+            z-index: 2; /* Đảm bảo nút nằm trên các phần tử khác */
         }
 
         .read-message-btn:hover {
             opacity: 1;
             background-color: rgba(255, 255, 255, 0.5);
-        }
-
-        .read-message-btn svg {
-            width: 14px; /* Giảm kích thước icon */
-            height: 14px; /* Giảm kích thước icon */
-            fill: white;
         }
 
         /* Highlight cho từ đang đọc */
@@ -1294,6 +1276,384 @@
         .message-bubble a:hover {
             color: #2563eb;
         }
+
+        /* Page content styles */
+        .page-content {
+            display: none; /* Hidden by default */
+            width: 100%;
+            max-width: 6xl;
+            margin: 0 auto;
+            padding: 1rem;
+            min-height: 70vh; /* Ensure pages have some height */
+        }
+        .page-content.active {
+            display: block; /* Show active page */
+        }
+
+        /* Detailed Manager Page Specific Styles */
+        .manager-detail-card {
+            background-color: rgba(0, 0, 0, 0.05);
+            border-radius: 20px;
+            padding: 2rem;
+            text-align: center;
+            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.1);
+            transition: transform 0.3s ease;
+        }
+        .manager-detail-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
+        }
+        .manager-detail-card img {
+            width: 150px;
+            height: 150px;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 5px solid #3b82f6;
+            margin-bottom: 1rem;
+            box-shadow: 0 0 15px rgba(59, 130, 246, 0.4);
+        }
+        
+        /* Notification Card Styles */
+        .notification-card {
+            background-color: #f0f9ff; /* Light blue background */
+            padding: 1.5rem;
+            border-radius: 12px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            color: #333; /* Dark text for light background */
+            border: 1px solid #e0f2fe; /* Light border */
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            text-align: center;
+        }
+
+        .notification-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
+        }
+
+        .notification-card h3 {
+            font-size: 1.75rem; /* Larger title */
+            font-weight: 700; /* Bolder title */
+            margin-bottom: 0.75rem;
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            color: #1e3a8a; /* Darker blue for title */
+        }
+
+        .notification-card p {
+            font-size: 1.1rem; /* Slightly larger body text */
+            line-height: 1.6;
+            color: #555;
+            flex-grow: 1; /* Allow paragraph to take available space */
+        }
+
+        .notification-card .date {
+            font-size: 0.9rem;
+            color: #888;
+            margin-top: 1rem;
+            font-style: italic;
+        }
+
+        .notification-card img {
+            width: 100%;
+            max-width: 200px; /* Max width for images in notification card */
+            height: auto;
+            border-radius: 8px;
+            margin-bottom: 1rem;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        /* Footer Styles */
+        .main-footer {
+            background-color: #f8f8f8; /* Light gray background */
+            padding: 2rem 1rem;
+            border-top: 1px solid #e0e0e0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            text-align: center;
+            gap: 1.5rem;
+            margin-top: 3rem; /* Space from content above */
+        }
+
+        .main-footer-logo img {
+            width: 250px; /* Adjust logo size */
+            height: auto;
+            margin-bottom: 1rem;
+        }
+
+        .main-footer-nav ul {
+            display: flex;
+            flex-direction: column;
+            gap: 0.75rem;
+            list-style: none;
+            padding: 0;
+        }
+
+        @media (min-width: 768px) {
+            .main-footer-nav ul {
+                flex-direction: row;
+                gap: 2rem;
+            }
+        }
+
+        .main-footer-nav a {
+            color: #555;
+            font-weight: 500;
+            text-decoration: none;
+            transition: color 0.2s ease;
+        }
+
+        .main-footer-nav a:hover {
+            color: #3b82f6;
+        }
+
+        .footer-copyright {
+            color: #777;
+            font-size: 0.9rem;
+            margin-top: 1rem;
+        }
+
+        /* Content Pages (Privacy Policy, Terms of Service) */
+        .content-page {
+            background-color: #ffffff;
+            padding: 2rem;
+            border-radius: 12px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+            margin-top: 2rem;
+            text-align: left;
+        }
+
+        .content-page h2 {
+            font-size: 2.5rem;
+            font-weight: bold;
+            color: #1e3a8a;
+            margin-bottom: 1.5rem;
+            text-align: center;
+        }
+
+        .content-page h3 {
+            font-size: 1.75rem;
+            font-weight: 600;
+            color: #3b82f6;
+            margin-top: 2rem;
+            margin-bottom: 1rem;
+        }
+
+        .content-page p {
+            font-size: 1.1rem;
+            line-height: 1.7;
+            color: #444;
+            margin-bottom: 1rem;
+        }
+
+        .content-page ul {
+            list-style: disc;
+            padding-left: 1.5rem;
+            margin-bottom: 1rem;
+        }
+
+        .content-page li {
+            margin-bottom: 0.5rem;
+            color: #444;
+        }
+
+        /* New styles for enhanced Notification Cards */
+        .notification-grid {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 1.5rem;
+        }
+
+        @media (min-width: 640px) { /* sm breakpoint */
+            .notification-grid {
+                grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            }
+        }
+
+        @media (min-width: 1024px) { /* lg breakpoint */
+            .notification-grid {
+                grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            }
+        }
+
+        .notification-card {
+            position: relative;
+            overflow: hidden;
+            background-color: #fefefe; /* Lighter background for cards */
+            border: 1px solid #e0e0e0;
+            transition: all 0.3s ease-in-out;
+            transform: translateY(20px);
+            opacity: 0;
+            animation: fadeInSlideUp 0.6s ease-out forwards;
+        }
+
+        .notification-card:nth-child(1) { animation-delay: 0.1s; }
+        .notification-card:nth-child(2) { animation-delay: 0.2s; }
+        .notification-card:nth-child(3) { animation-delay: 0.3s; }
+        .notification-card:nth-child(4) { animation-delay: 0.4s; }
+        .notification-card:nth-child(5) { animation-delay: 0.5s; }
+        /* Add more for more cards */
+
+        @keyframes fadeInSlideUp {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .notification-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 5px;
+            background: linear-gradient(to right, #3b82f6, #10b981); /* Gradient top border */
+            transform: translateY(-100%);
+            transition: transform 0.3s ease-out;
+        }
+
+        .notification-card:hover::before {
+            transform: translateY(0);
+        }
+
+        .notification-card h3 {
+            position: relative;
+            z-index: 1;
+        }
+
+        .notification-card .icon {
+            font-size: 2.5rem; /* Larger icon */
+            margin-bottom: 0.75rem;
+            color: #3b82f6; /* Icon color */
+        }
+
+        /* New styles for enhanced Manager Detail Page */
+        .team-intro-section {
+            background-color: #f8f8f8;
+            padding: 3rem 2rem;
+            border-radius: 20px;
+            margin-bottom: 3rem;
+            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.08);
+            text-align: center;
+        }
+
+        .team-intro-section h2 {
+            font-size: 3rem;
+            font-weight: 800;
+            color: #1e3a8a;
+            margin-bottom: 1rem;
+        }
+
+        .team-intro-section p {
+            font-size: 1.2rem;
+            line-height: 1.8;
+            color: #555;
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        .manager-grid {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 2rem;
+        }
+
+        @media (min-width: 768px) {
+            .manager-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+
+        @media (min-width: 1024px) {
+            .manager-grid {
+                grid-template-columns: repeat(3, 1fr);
+            }
+        }
+
+        .manager-detail-card {
+            background-color: #ffffff;
+            border: 1px solid #e0e0e0;
+            padding: 2.5rem;
+            position: relative;
+            overflow: hidden;
+            transition: all 0.4s ease-in-out;
+            transform: translateY(20px);
+            opacity: 0;
+            animation: fadeInSlideUp 0.6s ease-out forwards;
+        }
+
+        .manager-detail-card:nth-child(1) { animation-delay: 0.1s; }
+        .manager-detail-card:nth-child(2) { animation-delay: 0.2s; }
+        .manager-detail-card:nth-child(3) { animation-delay: 0.3s; }
+        .manager-detail-card:nth-child(4) { animation-delay: 0.4s; }
+        .manager-detail-card:nth-child(5) { animation-delay: 0.5s; }
+        .manager-detail-card:nth-child(6) { animation-delay: 0.6s; }
+        .manager-detail-card:nth-child(7) { animation-delay: 0.7s; }
+        .manager-detail-card:nth-child(8) { animation-delay: 0.8s; }
+        .manager-detail-card:nth-child(9) { animation-delay: 0.9s; }
+
+
+        .manager-detail-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 7px;
+            background: linear-gradient(to right, #3b82f6, #10b981);
+            transform: translateY(-100%);
+            transition: transform 0.3s ease-out;
+        }
+
+        .manager-detail-card:hover::before {
+            transform: translateY(0);
+        }
+
+        .manager-detail-card:hover {
+            transform: translateY(-10px) scale(1.02);
+            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.15);
+        }
+
+        .manager-detail-card.host-card {
+            border: 2px solid #3b82f6;
+            box-shadow: 0 0 25px rgba(59, 130, 246, 0.4);
+            background-color: #e3f2fd; /* Light blue background for host */
+        }
+
+        .manager-detail-card.host-card:hover {
+            box-shadow: 0 0 35px rgba(59, 130, 246, 0.6);
+        }
+
+        .manager-detail-card.host-card::before {
+            background: linear-gradient(to right, #1e3a8a, #3b82f6);
+        }
+
+        .manager-detail-card h3 {
+            font-size: 2.2rem; /* Larger name */
+            margin-bottom: 0.5rem;
+        }
+
+        .manager-detail-card .role {
+            font-size: 1.1rem;
+            font-weight: 600;
+            color: #666;
+            margin-bottom: 1rem;
+        }
+
+        .manager-detail-card p {
+            font-size: 1rem;
+            line-height: 1.6;
+            color: #555;
+        }
     </style>
 </head>
 
@@ -1335,12 +1695,9 @@
             </div>
             <nav class="menubar-nav hidden md:flex"> <!-- Ẩn trên mobile, hiện trên desktop -->
                 <ul>
-                    <li><a href="#hero">Giới Thiệu</a></li>
-                    <li><a href="#du-an-noi-bat">Dự Án Nổi Bật</a></li>
-                    <li><a href="#quy-dinh">Quy Định</a></li>
-                    <li><a href="#ban-quan-ly">Ban Quản Lý</a></li>
-                    <li><a href="#danh-gia">Đánh Giá</a></li>
-                    <!-- Đã loại bỏ tùy chọn "Gấu Gấu" -->
+                    <li><a href="#home" data-page="home">Trang Chủ</a></li>
+                    <li><a href="#thongbao" data-page="thongbao">Thông báo</a></li>
+                    <li><a href="#banquanly-detail" data-page="banquanly-detail">Ban Quản Lý</a></li>
                 </ul>
             </nav>
             <button class="mobile-menu-button md:hidden" id="mobileMenuButton">
@@ -1353,339 +1710,624 @@
     <div class="mobile-menu-overlay" id="mobileMenuOverlay">
         <button class="close-button" id="closeMobileMenu">X</button>
         <ul>
-            <li><a href="#hero">Giới Thiệu</a></li>
-            <li><a href="#du-an-noi-bat">Dự Án Nổi Bật</a></li>
-            <li><a href="#quy-dinh">Quy Định</a></li>
-            <li><a href="#ban-quan-ly">Ban Quản Lý</a></li>
-            <li><a href="#danh-gia">Đánh Giá</a></li>
-            <!-- Đã loại bỏ tùy chọn "Gấu Gấu" -->
+            <li><a href="#home" data-page="home">Trang Chủ</a></li>
+            <li><a href="#thongbao" data-page="thongbao">Thông báo</a></li>
+            <li><a href="#banquanly-detail" data-page="banquanly-detail">Ban Quản Lý</a></li>
         </ul>
     </div>
 
-    <!-- Nội dung trang web giới thiệu Studio Scratch -->
-    <main class="w-full max-w-6xl mx-auto p-4 md:p-8 space-y-8 z-20 mt-16">
+    <!-- Main Content Area - Contains all pages -->
+    <main class="w-full max-w-6xl mx-auto p-4 md:p-8 space-y-16 z-20 mt-16">
 
-        <!-- Hero Section -->
-        <section id="hero" class="liquid-glass-container p-8 md:p-12 text-center animate-on-scroll">
-            <div class="liquid-glass-overlay"></div>
-            <div class="liquid-glass-content">
-                <h1 class="text-4xl md:text-6xl font-extrabold mb-4" style="line-height: 1.2;">
-                    Chào mừng bạn đến với <br><span class="text-blue-600">Studio Dự Án Người Việt!</span>
-                </h1>
-                <p class="text-lg md:text-xl max-w-3xl mx-auto mb-8 opacity-90">
-                    Nơi phát triển, ủng hộ, quảng bá các dự án lập trình Việt Nam, chú trọng các dự án do người Việt sáng tạo.
+        <!-- Trang Chủ -->
+        <div id="page-home" class="page-content active">
+            <!-- Hero Section -->
+            <section id="hero" class="liquid-glass-container p-8 md:p-12 text-center animate-on-scroll">
+                <div class="liquid-glass-overlay"></div>
+                <div class="liquid-glass-content">
+                    <h1 class="text-4xl md:text-6xl font-extrabold mb-4" style="line-height: 1.2;">
+                        Chào mừng bạn đến với <br><span class="text-blue-600">Studio Dự Án Người Việt!</span>
+                    </h1>
+                    <p class="text-lg md:text-xl max-w-3xl mx-auto mb-8 opacity-90">
+                        Nơi phát triển, ủng hộ, quảng bá các dự án lập trình Việt Nam, chú trọng các dự án do người Việt sáng tạo.
+                    </p>
+                    <div class="flex flex-col sm:flex-row justify-center items-center gap-4">
+                        <button onclick="window.open('https://scratch.mit.edu/studios/33509364', '_blank')"
+                            class="px-8 py-4 bg-blue-500 text-white font-bold text-lg rounded-full shadow-lg hover:bg-blue-600 transition-colors duration-300 transform hover:scale-105 animated-button">
+                            Tham gia Studio ngay!
+                        </button>
+                        <button onclick="window.open('https://discord.gg/6hkPzynTgt', '_blank')"
+                            class="px-8 py-4 bg-indigo-600 text-white font-bold text-lg rounded-full shadow-lg hover:bg-indigo-700 transition-colors duration-300 transform hover:scale-105 animated-button flex items-center gap-2">
+                            <img src="https://static.vecteezy.com/system/resources/previews/023/986/880/non_2x/discord-logo-discord-logo-transparent-discord-icon-transparent-free-free-png.png"
+                                alt="Discord Logo" class="h-6 w-6">
+                            Tham gia Discord
+                        </button>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Giới thiệu & Lời nói đầu -->
+            <section id="gioi-thieu" class="p-8 md:p-12 text-center bg-transparent animate-on-scroll mt-16">
+                <h2 class="text-3xl md:text-4xl font-bold mb-8">Lời Nói Đầu</h2>
+                <p class="opacity-80 text-lg max-w-3xl mx-auto">
+                    Studio này nhằm mục đích phát triển, ủng hộ, quảng bá các dự án lập trình Việt Nam, chú trọng các dự án do
+                    người Việt sáng tạo. Chúng tôi tin rằng mỗi dự án Scratch là một hạt giống sáng tạo, và với sự hỗ trợ đúng
+                    đắn, chúng có thể nảy mầm thành những tác phẩm tuyệt vời.
                 </p>
-                <div class="flex flex-col sm:flex-row justify-center items-center gap-4">
-                    <button onclick="window.open('https://scratch.mit.edu/studios/33509364', '_blank')"
-                        class="px-8 py-4 bg-blue-500 text-white font-bold text-lg rounded-full shadow-lg hover:bg-blue-600 transition-colors duration-300 transform hover:scale-105 animated-button">
-                        Tham gia Studio ngay!
-                    </button>
-                    <button onclick="window.open('https://discord.gg/6hkPzynTgt', '_blank')"
-                        class="px-8 py-4 bg-indigo-600 text-white font-bold text-lg rounded-full shadow-lg hover:bg-indigo-700 transition-colors duration-300 transform hover:scale-105 animated-button flex items-center gap-2">
-                        <img src="https://static.vecteezy.com/system/resources/previews/023/986/880/non_2x/discord-logo-discord-logo-transparent-discord-icon-transparent-free-free-png.png"
-                            alt="Discord Logo" class="h-6 w-6">
-                        Tham gia Discord
-                    </button>
-                </div>
-            </div>
-        </section>
-
-        <!-- Giới thiệu & Lời nói đầu -->
-        <section id="gioi-thieu" class="p-8 md:p-12 text-center bg-transparent animate-on-scroll">
-            <h2 class="text-3xl md:text-4xl font-bold mb-8">Lời Nói Đầu</h2>
-            <p class="opacity-80 text-lg max-w-3xl mx-auto">
-                Studio này nhằm mục đích phát triển, ủng hộ, quảng bá các dự án lập trình Việt Nam, chú trọng các dự án do
-                người Việt sáng tạo. Chúng tôi tin rằng mỗi dự án Scratch là một hạt giống sáng tạo, và với sự hỗ trợ đúng
-                đắn, chúng có thể nảy mầm thành những tác phẩm tuyệt vời.
-            </p>
-            <p class="opacity-80 text-lg max-w-3xl mx-auto mt-4">
-                ✌️✨ Đội ngũ Managers của chúng tôi luôn thân thiện, nhiệt tình và sẵn sàng giúp đỡ bạn trong hành trình sáng
-                tạo trên Scratch. Hãy cùng nhau xây dựng một cộng đồng vững mạnh và đầy cảm hứng!
-            </p>
-        </section>
-
-        <!-- Sinh Nhật Studio & Trích Dẫn -->
-        <section id="sinh-nhat-trich-dan" class="split-section animate-on-scroll">
-            <div class="split-half animate-slide-in-left">
-                <h3 class="text-3xl font-bold mb-4">Sinh Nhật Studio</h3>
-                <p class="text-5xl font-extrabold text-blue-600 mb-4">15/06/2023</p>
-                <p class="text-lg opacity-80">
-                    Kỷ niệm ngày ra đời của Studio Dự Án Người Việt, nơi ươm mầm những tài năng lập trình trẻ.
+                <p class="opacity-80 text-lg max-w-3xl mx-auto mt-4">
+                    ✌️✨ Đội ngũ Managers của chúng tôi luôn thân thiện, nhiệt tình và sẵn sàng giúp đỡ bạn trong hành trình sáng
+                    tạo trên Scratch. Hãy cùng nhau xây dựng một cộng đồng vững mạnh và đầy cảm hứng!
                 </p>
-            </div>
-            <div class="split-half animate-slide-in-right">
-                <h3 class="text-3xl font-bold mb-4">Sáng tạo...</h3>
-                <p class="text-2xl italic mb-4">
-                    "Sáng tạo là sự thông minh có chứa đựng óc hài hước"
-                </p>
-                <p class="font-semibold text-xl">- Albert Einstein</p>
-                <p class="text-lg opacity-80 mt-4">
-                    Hãy luôn giữ tinh thần sáng tạo và đừng quên thêm chút hài hước vào các dự án của bạn!
-                </p>
-            </div>
-        </section>
+            </section>
+
+            <!-- Sinh Nhật Studio & Trích Dẫn -->
+            <section id="sinh-nhat-trich-dan" class="split-section animate-on-scroll mt-16">
+                <div class="split-half animate-slide-in-left">
+                    <h3 class="text-3xl font-bold mb-4">Sinh Nhật Studio</h3>
+                    <p class="text-5xl font-extrabold text-blue-600 mb-4">15/06/2023</p>
+                    <p class="text-lg opacity-80">
+                        Kỷ niệm ngày ra đời của Studio Dự Án Người Việt, nơi ươm mầm những tài năng lập trình trẻ.
+                    </p>
+                </div>
+                <div class="split-half animate-slide-in-right">
+                    <h3 class="text-3xl font-bold mb-4">Sáng tạo...</h3>
+                    <p class="text-2xl italic mb-4">
+                        "Sáng tạo là sự thông minh có chứa đựng óc hài hước"
+                    </p>
+                    <p class="font-semibold text-xl">- Albert Einstein</p>
+                    <p class="text-lg opacity-80 mt-4">
+                        Hãy luôn giữ tinh thần sáng tạo và đừng quên thêm chút hài hước vào các dự án của bạn!
+                    </p>
+                </div>
+            </section>
 
 
-        <!-- Dự án nổi bật -->
-        <section id="du-an-noi-bat" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-            <h2 class="col-span-full text-3xl md:text-4xl font-bold mb-4 text-center animate-on-scroll">SIÊU NỔI BẬT ⭐</h2>
-            <div class="liquid-glass-container p-6 text-center animate-on-scroll animate-delay-200">
-                <div class="liquid-glass-overlay"></div>
-                <div class="liquid-glass-content">
-                    <img src="https://i.ibb.co/8LCN4NKX/1154145707-282x210.png" alt="Thumbnail Dead rails"
-                        class="project-thumbnail mx-auto">
-                    <h3 class="text-2xl font-bold mb-2">⛰️ Dead rails</h3>
-                    <p class="opacity-80 mb-4">Một dự án Scratch sáng tạo với đường ray và thây ma.</p>
-                    <a href="https://scratch.mit.edu/projects/1154145707/" target="_blank"
-                        class="text-blue-600 hover:text-blue-800 transition-colors duration-200">Xem dự án</a>
+            <!-- Dự án nổi bật -->
+            <section id="du-an-noi-bat" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 mt-16">
+                <h2 class="col-span-full text-3xl md:text-4xl font-bold mb-4 text-center animate-on-scroll">SIÊU NỔI BẬT ⭐</h2>
+                <div class="liquid-glass-container p-6 text-center animate-on-scroll animate-delay-200">
+                    <div class="liquid-glass-overlay"></div>
+                    <div class="liquid-glass-content">
+                        <img src="https://i.ibb.co/8LCN4NKX/1154145707-282x210.png" alt="Thumbnail Dead rails"
+                            class="project-thumbnail mx-auto">
+                        <h3 class="text-2xl font-bold mb-2">⛰️ Dead rails</h3>
+                        <p class="opacity-80 mb-4">Một dự án Scratch sáng tạo với đường ray và thây ma.</p>
+                        <a href="https://scratch.mit.edu/projects/1154145707/" target="_blank"
+                            class="text-blue-600 hover:text-blue-800 transition-colors duration-200">Xem dự án</a>
+                    </div>
                 </div>
-            </div>
-            <div class="liquid-glass-container p-6 text-center animate-on-scroll animate-delay-400">
-                <div class="liquid-glass-overlay"></div>
-                <div class="liquid-glass-content">
-                    <img src="https://i.ibb.co/b5Nc7sp3/PNG-2.png" alt="Thumbnail AI LÀ NGHÌN PHÚ"
-                        class="project-thumbnail mx-auto">
-                    <h3 class="text-2xl font-bold mb-2">⛲️ AI LÀ NGHÌN PHÚ</h3>
-                    <p class="opacity-80 mb-4">Trò chơi đố vui trí tuệ đặc trưng trên truyền hình.</p>
-                    <a href="https://scratch.mit.edu/projects/1067950299" target="_blank"
-                        class="text-blue-600 hover:text-blue-800 transition-colors duration-200">Xem dự án</a>
+                <div class="liquid-glass-container p-6 text-center animate-on-scroll animate-delay-400">
+                    <div class="liquid-glass-overlay"></div>
+                    <div class="liquid-glass-content">
+                        <img src="https://i.ibb.co/b5Nc7sp3/PNG-2.png" alt="Thumbnail AI LÀ NGHÌN PHÚ"
+                            class="project-thumbnail mx-auto">
+                        <h3 class="text-2xl font-bold mb-2">⛲️ AI LÀ NGHÌN PHÚ</h3>
+                        <p class="opacity-80 mb-4">Trò chơi đố vui trí tuệ đặc trưng trên truyền hình.</p>
+                        <a href="https://scratch.mit.edu/projects/1067950299" target="_blank"
+                            class="text-blue-600 hover:text-blue-800 transition-colors duration-200">Xem dự án</a>
+                    </div>
                 </div>
-            </div>
-            <div class="liquid-glass-container p-6 text-center animate-on-scroll animate-delay-600">
-                <div class="liquid-glass-overlay"></div>
-                <div class="liquid-glass-content">
-                    <img src="https://i.ibb.co/PzrM5C9L/image.png" alt="Thumbnail Grace - Roblox V0.1.4"
-                        class="project-thumbnail mx-auto">
-                    <h3 class="text-2xl font-bold mb-2">⛽️ Grace - Roblox V0.1.4</h3>
-                    <p class="opacity-80 mb-4">Phiên bản Roblox độc đáo trên Scratch.</p>
-                    <a href="https://scratch.mit.edu/projects/1119305171" target="_blank"
-                        class="text-blue-600 hover:text-blue-800 transition-colors duration-200">Xem dự án</a>
+                <div class="liquid-glass-container p-6 text-center animate-on-scroll animate-delay-600">
+                    <div class="liquid-glass-overlay"></div>
+                    <div class="liquid-glass-content">
+                        <img src="https://i.ibb.co/PzrM5C9L/image.png" alt="Thumbnail Grace - Roblox V0.1.4"
+                            class="project-thumbnail mx-auto">
+                        <h3 class="text-2xl font-bold mb-2">⛽️ Grace - Roblox V0.1.4</h3>
+                        <p class="opacity-80 mb-4">Phiên bản Roblox độc đáo trên Scratch.</p>
+                        <a href="https://scratch.mit.edu/projects/1119305171" target="_blank"
+                            class="text-blue-600 hover:text-blue-800 transition-colors duration-200">Xem dự án</a>
+                    </div>
                 </div>
-            </div>
-            <div class="liquid-glass-container p-6 text-center animate-on-scroll animate-delay-800">
-                <div class="liquid-glass-overlay"></div>
-                <div class="liquid-glass-content">
-                    <img src="https://i.ibb.co/R4s3VS8x/PNG-2.png" alt="Thumbnail Grow A Garden (Roblox) v.5.0"
-                        class="project-thumbnail mx-auto">
-                    <h3 class="text-2xl font-bold mb-2">Grow A Garden (Roblox) v.5.0</h3>
-                    <p class="opacity-80 mb-4">Trải nghiệm làm vườn theo phong cách Roblox.</p>
-                    <a href="https://scratch.mit.edu/projects/1188197959/" target="_blank"
-                        class="text-blue-600 hover:text-blue-800 transition-colors duration-200">Xem dự án</a>
+                <div class="liquid-glass-container p-6 text-center animate-on-scroll animate-delay-800">
+                    <div class="liquid-glass-overlay"></div>
+                    <div class="liquid-glass-content">
+                        <img src="https://i.ibb.co/R4s3VS8x/PNG-2.png" alt="Thumbnail Grow A Garden (Roblox) v.5.0"
+                            class="project-thumbnail mx-auto">
+                        <h3 class="text-2xl font-bold mb-2">Grow A Garden (Roblox) v.5.0</h3>
+                        <p class="opacity-80 mb-4">Trải nghiệm làm vườn theo phong cách Roblox.</p>
+                        <a href="https://scratch.mit.edu/projects/1188197959/" target="_blank"
+                            class="text-blue-600 hover:text-blue-800 transition-colors duration-200">Xem dự án</a>
+                    </div>
                 </div>
-            </div>
-            <div class="liquid-glass-container p-6 text-center animate-on-scroll animate-delay-1000">
-                <div class="liquid-glass-overlay"></div>
-                <div class="liquid-glass-content">
-                    <img src="https://i.ibb.co/4nRCCN9S/PNG-2.png" alt="Thumbnail Lootify V1.3"
-                        class="project-thumbnail mx-auto">
-                    <h3 class="text-2xl font-bold mb-2">⚔️ Lootify V1.3 ☁(save and load)</h3>
-                    <p class="opacity-80 mb-4">Game phiêu lưu đặc trưng thể loại mới.</p>
-                    <a href="https://scratch.mit.edu/projects/1192996259/" target="_blank"
-                        class="text-blue-600 hover:text-blue-800 transition-colors duration-200">Xem dự án</a>
+                <div class="liquid-glass-container p-6 text-center animate-on-scroll animate-delay-1000">
+                    <div class="liquid-glass-overlay"></div>
+                    <div class="liquid-glass-content">
+                        <img src="https://i.ibb.co/4nRCCN9S/PNG-2.png" alt="Thumbnail Lootify V1.3"
+                            class="project-thumbnail mx-auto">
+                        <h3 class="text-2xl font-bold mb-2">⚔️ Lootify V1.3 ☁(save and load)</h3>
+                        <p class="opacity-80 mb-4">Game phiêu lưu đặc trưng thể loại mới.</p>
+                        <a href="https://scratch.mit.edu/projects/1192996259/" target="_blank"
+                            class="text-blue-600 hover:text-blue-800 transition-colors duration-200">Xem dự án</a>
+                    </div>
                 </div>
-            </div>
-        </section>
+            </section>
 
-        <!-- Quy định Tuân thủ -->
-        <section id="quy-dinh" class="liquid-glass-container p-8 md:p-12 animate-on-scroll">
-            <div class="liquid-glass-overlay"></div>
-            <div class="liquid-glass-content">
-                <h2 class="text-3xl md:text-4xl font-bold mb-8 text-center">☘️[-Tuân Thủ-]✨</h2>
-                <ul class="list-disc list-inside space-y-3 text-lg opacity-90 max-w-4xl mx-auto text-left">
-                    <li>⛺️ Có thể thêm các chương trình Việt Nam và các quốc gia khác.</li>
-                    <li>✋ Nghiêm cấm dự án, bình luận thô tục và vi phạm thuần phong mỹ tục.</li>
-                    <li>♨️ Vui lòng mỗi tài khoản chỉ đăng tối đa 4 dự án/ 1 ngày (Tránh việc trôi dự án của các Scratcher
-                        khác)</li>
-                    <li>✉️ Hãy hạn chế các hoạt động quảng cáo.</li>
-                    <li>⛱️ Người tham gia là người Việt hoặc có thể là người nước ngoài cùng giao lưu. (Studio accepts
-                        foreigners)</li>
-                    <li>✔️ Chúng tôi chấp nhận các ý kiến và đóng góp của bạn tại phần Bình luận studio.</li>
-                    <li>⚙️ Các nội dung vi phạm sẽ bị xóa.</li>
+            <!-- Quy định Tuân thủ -->
+            <section id="quy-dinh" class="liquid-glass-container p-8 md:p-12 animate-on-scroll mt-24"> <!-- Added mt-24 -->
+                <div class="liquid-glass-overlay"></div>
+                <div class="liquid-glass-content">
+                    <h2 class="text-3xl md:text-4xl font-bold mb-8 text-center">☘️[-Tuân Thủ-]✨</h2>
+                    <ul class="list-disc list-inside space-y-3 text-lg opacity-90 max-w-4xl mx-auto text-left">
+                        <li>⛺️ Có thể thêm các chương trình Việt Nam và các quốc gia khác.</li>
+                        <li>✋ Nghiêm cấm dự án, bình luận thô tục và vi phạm thuần phong mỹ tục.</li>
+                        <li>♨️ Vui lòng mỗi tài khoản chỉ đăng tối đa 4 dự án/ 1 ngày (Tránh việc trôi dự án của các Scratcher
+                            khác)</li>
+                        <li>✉️ Hãy hạn chế các hoạt động quảng cáo.</li>
+                        <li>⛱️ Người tham gia là người Việt hoặc có thể là người nước ngoài cùng giao lưu. (Studio accepts
+                            foreigners)</li>
+                        <li>✔️ Chúng tôi chấp nhận các ý kiến và đóng góp của bạn tại phần Bình luận studio.</li>
+                        <li>⚙️ Các nội dung vi phạm sẽ bị xóa.</li>
+                    </ul>
+                </div>
+            </section>
+
+            <!-- Lưu ý quan trọng -->
+            <section id="luu-y" class="p-8 md:p-12 text-center bg-transparent animate-on-scroll mt-16">
+                <h2 class="text-3xl md:text-4xl font-bold mb-8">⚠️[-Lưu Ý-]⚡️</h2>
+                <ul class="list-disc list-inside space-y-3 text-lg opacity-90 max-w-3xl mx-auto text-left">
+                    <li>⚙️ Đội ngũ Managers studio sẽ kiểm tra MỖI NGÀY và xóa các chương trình vi phạm.</li>
+                    <li>❗️ Các vi phạm của thành viên studio sẽ bị trừ vào Điểm đánh giá.</li>
+                    <li>⚡️ >10 điểm đánh giá sẽ bị loại.</li>
+                    <li>⚠️ Bất kì báo cáo nào vui lòng gửi về bình luận tại studio để được xử lí.</li>
                 </ul>
-            </div>
-        </section>
+            </section>
 
-        <!-- Lưu ý quan trọng -->
-        <section id="luu-y" class="p-8 md:p-12 text-center bg-transparent animate-on-scroll">
-            <h2 class="text-3xl md:text-4xl font-bold mb-8">⚠️[-Lưu Ý-]⚡️</h2>
-            <ul class="list-disc list-inside space-y-3 text-lg opacity-90 max-w-3xl mx-auto text-left">
-                <li>⚙️ Đội ngũ Managers studio sẽ kiểm tra MỖI NGÀY và xóa các chương trình vi phạm.</li>
-                <li>❗️ Các vi phạm của thành viên studio sẽ bị trừ vào Điểm đánh giá.</li>
-                <li>⚡️ >10 điểm đánh giá sẽ bị loại.</li>
-                <li>⚠️ Bất kì báo cáo nào vui lòng gửi về bình luận tại studio để được xử lí.</li>
-            </ul>
-        </section>
+            <!-- Ban Quản lý Studio (Overview on Homepage) -->
+            <section id="ban-quan-ly" class="liquid-glass-container p-6 md:p-8 animate-on-scroll mt-16">
+                <div class="liquid-glass-overlay"></div>
+                <div class="liquid-glass-content">
+                    <h2 class="text-2xl md:text-3xl font-bold mb-6 text-center">♥️ Đội Ngũ Manager</h2>
 
-        <!-- Ban Quản lý Studio -->
-        <section id="ban-quan-ly" class="liquid-glass-container p-8 md:p-12 animate-on-scroll">
-            <div class="liquid-glass-overlay"></div>
-            <div class="liquid-glass-content">
-                <h2 class="text-3xl md:text-4xl font-bold mb-8 text-center">♥️ Đội Ngũ Manager</h2>
+                    <div class="text-center mb-8 animate-on-scroll animate-delay-200">
+                        <a href="https://scratch.mit.edu/users/lunavocado/" target="_blank" class="block">
+                            <img src="https://cdn2.scratch.mit.edu/get_image/user/124521217_90x90.png" alt="lunavocado Avatar"
+                                class="manager-avatar host-avatar mx-auto mb-2">
+                            <p class="font-extrabold host-name text-2xl md:text-3xl mb-1">lunavocado</p>
+                        </a>
+                    </div>
 
-                <div class="text-center mb-12 animate-on-scroll animate-delay-200">
-                    <a href="https://scratch.mit.edu/users/lunavocado/" target="_blank" class="block">
-                        <img src="https://cdn2.scratch.mit.edu/get_image/user/124521217_90x90.png" alt="lunavocado Avatar"
-                            class="manager-avatar host-avatar mx-auto mb-4">
-                        <p class="font-extrabold host-name mb-1">lunavocado</p>
-                        <p class="text-xl opacity-90">(Studio Host)</p>
-                    </a>
-                </div>
-
-                <h3 class="text-2xl font-bold mb-6 text-center animate-on-scroll animate-delay-400">Các Manager khác</h3>
-                <div class="other-managers-container animate-on-scroll animate-delay-500">
-                    <div class="other-managers-track">
+                    <h3 class="text-xl md:text-2xl font-bold mb-4 text-center animate-on-scroll animate-delay-400">Các Manager khác</h3>
+                    <!-- Updated Manager Section with Horizontal Scroll -->
+                    <div class="horizontal-scroll-container">
                         <div class="manager-item">
                             <a href="https://scratch.mit.edu/users/Fleiroscracth/" target="_blank" class="block">
                                 <img src="https://cdn2.scratch.mit.edu/get_image/user/124495990_90x90.png"
                                     alt="Fleiroscracth Avatar" class="manager-avatar mx-auto mb-2">
-                                <p class="text-lg font-semibold">Fleiroscracth</p>
+                                <p class="text-base font-semibold">Fleiroscracth</p>
                             </a>
                         </div>
                         <div class="manager-item">
                             <a href="https://scratch.mit.edu/users/StudioDANV/" target="_blank" class="block">
                                 <img src="https://uploads.scratch.mit.edu/get_image/user/149945770_90x90.png"
                                     alt="StudioDANV Avatar" class="manager-avatar mx-auto mb-2">
-                                <p class="text-lg font-semibold">StudioDANV</p>
+                                <p class="text-base font-semibold">StudioDANV</p>
                             </a>
                         </div>
                         <div class="manager-item">
                             <a href="https://scratch.mit.edu/users/ngw--/" target="_blank" class="block">
                                 <img src="https://cdn2.scratch.mit.edu/get_image/user/133312821_90x90.png" alt="ngw-- Avatar"
-                                    class="manager-avatar mx-auto mb-2">
-                                <p class="text-lg font-semibold">ngw--</p>
+                                class="manager-avatar mx-auto mb-2">
+                                <p class="text-base font-semibold">ngw--</p>
                             </a>
                         </div>
                         <div class="manager-item">
                             <a href="https://scratch.mit.edu/users/Nhienzcute/" target="_blank" class="block">
                                 <img src="https://cdn2.scratch.mit.edu/get_image/user/133904533_90x90.png"
                                     alt="Nhienzcute Avatar" class="manager-avatar mx-auto mb-2">
-                                <p class="text-lg font-semibold">Nhienzcute</p>
+                                <p class="text-base font-semibold">Nhienzcute</p>
                             </a>
                         </div>
                         <div class="manager-item">
                             <a href="https://scratch.mit.edu/users/ArchionTechno/" target="_blank" class="block">
                                 <img src="https://cdn2.scratch.mit.edu/get_image/user/148565311_90x90.png"
                                     alt="ArchionTechno Avatar" class="manager-avatar mx-auto mb-2">
-                                <p class="text-lg font-semibold">ArchionTechno</p>
+                                <p class="text-base font-semibold">ArchionTechno</p>
                             </a>
                         </div>
                         <div class="manager-item">
                             <a href="https://scratch.mit.edu/users/Ysanamoto/" target="_blank" class="block">
                                 <img src="https://cdn2.scratch.mit.edu/get_image/user/135593853_90x90.png"
                                     alt="Ysanamoto Avatar" class="manager-avatar mx-auto mb-2">
-                                <p class="text-lg font-semibold">Ysanamoto</p>
+                                <p class="text-base font-semibold">Ysanamoto</p>
                             </a>
                         </div>
                         <div class="manager-item">
-                            <!-- Đã sửa lỗi dính chữ bằng cách tăng margin-right cho manager-item -->
                             <a href="https://scratch.mit.edu/users/daothanhhai1192/" target="_blank" class="block"> 
                                 <img src="https://cdn2.scratch.mit.edu/get_image/user/126227518_90x90.png"
                                     alt="daothanhhai1192 Avatar" class="manager-avatar mx-auto mb-2">
-                                <p class="text-lg font-semibold">daothanhhai1192</p>
+                                <p class="text-base font-semibold">daothanhhai1192</p>
                             </a>
                         </div>
+                        <!-- Updated _-Zipper-_ Avatar -->
                         <div class="manager-item">
-                            <a href="https://scratch.mit.edu/users/Fleiroscracth/" target="_blank" class="block">
-                                <img src="https://cdn2.scratch.mit.edu/get_image/user/124495990_90x90.png"
-                                    alt="Fleiroscracth Avatar" class="manager-avatar mx-auto mb-2">
-                                <p class="text-lg font-semibold">Fleiroscracth</p>
-                            </a>
-                        </div>
-                        <div class="manager-item">
-                            <a href="https://scratch.mit.edu/users/StudioDANV/" target="_blank" class="block">
-                                <img src="https://uploads.scratch.mit.edu/get_image/user/149945770_90x90.png"
-                                    alt="StudioDANV Avatar" class="manager-avatar mx-auto mb-2">
-                                <p class="text-lg font-semibold">StudioDANV</p>
-                            </a>
-                        </div>
-                        <div class="manager-item">
-                            <a href="https://scratch.mit.edu/users/ngw--/" target="_blank" class="block">
-                                <img src="https://cdn2.scratch.mit.edu/get_image/user/133312821_90x90.png" alt="ngw-- Avatar"
-                                    class="manager-avatar mx-auto mb-2">
-                                <p class="text-lg font-semibold">ngw--</p>
-                            </a>
-                        </div>
-                        <div class="manager-item">
-                            <a href="https://scratch.mit.edu/users/Nhienzcute/" target="_blank" class="block">
-                                <img src="https://cdn2.scratch.mit.edu/get_image/user/133904533_90x90.png"
-                                    alt="Nhienzcute Avatar" class="manager-avatar mx-auto mb-2">
-                                <p class="text-lg font-semibold">Nhienzcute</p>
-                            </a>
-                        </div>
-                        <div class="manager-item">
-                            <a href="https://scratch.mit.edu/users/ArchionTechno/" target="_blank" class="block">
-                                <img src="https://cdn2.scratch.mit.edu/get_image/user/148565311_90x90.png"
-                                    alt="ArchionTechno Avatar" class="manager-avatar mx-auto mb-2">
-                                <p class="text-lg font-semibold">ArchionTechno</p>
-                            </a>
-                        </div>
-                        <div class="manager-item">
-                            <a href="https://scratch.mit.edu/users/Ysanamoto/" target="_blank" class="block">
-                                <img src="https://cdn2.scratch.mit.edu/get_image/user/135593853_90x90.png"
-                                    alt="Ysanamoto Avatar" class="manager-avatar mx-auto mb-2">
-                                <p class="text-lg font-semibold">Ysanamoto</p>
-                            </a>
-                        </div>
-                        <div class="manager-item">
-                            <a href="https://scratch.mit.edu/users/daothanhhai1192/" target="_blank" class="block">
-                                <img src="https://cdn2.scratch.mit.edu/get_image/user/126227518_90x90.png"
-                                    alt="daothanhhai1192 Avatar" class="manager-avatar mx-auto mb-2">
-                                <p class="text-lg font-semibold">daothanhhai1192</p>
+                            <a href="https://scratch.mit.edu/users/_-Zipper-_/" target="_blank" class="block">
+                                <img src="https://uploads.scratch.mit.edu/get_image/user/131311396_60x60.png"
+                                    alt="_-Zipper-_ Avatar" class="manager-avatar mx-auto mb-2">
+                                <p class="text-base font-semibold">_-Zipper-_</p>
                             </a>
                         </div>
                     </div>
+                    <p class="text-base md:text-lg max-w-3xl mx-auto mt-6 opacity-90 text-center">
+                        Duy Trì Bởi ❤️ Đội Ngũ Manager
+                    </p>
                 </div>
-                <p class="text-lg md:text-xl max-w-3xl mx-auto mt-8 opacity-90 text-center">
-                    Duy Trì Bởi ❤️ Đội Ngũ Manager
-                </p>
-            </div>
-        </section>
+            </section>
 
-        <!-- Tham gia ngay Section -->
-        <section id="tham-gia" class="liquid-glass-container p-8 md:p-12 text-center animate-on-scroll">
-            <div class="liquid-glass-overlay"></div>
-            <div class="liquid-glass-content">
-                <h2 class="text-3xl md:text-4xl font-bold mb-4">Sẵn sàng khám phá và sáng tạo?</h2>
-                <p class="text-lg md:text-xl max-w-2xl mx-auto mb-8 opacity-90">
-                    Tham gia cộng đồng của chúng tôi ngay hôm nay và cùng nhau phát triển các dự án Scratch tuyệt vời!
-                </p>
-                <div class="flex flex-col sm:flex-row justify-center items-center gap-4">
-                    <button onclick="window.open('https://scratch.mit.edu/studios/33509364', '_blank')"
-                        class="px-8 py-4 bg-blue-500 text-white font-bold text-lg rounded-full shadow-lg hover:bg-blue-600 transition-colors duration-300 transform hover:scale-105 animated-button">
-                        Đến Studio trên Scratch
-                    </button>
-                    <button onclick="window.open('https://discord.gg/6hkPzynTgt', '_blank')"
-                        class="px-8 py-4 bg-indigo-600 text-white font-bold text-lg rounded-full shadow-lg hover:bg-indigo-700 transition-colors duration-300 transform hover:scale-105 animated-button flex items-center gap-2">
-                        <img src="https://static.vecteezy.com/system/resources/previews/023/986/880/non_2x/discord-logo-discord-logo-transparent-discord-icon-transparent-free-free-png.png"
-                            alt="Discord Logo" class="h-6 w-6">
-                        Tham gia Discord
-                    </button>
+            <!-- Tham gia ngay Section -->
+            <section id="tham-gia" class="liquid-glass-container p-8 md:p-12 text-center animate-on-scroll mt-24"> <!-- Added mt-24 -->
+                <div class="liquid-glass-overlay"></div>
+                <div class="liquid-glass-content">
+                    <h2 class="text-3xl md:text-4xl font-bold mb-4">Sẵn sàng khám phá và sáng tạo?</h2>
+                    <p class="text-lg md:text-xl max-w-2xl mx-auto mb-8 opacity-90">
+                        Tham gia cộng đồng của chúng tôi ngay hôm nay và cùng nhau phát triển các dự án Scratch tuyệt vời!
+                    </p>
+                    <div class="flex flex-col sm:flex-row justify-center items-center gap-4">
+                        <button onclick="window.open('https://scratch.mit.edu/studios/33509364', '_blank')"
+                            class="px-8 py-4 bg-blue-500 text-white font-bold text-lg rounded-full shadow-lg hover:bg-blue-600 transition-colors duration-300 transform hover:scale-105 animated-button">
+                            Đến Studio trên Scratch
+                        </button>
+                        <button onclick="window.open('https://discord.gg/6hkPzynTgt', '_blank')"
+                            class="px-8 py-4 bg-indigo-600 text-white font-bold text-lg rounded-full shadow-lg hover:bg-indigo-700 transition-colors duration-300 transform hover:scale-105 animated-button flex items-center gap-2">
+                            <img src="https://static.vecteezy.com/system/resources/previews/023/986/880/non_2x/discord-logo-discord-logo-transparent-discord-icon-transparent-free-free-png.png"
+                                alt="Discord Logo" class="h-6 w-6">
+                            Tham gia Discord
+                        </button>
+                    </div>
                 </div>
-            </div>
-        </section>
+            </section>
 
-        <!-- Facebook Comments Section -->
-        <section id="danh-gia" class="liquid-glass-container p-8 md:p-12 animate-on-scroll">
-            <div class="liquid-glass-overlay"></div>
-            <div class="liquid-glass-content text-center">
-                <h2 class="text-3xl md:text-4xl font-bold mb-8" style="color: #333;">Đánh Giá và Bình Luận</h2>
-                <p class="text-lg md:text-xl max-w-2xl mx-auto mb-8 opacity-90" style="color: #333;">
-                    Hãy để lại ý kiến của bạn về Studio Dự Án Người Việt nhé!
+            <!-- Facebook Comments Section -->
+            <section id="danh-gia" class="liquid-glass-container p-8 md:p-12 animate-on-scroll mt-16">
+                <div class="liquid-glass-overlay"></div>
+                <div class="liquid-glass-content text-center">
+                    <h2 class="text-3xl md:text-4xl font-bold mb-8" style="color: #333;">Đánh Giá và Bình Luận</h2>
+                    <p class="text-lg md:text-xl max-w-2xl mx-auto mb-8 opacity-90" style="color: #333;">
+                        Hãy để lại ý kiến của bạn về Studio Dự Án Người Việt nhé!
+                    </p>
+                    <!-- Facebook Comments Plugin -->
+                    <div class="fb-comments" data-href="https://danvpr.github.io/studiodanv/" data-width="100%" data-numposts="5"></div>
+                </div>
+            </section>
+        </div>
+
+        <!-- Trang Thông báo -->
+        <div id="page-thongbao" class="page-content">
+            <section class="liquid-glass-container p-8 md:p-12 text-center">
+                <div class="liquid-glass-overlay"></div>
+                <div class="liquid-glass-content">
+                    <h2 class="text-3xl md:text-4xl font-bold mb-8">📢 Thông Báo Mới Nhất 📢</h2>
+                    <div class="notification-grid">
+                        <div class="notification-card">
+                            <span class="icon">✨</span>
+                            <img src="https://placehold.co/200x120/ADD8E6/000?text=Cập+Nhật+Quy+Định" alt="Cập Nhật Quy Định">
+                            <h3>Cập Nhật Quy Định Studio</h3>
+                            <p>
+                                Chúng tôi đã cập nhật một số quy định mới nhằm nâng cao chất lượng dự án và môi trường giao lưu. Vui lòng đọc kỹ phần "Quy Định Tuân Thủ" trên trang chủ để nắm rõ các thay đổi nhé!
+                            </p>
+                            <p class="date">Ngày đăng: 10/07/2025</p>
+                            <button onclick="alert('Tính năng xem chi tiết đang được phát triển!')" class="mt-4 px-6 py-2 bg-blue-500 text-white font-semibold rounded-full hover:bg-blue-600 transition-colors duration-200">
+                                Xem chi tiết
+                            </button>
+                        </div>
+                        <div class="notification-card">
+                            <span class="icon">🎉</span>
+                            <img src="https://placehold.co/200x120/FFDDC1/000?text=Sự+Kiện+Sắp+Tới" alt="Sự Kiện Sắp Tới">
+                            <h3>Sự Kiện Lập Trình Scratch Sắp Tới</h3>
+                            <p>
+                                Chuẩn bị cho sự kiện lập trình Scratch lớn nhất năm của Studio! Chúng tôi sẽ công bố chủ đề và thể lệ tham gia vào tuần tới. Hãy theo dõi kênh Discord của chúng tôi để không bỏ lỡ nhé!
+                            </p>
+                            <p class="date">Ngày đăng: 01/07/2025</p>
+                            <button onclick="alert('Tính năng xem chi tiết đang được phát triển!')" class="mt-4 px-6 py-2 bg-blue-500 text-white font-semibold rounded-full hover:bg-blue-600 transition-colors duration-200">
+                                Xem chi tiết
+                            </button>
+                        </div>
+                        <div class="notification-card">
+                            <span class="icon">🤝</span>
+                            <img src="https://placehold.co/200x120/DDA0DD/000?text=Tuyển+Manager" alt="Tuyển Thêm Manager">
+                            <h3>Tuyển Thêm Manager Mới</h3>
+                            <p>
+                                Để hỗ trợ cộng đồng ngày càng lớn mạnh, Studio đang tìm kiếm những bạn Manager nhiệt huyết và có kinh nghiệm Scratch. Nếu bạn quan tâm, hãy gửi đơn đăng ký cho lunavocado qua tin nhắn Scratch nhé!
+                            </p>
+                            <p class="date">Ngày đăng: 20/06/2025</p>
+                            <button onclick="alert('Tính năng xem chi tiết đang được phát triển!')" class="mt-4 px-6 py-2 bg-blue-500 text-white font-semibold rounded-full hover:bg-blue-600 transition-colors duration-200">
+                                Xem chi tiết
+                            </button>
+                        </div>
+                        <div class="notification-card">
+                            <span class="icon">🛠️</span>
+                            <img src="https://placehold.co/200x120/C0C0C0/000?text=Bảo+Trì+Hệ+Thống" alt="Bảo Trì Hệ Thống">
+                            <h3>Bảo Trì Hệ Thống</h3>
+                            <p>
+                                Hệ thống Studio sẽ được bảo trì định kỳ vào 2 giờ sáng Chủ Nhật hàng tuần để nâng cao hiệu suất. Trong thời gian này, một số chức năng có thể bị gián đoạn. Mong bạn thông cảm!
+                            </p>
+                            <p class="date">Ngày đăng: 15/06/2025</p>
+                            <button onclick="alert('Tính năng xem chi tiết đang được phát triển!')" class="mt-4 px-6 py-2 bg-blue-500 text-white font-semibold rounded-full hover:bg-blue-600 transition-colors duration-200">
+                                Xem chi tiết
+                            </button>
+                        </div>
+                        <div class="notification-card">
+                            <span class="icon">💡</span>
+                            <img src="https://placehold.co/200x120/D8BFD8/000?text=Mẹo+Lập+Trình" alt="Mẹo Lập Trình">
+                            <h3>Mẹo Lập Trình Scratch Hiệu Quả</h3>
+                            <p>
+                                Đội ngũ Manager đã tổng hợp các mẹo và thủ thuật giúp bạn tối ưu hóa dự án Scratch của mình. Hãy ghé thăm trang Discord để xem chi tiết nhé!
+                            </p>
+                            <p class="date">Ngày đăng: 05/07/2025</p>
+                            <button onclick="alert('Tính năng xem chi tiết đang được phát triển!')" class="mt-4 px-6 py-2 bg-blue-500 text-white font-semibold rounded-full hover:bg-blue-600 transition-colors duration-200">
+                                Xem chi tiết
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </div>
+
+        <!-- Trang Ban Quản Lý Chi Tiết -->
+        <div id="page-banquanly-detail" class="page-content">
+            <section class="liquid-glass-container p-8 md:p-12 text-center">
+                <div class="liquid-glass-overlay"></div>
+                <div class="liquid-glass-content">
+                    <div class="team-intro-section">
+                        <h2>Gặp Gỡ Đội Ngũ Manager Của Chúng Tôi</h2>
+                        <p>
+                            Đội ngũ Manager của Studio Dự Án Người Việt là những cá nhân đầy nhiệt huyết, tận tâm và có kinh nghiệm sâu rộng trong cộng đồng Scratch. Chúng tôi luôn sẵn lòng hỗ trợ, hướng dẫn và cùng bạn xây dựng một môi trường sáng tạo, thân thiện và phát triển. Mỗi Manager đều mang một màu sắc riêng, đóng góp vào sự đa dạng và vững mạnh của Studio.
+                        </p>
+                        <p class="mt-4">
+                            Hãy cùng khám phá những gương mặt đã và đang đồng hành cùng bạn trên hành trình lập trình Scratch nhé!
+                        </p>
+                    </div>
+
+                    <h2 class="text-3xl md:text-4xl font-bold mb-8">💖 Các Thành Viên Nòng Cốt 💖</h2>
+                    <div class="manager-grid">
+                        <!-- Manager 1: lunavocado (Host) -->
+                        <div class="manager-detail-card host-card">
+                            <img src="https://cdn2.scratch.mit.edu/get_image/user/124521217_90x90.png" alt="lunavocado Avatar">
+                            <h3 class="text-blue-600">lunavocado</h3>
+                            <p class="role">(Studio Host)</p>
+                            <p>
+                                Người sáng lập và quản lý chính của Studio. Luôn nhiệt tình hỗ trợ các thành viên và định hướng phát triển cho cộng đồng. Với tầm nhìn xa và sự tận tâm, lunavocado là trái tim của Studio.
+                            </p>
+                            <a href="https://scratch.mit.edu/users/lunavocado/" target="_blank" class="text-blue-500 hover:underline mt-4 inline-block">Xem hồ sơ Scratch</a>
+                        </div>
+                        <!-- Manager 2: Fleiroscracth -->
+                        <div class="manager-detail-card">
+                            <img src="https://cdn2.scratch.mit.edu/get_image/user/124495990_90x90.png" alt="Fleiroscracth Avatar">
+                            <h3>Fleiroscracth</h3>
+                            <p class="role">Manager</p>
+                            <p>
+                                Chuyên gia về các dự án game phức tạp và luôn sẵn lòng chia sẻ kiến thức về lập trình game. Fleiroscracth là người bạn đồng hành lý tưởng cho những ai đam mê phát triển trò chơi.
+                            </p>
+                            <a href="https://scratch.mit.edu/users/Fleiroscracth/" target="_blank" class="text-blue-500 hover:underline mt-4 inline-block">Xem hồ sơ Scratch</a>
+                        </div>
+                        <!-- Manager 3: StudioDANV -->
+                        <div class="manager-detail-card">
+                            <img src="https://uploads.scratch.mit.edu/get_image/user/149945770_90x90.png" alt="StudioDANV Avatar">
+                            <h3>StudioDANV</h3>
+                            <p class="role">Manager</p>
+                            <p>
+                                Đại diện chính thức của Studio, phụ trách các vấn đề liên quan đến quy định và hỗ trợ chung. StudioDANV đảm bảo mọi hoạt động của cộng đồng diễn ra suôn sẻ và công bằng.
+                            </p>
+                            <a href="https://scratch.mit.edu/users/StudioDANV/" target="_blank" class="text-blue-500 hover:underline mt-4 inline-block">Xem hồ sơ Scratch</a>
+                        </div>
+                        <!-- Manager 4: ngw-- -->
+                        <div class="manager-detail-card">
+                            <img src="https://cdn2.scratch.mit.edu/get_image/user/133312821_90x90.png" alt="ngw-- Avatar">
+                            <h3>ngw--</h3>
+                            <p class="role">Manager</p>
+                            <p>
+                                Năng động và sáng tạo, ngw-- thường xuyên tổ chức các hoạt động cộng đồng và thử thách lập trình, mang đến không khí sôi nổi và hứng khởi cho các thành viên.
+                            </p>
+                            <a href="https://scratch.mit.edu/users/ngw--/" target="_blank" class="text-blue-500 hover:underline mt-4 inline-block">Xem hồ sơ Scratch</a>
+                        </div>
+                        <!-- Manager 5: Nhienzcute -->
+                        <div class="manager-detail-card">
+                            <img src="https://cdn2.scratch.mit.edu/get_image/user/133904533_90x90.png" alt="Nhienzcute Avatar">
+                            <h3>Nhienzcute</h3>
+                            <p class="role">Manager</p>
+                            <p>
+                                Chuyên về thiết kế đồ họa và hiệu ứng hình ảnh trong Scratch, mang lại vẻ đẹp và sự sống động cho các dự án. Nhienzcute là nguồn cảm hứng cho những ai yêu thích nghệ thuật trong lập trình.
+                            </p>
+                            <a href="https://scratch.mit.edu/users/Nhienzcute/" target="_blank" class="text-blue-500 hover:underline mt-4 inline-block">Xem hồ sơ Scratch</a>
+                        </div>
+                        <!-- Manager 6: ArchionTechno -->
+                        <div class="manager-detail-card">
+                            <img src="https://cdn2.scratch.mit.edu/get_image/user/148565311_90x90.png" alt="ArchionTechno Avatar">
+                            <h3>ArchionTechno</h3>
+                            <p class="role">Manager</p>
+                            <p>
+                                Có kinh nghiệm sâu rộng về các dự án kỹ thuật và logic phức tạp, là người giải đáp mọi thắc mắc kỹ thuật. ArchionTechno giúp các thành viên vượt qua những thử thách khó nhằn nhất.
+                            </p>
+                            <a href="https://scratch.mit.edu/users/ArchionTechno/" target="_blank" class="text-blue-500 hover:underline mt-4 inline-block">Xem hồ sơ Scratch</a>
+                        </div>
+                        <!-- Manager 7: Ysanamoto -->
+                        <div class="manager-detail-card">
+                            <img src="https://cdn2.scratch.mit.edu/get_image/user/135593853_90x90.png" alt="Ysanamoto Avatar">
+                            <h3>Ysanamoto</h3>
+                            <p class="role">Manager</p>
+                            <p>
+                                Chuyên về các dự án âm nhạc và hiệu ứng âm thanh, giúp các dự án trở nên sống động và cuốn hút hơn. Ysanamoto mang đến những giai điệu tuyệt vời cho cộng đồng.
+                            </p>
+                            <a href="https://scratch.mit.edu/users/Ysanamoto/" target="_blank" class="text-blue-500 hover:underline mt-4 inline-block">Xem hồ sơ Scratch</a>
+                        </div>
+                        <!-- Manager 8: daothanhhai1192 -->
+                        <div class="manager-detail-card">
+                            <img src="https://cdn2.scratch.mit.edu/get_image/user/126227518_90x90.png" alt="daothanhhai1192 Avatar">
+                            <h3>daothanhhai1192</h3>
+                            <p class="role">Manager</p>
+                            <p>
+                                Hỗ trợ cộng đồng trong việc giải quyết các vấn đề kỹ thuật và tối ưu hóa dự án. daothanhhai1192 là người bạn đáng tin cậy để tìm kiếm giải pháp cho mọi vấn đề.
+                            </p>
+                            <a href="https://scratch.mit.edu/users/daothanhhai1192/" target="_blank" class="text-blue-500 hover:underline mt-4 inline-block">Xem hồ sơ Scratch</a>
+                        </div>
+                        <!-- Updated _-Zipper-_ Avatar -->
+                        <div class="manager-detail-card">
+                            <img src="https://uploads.scratch.mit.edu/get_image/user/131311396_60x60.png" alt="_-Zipper-_ Avatar">
+                            <h3>_-Zipper-_</h3>
+                            <p class="role">Manager</p>
+                            <p>
+                                Một thành viên mới đầy nhiệt huyết, sẵn sàng đóng góp cho sự phát triển của Studio. _-Zipper-_ mang đến năng lượng tươi mới và những ý tưởng sáng tạo.
+                            </p>
+                            <a href="https://scratch.mit.edu/users/_-Zipper-_/" target="_blank" class="text-blue-500 hover:underline mt-4 inline-block">Xem hồ sơ Scratch</a>
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </div>
+
+        <!-- Trang Chính sách quyền riêng tư -->
+        <div id="page-privacy-policy" class="page-content">
+            <section class="content-page">
+                <h2>Chính sách quyền riêng tư</h2>
+                <p>
+                    Chào mừng bạn đến với Chính sách quyền riêng tư của Studio Dự Án Người Việt. Chúng tôi cam kết bảo vệ quyền riêng tư của người dùng và xử lý dữ liệu cá nhân một cách có trách nhiệm. Chính sách này mô tả cách chúng tôi thu thập, sử dụng, tiết lộ và bảo vệ thông tin của bạn khi bạn truy cập trang web và sử dụng các dịch vụ của chúng tôi.
                 </p>
-                <!-- Facebook Comments Plugin -->
-                <div class="fb-comments" data-href="https://danvpr.github.io/studiodanv/" data-width="100%" data-numposts="5"></div>
-            </div>
-        </section>
+
+                <h3>1. Thông tin chúng tôi thu thập</h3>
+                <p>
+                    Chúng tôi chỉ thu thập thông tin mà bạn tự nguyện cung cấp cho chúng tôi thông qua các tương tác trên trang web, chẳng hạn như:
+                </p>
+                <ul>
+                    <li>**Thông tin liên hệ:** Khi bạn gửi tin nhắn cho Gấu Gấu hoặc tham gia bình luận trên Facebook (thông qua plugin Facebook Comments), chúng tôi có thể thu thập tên người dùng và nội dung tin nhắn của bạn.</li>
+                    <li>**Dữ liệu sử dụng:** Chúng tôi có thể thu thập thông tin về cách bạn truy cập và sử dụng trang web, bao gồm địa chỉ IP, loại trình duyệt, trang đã xem, thời gian truy cập và các số liệu thống kê khác. Dữ liệu này được thu thập tự động thông qua Google Analytics để cải thiện trải nghiệm người dùng.</li>
+                    <li>**Ảnh tải lên:** Nếu bạn chọn tải ảnh lên trong tính năng "Chat với Gấu Gấu", ảnh đó sẽ được chuyển đổi sang định dạng base64 và gửi đến mô hình AI để xử lý. Chúng tôi không lưu trữ các ảnh này sau khi phiên trò chuyện kết thúc.</li>
+                </ul>
+
+                <h3>2. Cách chúng tôi sử dụng thông tin của bạn</h3>
+                <p>
+                    Chúng tôi sử dụng thông tin thu thập được cho các mục đích sau:
+                </p>
+                <ul>
+                    <li>Để cung cấp và duy trì dịch vụ của chúng tôi, bao gồm tính năng "Chat với Gấu Gấu" và hiển thị nội dung trang web.</li>
+                    <li>Để cải thiện, cá nhân hóa và mở rộng trang web của chúng tôi.</li>
+                    <li>Để hiểu và phân tích cách bạn sử dụng trang web của chúng tôi.</li>
+                    <li>Để phát triển các sản phẩm, dịch vụ, tính năng và chức năng mới.</li>
+                    <li>Để liên lạc với bạn, trực tiếp hoặc thông qua một trong những đối tác của chúng tôi, bao gồm cả dịch vụ khách hàng, để cung cấp cho bạn các bản cập nhật và thông tin khác liên quan đến trang web, và cho các mục đích tiếp thị và quảng cáo.</li>
+                    <li>Để phát hiện và ngăn chặn gian lận.</li>
+                </ul>
+
+                <h3>3. Chia sẻ thông tin của bạn</h3>
+                <p>
+                    Chúng tôi không bán, trao đổi hoặc cho thuê thông tin nhận dạng cá nhân của người dùng cho bên thứ ba. Chúng tôi có thể chia sẻ thông tin tổng hợp không mang tính nhận dạng cá nhân về khách truy cập và người dùng với các đối tác kinh doanh, chi nhánh đáng tin cậy và nhà quảng cáo cho các mục đích được nêu ở trên.
+                </p>
+                <p>
+                    Chúng tôi có thể sử dụng các nhà cung cấp dịch vụ bên thứ ba để giúp chúng tôi vận hành doanh nghiệp và trang web hoặc quản lý các hoạt động thay mặt chúng tôi, chẳng hạn như gửi bản tin hoặc khảo sát. Chúng tôi có thể chia sẻ thông tin của bạn với các bên thứ ba này cho các mục đích hạn chế đó với điều kiện bạn đã cho phép chúng tôi.
+                </p>
+
+                <h3>4. Bảo mật dữ liệu</h3>
+                <p>
+                    Chúng tôi áp dụng các biện pháp bảo mật dữ liệu thích hợp để bảo vệ chống lại việc truy cập, thay đổi, tiết lộ hoặc phá hủy trái phép thông tin cá nhân của bạn. Tuy nhiên, không có phương pháp truyền tải qua Internet hoặc phương pháp lưu trữ điện tử nào là an toàn 100%. Mặc dù chúng tôi cố gắng sử dụng các biện pháp được chấp nhận về mặt thương mại để bảo vệ thông tin cá nhân của bạn, chúng tôi không thể đảm bảo an ninh tuyệt đối.
+                </p>
+
+                <h3>5. Quyền của bạn</h3>
+                <p>
+                    Bạn có quyền truy cập, chỉnh sửa hoặc xóa thông tin cá nhân của mình. Nếu bạn có bất kỳ câu hỏi nào về dữ liệu cá nhân của mình hoặc muốn thực hiện các quyền này, vui lòng liên hệ với chúng tôi qua địa chỉ email được cung cấp trong phần "Liên hệ".
+                </p>
+
+                <h3>6. Thay đổi chính sách quyền riêng tư này</h3>
+                <p>
+                    Studio Dự Án Người Việt có quyền cập nhật chính sách quyền riêng tư này bất cứ lúc nào. Khi chúng tôi làm như vậy, chúng tôi sẽ sửa lại ngày "cập nhật" ở cuối trang này. Chúng tôi khuyến khích người dùng thường xuyên kiểm tra trang này để biết bất kỳ thay đổi nào để luôn được thông báo về cách chúng tôi đang giúp bảo vệ thông tin cá nhân mà chúng tôi thu thập. Bạn thừa nhận và đồng ý rằng bạn có trách nhiệm xem xét định kỳ chính sách quyền riêng tư này và nhận thức được các sửa đổi.
+                </p>
+
+                <h3>7. Liên hệ chúng tôi</h3>
+                <p>
+                    Nếu bạn có bất kỳ câu hỏi nào về Chính sách quyền riêng tư này, các hoạt động của trang web này hoặc các giao dịch của bạn với trang web này, vui lòng liên hệ với chúng tôi tại:
+                </p>
+                <p>Email: StudioDANV@hotmail.com</p>
+                <p class="text-sm text-gray-500 mt-4">Ngày cập nhật cuối cùng: 15/07/2025</p>
+            </section>
+        </div>
+
+        <!-- Trang Điều khoản sử dụng -->
+        <div id="page-terms-of-service" class="page-content">
+            <section class="content-page">
+                <h2>Điều khoản sử dụng</h2>
+                <p>
+                    Chào mừng bạn đến với Studio Dự Án Người Việt. Các điều khoản và điều kiện này ("Điều khoản") chi phối việc bạn truy cập và sử dụng trang web của chúng tôi. Bằng cách truy cập hoặc sử dụng trang web của chúng tôi, bạn đồng ý tuân thủ các Điều khoản này. Nếu bạn không đồng ý với bất kỳ phần nào của các điều khoản này, bạn không được phép truy cập trang web.
+                </p>
+
+                <h3>1. Chấp thuận Điều khoản</h3>
+                <p>
+                    Bằng cách sử dụng trang web này, bạn xác nhận rằng bạn đã đọc, hiểu và đồng ý bị ràng buộc bởi các Điều khoản này, cũng như Chính sách quyền riêng tư của chúng tôi. Các Điều khoản này áp dụng cho tất cả khách truy cập, người dùng và những người khác truy cập hoặc sử dụng Dịch vụ.
+                </p>
+                <h3>2. Sử dụng Dịch vụ</h3>
+                <p>
+                    Bạn đồng ý sử dụng trang web chỉ cho các mục đích hợp pháp và theo các Điều khoản này. Bạn đồng ý không sử dụng trang web:
+                </p>
+                <ul>
+                    <li>Theo bất kỳ cách nào vi phạm bất kỳ luật hoặc quy định quốc gia hoặc quốc tế hiện hành nào.</li>
+                    <li>Để tham gia vào bất kỳ hành vi nào hạn chế hoặc cản trở việc sử dụng hoặc hưởng thụ trang web của bất kỳ ai, hoặc có thể gây hại cho Studio Dự Án Người Việt hoặc người dùng của trang web.</li>
+                    <li>Để truyền tải hoặc tạo điều kiện cho việc gửi bất kỳ tài liệu quảng cáo hoặc khuyến mại nào, bao gồm bất kỳ "thư rác", "thư dây chuyền" hoặc bất kỳ hình thức chào mời tương tự nào khác.</li>
+                    <li>Để mạo danh hoặc cố gắng mạo danh Studio Dự Án Người Việt, nhân viên của Studio Dự Án Người Việt, người dùng khác hoặc bất kỳ người hoặc tổ chức nào khác.</li>
+                </ul>
+
+                <h3>3. Nội dung người dùng</h3>
+                <p>
+                    Trang web có thể cho phép bạn đăng tải, liên kết, lưu trữ, chia sẻ và cung cấp một số thông tin, văn bản, đồ họa, video hoặc tài liệu khác ("Nội dung người dùng"). Bạn chịu trách nhiệm hoàn toàn về Nội dung người dùng mà bạn đăng tải lên trang web.
+                </p>
+                <ul>
+                    <li>Bạn tuyên bố và bảo đảm rằng: (i) Nội dung người dùng là của bạn (bạn sở hữu nó) hoặc bạn có quyền sử dụng nó và cấp cho chúng tôi các quyền và giấy phép như được cung cấp trong các Điều khoản này, và (ii) việc đăng tải Nội dung người dùng của bạn trên hoặc thông qua Dịch vụ không vi phạm quyền riêng tư, quyền công khai, bản quyền, quyền hợp đồng hoặc bất kỳ quyền nào khác của bất kỳ người nào.</li>
+                    <li>Chúng tôi có quyền (nhưng không có nghĩa vụ) xóa hoặc chỉnh sửa bất kỳ Nội dung người dùng nào theo quyết định riêng của chúng tôi.</li>
+                </ul>
+
+                <h3>4. Quyền sở hữu trí tuệ</h3>
+                <p>
+                    Trang web và nội dung gốc của nó (không bao gồm Nội dung người dùng), các tính năng và chức năng là và sẽ vẫn là tài sản độc quyền của Studio Dự Án Người Việt và những người cấp phép của nó. Trang web được bảo vệ bởi bản quyền, nhãn hiệu và các luật khác của cả Việt Nam và các quốc gia khác.
+                </p>
+
+                <h3>5. Từ chối bảo hành</h3>
+                <p>
+                    Việc bạn sử dụng trang web là rủi ro của riêng bạn. Trang web được cung cấp trên cơ sở "NGUYÊN TRẠNG" và "NHƯ HIỆN CÓ". Trang web được cung cấp mà không có bảo hành dưới bất kỳ hình thức nào, dù rõ ràng hay ngụ ý, bao gồm, nhưng không giới hạn, các bảo hành ngụ ý về khả năng bán được, sự phù hợp cho một mục đích cụ thể, không vi phạm hoặc quá trình thực hiện.
+                </p>
+
+                <h3>6. Giới hạn trách nhiệm</h3>
+                <p>
+                    Trong mọi trường hợp, Studio Dự Án Người Việt, cũng như các giám đốc, nhân viên, đối tác, đại lý, nhà cung cấp hoặc chi nhánh của Studio Dự Án Người Việt, sẽ không chịu trách nhiệm về bất kỳ thiệt hại gián tiếp, ngẫu nhiên, đặc biệt, do hậu quả hoặc trừng phạt nào, bao gồm nhưng không giới hạn, mất lợi nhuận, dữ liệu, việc sử dụng, thiện chí hoặc các tổn thất vô hình khác, do (i) việc bạn truy cập hoặc sử dụng hoặc không thể truy cập hoặc sử dụng Dịch vụ; (ii) bất kỳ hành vi hoặc nội dung nào của bất kỳ bên thứ ba nào trên Dịch vụ; (iii) bất kỳ nội dung nào có được từ Dịch vụ; và (iv) truy cập, sử dụng hoặc thay đổi trái phép các bản truyền hoặc nội dung của bạn, dù dựa trên bảo hành, hợp đồng, sai lầm (bao gồm cả sơ suất) hoặc bất kỳ lý thuyết pháp lý nào khác, dù chúng tôi đã được thông báo về khả năng xảy ra thiệt hại đó hay không.
+                </p>
+
+                <h3>7. Chấm dứt</h3>
+                <p>
+                    Chúng tôi có thể chấm dứt hoặc đình chỉ quyền truy cập của bạn vào Dịch vụ ngay lập tức, mà không cần thông báo trước hoặc chịu trách nhiệm, theo quyết định riêng của chúng tôi, vì bất kỳ lý do gì, bao gồm nhưng không giới hạn, việc bạn vi phạm Điều khoản.
+                </p>
+
+                <h3>8. Luật áp dụng</h3>
+                <p>
+                    Các Điều khoản này sẽ được điều chỉnh và hiểu theo luật pháp của Việt Nam, không liên quan đến các quy định xung đột pháp luật của nó.
+                </p>
+
+                <h3>9. Thay đổi Điều khoản</h3>
+                <p>
+                    Chúng tôi bảo lưu quyền, theo quyết định riêng của chúng tôi, sửa đổi hoặc thay thế các Điều khoản này bất cứ lúc nào. Nếu một bản sửa đổi là quan trọng, chúng tôi sẽ cố gắng cung cấp thông báo ít nhất 30 ngày trước khi bất kỳ điều khoản mới nào có hiệu lực. Điều gì cấu thành một thay đổi quan trọng sẽ được xác định theo quyết định riêng của chúng tôi.
+                </p>
+
+                <h3>10. Liên hệ</h3>
+                <p>
+                    Nếu bạn có bất kỳ câu hỏi nào về các Điều khoản này, vui lòng liên hệ với chúng tôi tại:
+                </p>
+                <p>Email: StudioDANV@hotmail.com</p>
+                <p class="text-sm text-gray-500 mt-4">Ngày cập nhật cuối cùng: 15/07/2025</p>
+            </section>
+        </div>
 
     </main>
 
-    <footer class="w-full text-center p-6 mt-12" style="color: #555;">
-        <p>&copy; 2025 Studio Dự Án Người Việt. All rights reserved.</p>
+    <!-- Footer -->
+    <footer id="main-footer" class="main-footer w-full">
+        <div class="main-footer-logo">
+            <img src="https://i.postimg.cc/x87pGPGS/PNG-2.png" alt="Studio Dự Án Người Việt Logo">
+        </div>
+        <nav class="main-footer-nav">
+            <ul>
+                <li><a href="https://scratch.mit.edu/studios/33509364" target="_blank">Truy cập studio trên Scratch</a></li>
+                <li><a href="#privacy-policy" data-page="privacy-policy">Chính sách quyền riêng tư</a></li>
+                <li><a href="#terms-of-service" data-page="terms-of-service">Điều khoản sử dụng</a></li>
+            </ul>
+        </nav>
+        <p class="footer-copyright">&copy; 2025 Studio Dự Án Người Việt. All rights reserved.</p>
     </footer>
 
     <!-- Nút Gấu Gấu chính trên trang -->
     <button id="gaugauMainBtn">
-        <span class="dot"></span>
+        <img src="https://i.ibb.co/wFX7DvSn/costume5-1.png" alt="Gấu Gấu Avatar">
         <span class="text">Gấu Gấu</span>
     </button>
 
@@ -1704,11 +2346,9 @@
                 <div class="flex gap-2">
                     <div class="image-upload-wrapper">
                         <button class="image-upload-button">
-                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor"
-                                class="w-6 h-6">
-                                <path fill-rule="evenodd"
-                                    d="M1.5 6a2.25 2.25 0 012.25-2.25h16.5A2.25 2.25 0 0122.5 6v12a2.25 2.25 0 01-2.25 2.25H3.75A2.25 2.25 0 011.5 18V6zM3 16.06V18c0 .414.336.75.75.75h16.5A.75.75 0 0021 18v-1.94l-2.69-2.69a1.5 1.5 0 00-2.12 0l-.88.879.97.97a.75.75 0 11-1.06 1.06l-5.16-5.159a1.5 1.5 0 00-2.12 0L3 16.061zm10.125-7.81a1.125 1.125 0 112.25 0 1.125 1.125 0 01-2.25 0z"
-                                    clip-rule="evenodd" />
+                            <!-- Updated SVG for image upload icon -->
+                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="w-6 h-6">
+                                <path fill-rule="evenodd" d="M1.5 6a2.25 2.25 0 012.25-2.25h16.5A2.25 2.25 0 0122.5 6v12a2.25 2.25 0 01-2.25 2.25H3.75A2.25 2.25 0 011.5 18V6zM3 16.06V18c0 .414.336.75.75.75h16.5A.75.75 0 0021 18v-1.94l-2.69-2.69a1.5 1.5 0 00-2.12 0l-.88.879.97.97a.75.75 0 11-1.06 1.06l-5.16-5.159a1.5 1.5 0 00-2.12 0L3 16.061zm10.125-7.81a1.125 1.125 0 112.25 0 1.125 1.125 0 01-2.25 0z" clip-rule="evenodd" />
                             </svg>
                             <input type="file" id="imageUpload" multiple accept="image/*">
                         </button>
@@ -1761,25 +2401,80 @@
                 animationObserver.observe(el);
             });
 
-            // Menubar navigation click handler (được điều chỉnh để cuộn mượt mà theo trình duyệt)
-            document.querySelectorAll('.menubar-nav a').forEach(link => {
-                link.addEventListener('click', function (e) {
-                    e.preventDefault();
-                    const targetId = this.getAttribute('href').substring(1);
-                    const targetSection = document.getElementById(targetId);
+            // Page routing logic
+            const pages = document.querySelectorAll('.page-content');
+            const navLinks = document.querySelectorAll('.menubar-nav a, .mobile-menu-overlay a');
+            const footerLinks = document.querySelectorAll('.main-footer-nav a'); // New: Select footer links
+
+            function showPage(pageId) {
+                pages.forEach(page => {
+                    page.classList.remove('active');
+                    page.style.display = 'none'; // Ensure display is none
+                });
+                const activePage = document.getElementById(pageId);
+                if (activePage) {
+                    activePage.classList.add('active');
+                    activePage.style.display = 'block'; // Ensure display is block
+                    // Scroll to top of the new page content area
+                    activePage.scrollTop = 0;
+                }
+            }
+
+            function handleNavigation(e) {
+                e.preventDefault();
+                const targetHref = this.getAttribute('href');
+                const dataPage = this.getAttribute('data-page');
+
+                if (targetHref.startsWith('https://')) { // External link in footer
+                    window.open(targetHref, '_blank');
+                    return;
+                }
+
+                if (dataPage === 'home-section') {
+                    // If it's a section on the homepage, switch to homepage and scroll
+                    showPage('page-home');
+                    const targetSectionId = targetHref.substring(1);
+                    const targetSection = document.getElementById(targetSectionId);
                     if (targetSection) {
                         const menubarHeight = menubar.offsetHeight;
                         const targetY = targetSection.offsetTop - menubarHeight;
                         window.scrollTo({ top: targetY, behavior: 'smooth' });
-
-                        // Cập nhật trạng thái active cho menu (tùy chọn, có thể dùng IntersectionObserver để tự động hơn)
-                        document.querySelectorAll('.menubar-nav a').forEach(navLink => {
-                            navLink.classList.remove('active');
-                        });
-                        this.classList.add('active');
                     }
-                });
+                } else {
+                    // If it's a new page, switch to that page
+                    const pageId = targetHref.substring(1); // e.g., #thongbao -> thongbao, #privacy-policy -> privacy-policy
+                    showPage('page-' + pageId);
+                    window.scrollTo({ top: 0, behavior: 'smooth' }); // Scroll to top of window for new page
+                }
+
+                // Update active class for navigation links (only for main nav)
+                navLinks.forEach(link => link.classList.remove('active'));
+                // Only add active class if it's a main nav link
+                if (this.closest('.menubar-nav')) {
+                    this.classList.add('active');
+                }
+                // Close mobile menu if open
+                mobileMenuOverlay.classList.remove('active');
+            }
+
+            navLinks.forEach(link => {
+                link.addEventListener('click', handleNavigation);
             });
+
+            // New: Add event listeners for footer links
+            footerLinks.forEach(link => {
+                link.addEventListener('click', handleNavigation);
+            });
+
+
+            // Initial page load based on hash or default to home
+            const initialHash = window.location.hash.substring(1);
+            if (initialHash && document.getElementById('page-' + initialHash)) {
+                showPage('page-' + initialHash);
+            } else {
+                showPage('page-home');
+            }
+
 
             // Mobile Menu Logic
             const mobileMenuButton = document.getElementById('mobileMenuButton');
@@ -1793,21 +2488,6 @@
             closeMobileMenuButton.addEventListener('click', () => {
                 mobileMenuOverlay.classList.remove('active');
             });
-
-            mobileMenuOverlay.querySelectorAll('a').forEach(link => {
-                link.addEventListener('click', function (e) {
-                    e.preventDefault();
-                    const targetId = this.getAttribute('href').substring(1);
-                    const targetSection = document.getElementById(targetId);
-                    if (targetSection) {
-                        const menubarHeight = menubar.offsetHeight;
-                        const targetY = targetSection.offsetTop - menubarHeight;
-                        window.scrollTo({ top: targetY, behavior: 'smooth' });
-                        mobileMenuOverlay.classList.remove('active'); // Close menu after clicking
-                    }
-                });
-            });
-
 
             // AI Chatbot Logic
             const gaugauMainBtn = document.getElementById('gaugauMainBtn');
@@ -1876,50 +2556,72 @@
                         // Restore original text content of the parent bubble's text-content div
                         const textContentDiv = parentBubble.querySelector('.message-text-content');
                         if (textContentDiv) {
-                            textContentDiv.textContent = textToSpeak; // Restore to original text
+                            // Only restore if it's not the current bubble being processed
+                            if (textContentDiv.closest('.message-bubble') !== messageBubbleElement) {
+                                textContentDiv.textContent = textContentDiv.dataset.originalText || textContentDiv.textContent;
+                            }
                         }
                     }
                 });
 
+                // Get the bubbleContentContainer which is the direct parent of message-text-content
+                const bubbleContentContainer = messageBubbleElement.querySelector('.bubble-content-container');
+                if (!bubbleContentContainer) {
+                    console.error("Error: bubble-content-container not found in message bubble. Cannot highlight.");
+                    spamWarning.textContent = "Lỗi hiển thị tin nhắn, không thể đọc. 😥";
+                    spamWarning.style.display = 'block';
+                    setTimeout(() => spamWarning.style.display = 'none', spamCooldown * 3);
+                    return;
+                }
 
-                const tempTextDiv = document.createElement('div');
-                tempTextDiv.id = `text-content-${messageBubbleElement.id}`; // Unique ID for text content div
-                tempTextDiv.classList.add('message-text-content'); // Add class for styling
+                // Find the existing text content div within the bubbleContentContainer
+                const existingTextContentDiv = bubbleContentContainer.querySelector('.message-text-content');
 
-                // Split by words and keep spaces/punctuation as separate elements
-                // Regex: /(\s+|[.,!?;:]+)/g matches one or more whitespace chars OR one punctuation char
-                const wordsAndSeparators = textToSpeak.split(/(\s+|[.,!?;:]+)/).filter(s => s.length > 0);
-
-                let charIndexMap = []; // Map charIndex to word span ID
-                let currentOffset = 0;
-                let spanCounter = 0;
-
-                wordsAndSeparators.forEach((part) => {
-                    if (/\S/.test(part)) { // If it's not just whitespace
-                        const span = document.createElement('span');
-                        span.id = `word-${messageBubbleElement.id}-${spanCounter++}`;
-                        span.textContent = part;
-                        charIndexMap.push({
-                            start: currentOffset,
-                            end: currentOffset + part.length,
-                            id: span.id,
-                            text: part
-                        });
-                        tempTextDiv.appendChild(span);
-                    } else { // It's whitespace or punctuation, just append as text node
-                        tempTextDiv.appendChild(document.createTextNode(part));
-                    }
-                    currentOffset += part.length;
-                });
-
-                // Replace the existing text content with the new spanned content
-                const existingTextContentDiv = messageBubbleElement.querySelector('.message-text-content');
                 if (existingTextContentDiv) {
-                    messageBubbleElement.replaceChild(tempTextDiv, existingTextContentDiv);
+                    // Store original text before replacing with spans
+                    existingTextContentDiv.dataset.originalText = existingTextContentDiv.textContent;
+
+                    const tempTextDiv = document.createElement('div');
+                    tempTextDiv.classList.add('message-text-content'); // Add class for styling
+                    tempTextDiv.id = `text-content-${messageBubbleElement.id}`; // Unique ID for text content div
+
+                    // Split by words and keep spaces/punctuation as separate elements
+                    const wordsAndSeparators = textToSpeak.split(/(\s+|[.,!?;:]+)/).filter(s => s.length > 0);
+
+                    let charIndexMap = []; // Map charIndex to word span ID
+                    let currentOffset = 0;
+                    let spanCounter = 0;
+
+                    wordsAndSeparators.forEach((part) => {
+                        if (/\S/.test(part)) { // If it's not just whitespace
+                            const span = document.createElement('span');
+                            span.id = `word-${messageBubbleElement.id}-${spanCounter++}`;
+                            span.textContent = part;
+                            charIndexMap.push({
+                                start: currentOffset,
+                                end: currentOffset + part.length,
+                                id: span.id,
+                                text: part
+                            });
+                            tempTextDiv.appendChild(span);
+                        } else { // It's whitespace or punctuation, just append as text node
+                            tempTextDiv.appendChild(document.createTextNode(part));
+                        }
+                        currentOffset += part.length;
+                    });
+
+                    // Replace the existing text content with the new spanned content within its direct parent
+                    bubbleContentContainer.replaceChild(tempTextDiv, existingTextContentDiv);
                 } else {
                     // This case should ideally not happen if appendMessage creates it correctly
-                    messageBubbleElement.prepend(tempTextDiv);
+                    console.warn("No existing message-text-content div found to highlight. Creating a new one.");
+                    const tempTextDiv = document.createElement('div');
+                    tempTextDiv.classList.add('message-text-content');
+                    tempTextDiv.id = `text-content-${messageBubbleElement.id}`;
+                    tempTextDiv.textContent = textToSpeak; // Fallback to plain text if no existing div
+                    bubbleContentContainer.prepend(tempTextDiv); // Prepend so it's before code blocks
                 }
+
 
                 const utterance = new SpeechSynthesisUtterance(textToSpeak);
                 utterance.lang = 'vi-VN';
@@ -1965,10 +2667,14 @@
                         lastHighlightedSpan.classList.remove('highlight-word');
                     }
                     // Restore original text content after speech ends
-                    const finalContentDiv = messageBubbleElement.querySelector('.message-text-content');
-                    if (finalContentDiv) {
-                        finalContentDiv.textContent = textToSpeak;
+                    const finalContentDiv = bubbleContentContainer.querySelector('.message-text-content');
+                    if (finalContentDiv && finalContentDiv.dataset.originalText) {
+                        finalContentDiv.textContent = finalContentDiv.dataset.originalText;
+                        delete finalContentDiv.dataset.originalText; // Clean up
+                    } else if (finalContentDiv) {
+                        finalContentDiv.textContent = textToSpeak; // Fallback if originalText not stored
                     }
+
                     currentUtterance = null;
                     isWaitingForAIResponse = false; // AI finished speaking, no longer waiting
                     // Re-enable mic after Gấu Gấu finishes speaking if live chat is active
@@ -1991,9 +2697,12 @@
                     if (lastHighlightedSpan) {
                         lastHighlightedSpan.classList.remove('highlight-word');
                     }
-                    const errorContentDiv = messageBubbleElement.querySelector('.message-text-content');
-                    if (errorContentDiv) {
-                        errorContentDiv.textContent = textToSpeak; // Restore original text
+                    const errorContentDiv = bubbleContentContainer.querySelector('.message-text-content');
+                    if (errorContentDiv && errorContentDiv.dataset.originalText) {
+                        errorContentDiv.textContent = errorContentDiv.dataset.originalText;
+                        delete errorContentDiv.dataset.originalText;
+                    } else if (errorContentDiv) {
+                        errorContentDiv.textContent = textToSpeak; // Fallback
                     }
                     currentUtterance = null;
                     isWaitingForAIResponse = false; // AI speech error, no longer waiting
@@ -2057,12 +2766,18 @@
                     const parsedContent = parseMarkdownAndCodeBlocks(content);
                     let fullTextForTTS = ''; // Collect text for TTS
 
+                    // Create a container for all content within the bubble
+                    const bubbleContentContainer = document.createElement('div');
+                    bubbleContentContainer.classList.add('bubble-content-container'); // New class for styling if needed
+                    messageBubble.appendChild(bubbleContentContainer);
+
+
                     parsedContent.forEach(part => {
                         if (part.type === 'text') {
                             const textContentDiv = document.createElement('div');
                             textContentDiv.classList.add('message-text-content');
-                            textContentDiv.id = `text-content-${messageBubble.id}`;
-                            messageBubble.appendChild(textContentDiv);
+                            // No ID here, as ID is for the whole bubble and used for highlighting
+                            bubbleContentContainer.appendChild(textContentDiv);
                             typeMessage(textContentDiv, part.content, () => {
                                 // Enable read button after typing is complete
                                 const readBtn = messageBubble.querySelector('.read-message-btn');
@@ -2073,13 +2788,13 @@
                             const codeBlock = document.createElement('pre');
                             codeBlock.classList.add('scratch-code-block', part.language || 'default');
                             codeBlock.textContent = part.content;
-                            messageBubble.appendChild(codeBlock);
+                            bubbleContentContainer.appendChild(codeBlock);
                             // Do NOT add code block text to TTS
                         } else if (part.type === 'html') { // For bold/italic converted HTML and hyperlinks
                             const htmlContentDiv = document.createElement('div');
                             htmlContentDiv.classList.add('message-text-content');
                             htmlContentDiv.innerHTML = part.content; // Use innerHTML for parsed Markdown and links
-                            messageBubble.appendChild(htmlContentDiv);
+                            bubbleContentContainer.appendChild(htmlContentDiv);
                             // For TTS, extract plain text from HTML
                             const tempDiv = document.createElement('div');
                             tempDiv.innerHTML = part.content;
@@ -2089,16 +2804,13 @@
 
                     const readBtn = document.createElement('button');
                     readBtn.classList.add('read-message-btn');
-                    readBtn.innerHTML = `
-                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor">
-                            <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 14.5v-9l6 4.5-6 4.5z"/>
-                        </svg>
-                    `;
+                    readBtn.textContent = '🔊'; // Changed from SVG to emoji
                     readBtn.title = "Nghe Gấu Gấu đọc";
                     readBtn.disabled = true; // Disable until typed
                     messageBubble.appendChild(readBtn);
 
                     readBtn.addEventListener('click', () => {
+                        console.log('Read message button clicked!'); // Debugging log
                         handleReadMessage(messageBubble, fullTextForTTS.trim()); // Use collected text for TTS
                     });
 
@@ -2193,9 +2905,9 @@ Các khối này sẽ có nền màu đặc trưng của khối Scratch đó, g�
 
 Thông tin về Studio Dự Án Người Việt:
 - Là một studio Việt Nam nổi tiếng trong Scratch.
-- Các manager của studio gồm: lunavocado (host), ysanamoto, Fleiroscracth, StudioDANV, ngw--, Nhienzcute, archion techno, duc_2014.
+- Các manager của studio gồm: lunavocado (host), ysanamoto, Fleiroscracth, StudioDANV, ngw--, Nhienzcute, archion techno, duc_2014, _-Zipper-_.
 - Những người bạn hỗ trợ sẽ là thành viên trong studio này.
-- Mô tả của studio: "Duy Trì Bởi ❤️ Đội Ngũ Manager⛵️[-Lời Nói Đầu-]✈️ ⭐ Studio này nhầm mục đích phát triển, ủng hộ, quảng bá các dự án lập trình Việt Nam, chú trọng các dự án do người Việt sáng tạo. ✌️✨ Managers thân thiện nhiệt tình, sẵn sàng giúp đỡ bạn!"
+- Mô tả của studio: "Duy Trì Bởi ❤️ Đội Ngũ Manager⛵️[-Lời Nói Đầu-]✈️ ⭐ Studio này nhầm mục đích phát triển, ủng hộ, quảng bá các dự án lập trình Việt Nam, chú trọng các dự án do người Việt sáng tạo.✌️✨ Managers thân thiện nhiệt tình, sẵn sàng giúp đỡ bạn!"
 - Quy định Tuân thủ: "☘️[-Tuân Thủ-]✨ ⛺️ Có thể thêm các chương trình Việt Nam và các quốc gia khác. ✋ Nghiêm cấm dự án, bình luận thô tục và vi phạm thuần phong mỹ tục. ♨️ Vui lòng mỗi tài khoản chỉ đăng tối đa 4 dự án/ 1 ngày (Tránh việc trôi dự án của các Scratcher khác) ✉️ Hãy hạn chế các hoạt động quảng cáo. ⛱️ Người tham gia là người Việt hoặc có thể là người nước ngoài cùng giao lưu. (Studio accepts foreigners) ✔️ Chúng tôi chấp nhận các ý kiến và đóng góp của bạn tại phần Bình luận studio. ⚙️ Các nội dung vi phạm sẽ bị xóa."
 - Lưu ý quan trọng: "⚠️[-Lưu Ý-]⚡️ ⚙️ Đội ngũ Managers studio sẽ kiểm tra MỖI NGÀY và xóa các chương trình vi phạm. ❗️ Các vi phạm của thành viên studio sẽ bị trừ vào Điểm đánh giá. ⚡️ >10 điểm đánh giá sẽ bị loại. ⚠️ Bất kì báo cáo nào vui lòng gửi về bình luận tại studio để được xử lí. ———————————— ✉️ [-Thông Tin-] ☎️ ☀️ Trang Wiki Tiếng Việt test.scratch-wiki.info/wiki/Vie ☎️ Giúp đỡ/ Tố cáo (24/7) StudioDANV@hotmail.com ✅ FAQ - Câu hỏi thường gặp https://bom.so/VNAI ✉️ Tra cứu Điểm Đánh Giá https://bom.so/StudioSS ☄️ Máy chủ DS https://byvn.net/QHMZ"
 - Sinh nhật: 15/06/2023
@@ -2399,7 +3111,7 @@ Thông tin về Studio Dự Án Người Việt:
                                         micToggleBtn.classList.add('active'); // Set mic active icon
                                     } catch (e) {
                                         console.error("Error restarting recognition after error:", e);
-                                        spamWarning.textContent = "Không thể bật lại mic sau lỗi. Vui lòng thử lại Live Chat. �";
+                                        spamWarning.textContent = "Không thể bật lại mic sau lỗi. Vui lòng thử lại Live Chat. 🔇";
                                         spamWarning.style.display = 'block';
                                         setTimeout(() => spamWarning.style.display = 'none', spamCooldown * 3);
                                     }
@@ -2539,6 +3251,7 @@ Thông tin về Studio Dự Án Người Việt:
                             const lastAiMessageBubble = chatMessages.querySelector('.message-ai:last-child .message-bubble');
                             if (lastAiMessageBubble) {
                                 // Get the full text content from the message bubble for reading
+                                // This will now correctly get text from both .message-text-content and .scratch-code-block
                                 const aiResponseTextContent = Array.from(lastAiMessageBubble.querySelectorAll('.message-text-content, .scratch-code-block'))
                                     .map(el => el.textContent).join(' ');
                                 // Ensure text content is not empty or just whitespace before attempting to speak
@@ -2614,9 +3327,68 @@ Thông tin về Studio Dự Án Người Việt:
                     sendMessage();
                 }
             });
+
+            // Auto-scroll for Manager section
+            const horizontalScrollContainer = document.querySelector('.horizontal-scroll-container');
+            let scrollAmount = 0;
+            const scrollSpeed = 0.5; // Pixels per frame
+            let animationFrameId;
+
+            function autoScrollManagers() {
+                if (!horizontalScrollContainer) return;
+
+                const maxScrollLeft = horizontalScrollContainer.scrollWidth - horizontalScrollContainer.clientWidth;
+
+                if (maxScrollLeft <= 0) { // No need to scroll if content fits
+                    return;
+                }
+
+                scrollAmount += scrollSpeed;
+                if (scrollAmount >= maxScrollLeft) {
+                    scrollAmount = 0; // Reset to beginning
+                }
+                horizontalScrollContainer.scrollLeft = scrollAmount;
+
+                animationFrameId = requestAnimationFrame(autoScrollManagers);
+            }
+
+            // Start auto-scrolling when the page is loaded and `horizontalScrollContainer` is visible
+            // Use IntersectionObserver to start/stop scrolling when in/out of view
+            const scrollObserver = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        if (!animationFrameId) { // Only start if not already running
+                            autoScrollManagers();
+                        }
+                    } else {
+                        if (animationFrameId) { // Stop if not intersecting
+                            cancelAnimationFrame(animationFrameId);
+                            animationFrameId = null;
+                        }
+                    }
+                });
+            }, { threshold: 0.1 }); // Trigger when 10% of the container is visible
+
+            if (horizontalScrollContainer) {
+                scrollObserver.observe(horizontalScrollContainer);
+            }
+
+            // Optional: Pause on hover
+            if (horizontalScrollContainer) {
+                horizontalScrollContainer.addEventListener('mouseenter', () => {
+                    if (animationFrameId) {
+                        cancelAnimationFrame(animationFrameId);
+                        animationFrameId = null;
+                    }
+                });
+                horizontalScrollContainer.addEventListener('mouseleave', () => {
+                    if (!animationFrameId && horizontalScrollContainer.scrollWidth > horizontalScrollContainer.clientWidth) {
+                        autoScrollManagers();
+                    }
+                });
+            }
         });
     </script>
 </body>
 
 </html>
-�
