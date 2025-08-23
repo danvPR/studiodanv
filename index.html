@@ -2342,8 +2342,13 @@
     </br>
         <p 20 Nguyễn Thiện Thành, Thủ Thiêm, Thủ Đức, Thành phố Hồ Chí Minh, Việt Nam.</p>
     </footer>
-
+<!-- Input ngoài overlay, để gửi cho Gấu Gấu -->
+<div id="external-chat-area" style="position:fixed;bottom:110px;right:2rem;z-index:1490;">
+    <input type="text" id="externalChatInput" placeholder="Nhập tin nhắn cho Gấu Gấu..." style="padding:8px;border-radius:8px;border:1px solid #ccc;width:200px;">
+    <button id="sendExternalChatBtn" style="padding:8px 12px;border-radius:8px;background:#ef4444;color:white;font-weight:bold;">Gửi</button>
+</div>
     <!-- Nút Gấu Gấu chính trên trang -->
+    
     <button id="gaugauMainBtn">
         <img src="https://i.ibb.co/wFX7DvSn/costume5-1.png" alt="Gấu Gấu Avatar">
         <span class="text">Gấu Gấu</span>
@@ -2410,6 +2415,27 @@
     </div>
 
     <script>
+        // Chuyển tin nhắn từ input ngoài vào chat Gấu Gấu
+const externalChatInput = document.getElementById('externalChatInput');
+const sendExternalChatBtn = document.getElementById('sendExternalChatBtn');
+
+if (externalChatInput && sendExternalChatBtn) {
+    sendExternalChatBtn.addEventListener('click', () => {
+        const msg = externalChatInput.value.trim();
+        if (msg) {
+            // Mở overlay chat nếu chưa mở
+            aiChatOverlay.classList.add('active');
+            // Đưa tin nhắn vào input trong overlay và gọi hàm gửi tin nhắn
+            chatInput.value = msg;
+            sendMessage();
+            externalChatInput.value = '';
+        }
+    });
+    // Hỗ trợ Enter để gửi
+    externalChatInput.addEventListener('keypress', (e) => {
+        if (e.key === 'Enter') sendExternalChatBtn.click();
+    });
+}
               // JS Bubble Chat Gấu Gấu
   const gaugauMainBtn = document.getElementById('gaugauMainBtn');
   const gaugauBubbleChat = document.getElementById('gaugauBubbleChat');
