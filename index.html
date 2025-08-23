@@ -1655,6 +1655,21 @@
             line-height: 1.6;
             color: #555;
         }
+        #gaugauBubbleChat {
+          position: fixed;
+          bottom: 110px; /* ngay trên nút Gấu Gấu, chỉnh lại nếu cần */
+          right: 32px;
+          width: 310px;
+          background: white;
+          border-radius: 20px;
+          box-shadow: 0 8px 28px rgba(0,0,0,0.18);
+          z-index: 2000;
+          animation: fadeInBubble 0.3s;
+        }
+@keyframes fadeInBubble {
+  from { opacity: 0; transform: scale(0.95);}
+  to { opacity: 1; transform: scale(1);}
+}
     </style>
 </head>
 
@@ -1713,7 +1728,7 @@
         <ul>
             <li><a href="#home" data-page="home">Trang Chủ</a></li>
             <li><a href="#thongbao" data-page="thongbao">Thông báo</a></li>
-            <li><a href="#manager" data-page="banquanly-detail">Ban Quản Lý</a></li>
+            <li><a href="#manager" data-page="manager">Ban Quản Lý</a></li>
         </ul>
     </div>
 
@@ -2064,7 +2079,7 @@
         </div>
 
         <!-- Trang Ban Quản Lý Chi Tiết -->
-        <div id="page-banquanly-detail" class="page-content">
+        <div id="page-manager" class="page-content">
             <section class="liquid-glass-container p-8 md:p-12 text-center">
                 <div class="liquid-glass-overlay"></div>
                 <div class="liquid-glass-content">
@@ -2334,6 +2349,25 @@
         <span class="text">Gấu Gấu</span>
     </button>
 
+    <!-- Bubble Chat của Gấu Gấu -->
+<div id="gaugauBubbleChat" style="display:none;">
+  <div style="display:flex;align-items:center;justify-content:space-between;padding:8px 16px;">
+    <div style="display:flex;align-items:center;gap:8px;">
+      <img src="https://i.ibb.co/wFX7DvSn/costume5-1.png" alt="Gấu Gấu" style="width:36px;height:36px;border-radius:50%;">
+      <span style="font-weight:bold;">Gấu Gấu</span>
+    </div>
+    <button id="closeBubbleChatBtn" style="background:none;border:none;font-size:24px;cursor:pointer;">×</button>
+  </div>
+  <div id="bubbleChatMessages" style="max-height:180px;overflow:auto;padding:8px 16px;">
+    <div style="font-size:1rem;color:#555;">Trò chuyện với Gấu Gấu nhé?</div>
+    <!-- Tin nhắn sẽ được thêm vào đây -->
+  </div>
+  <div style="display:flex;gap:8px;padding:8px 16px;">
+    <input id="bubbleChatInput" type="text" placeholder="Nhập tin nhắn..." style="flex:1;border-radius:18px;border:1px solid #eee;padding:6px 12px;">
+    <button id="sendBubbleChatBtn" style="background:#3b82f6;color:white;border:none;border-radius:18px;padding:6px 16px;font-weight:bold;cursor:pointer;">Gửi</button>
+  </div>
+</div>
+
     <!-- Overlay cho AI Chat -->
     <div id="aiChatOverlay" class="ai-chat-overlay">
         <div class="ai-chat-container">
@@ -2376,6 +2410,45 @@
     </div>
 
     <script>
+              // JS Bubble Chat Gấu Gấu
+  const gaugauMainBtn = document.getElementById('gaugauMainBtn');
+  const gaugauBubbleChat = document.getElementById('gaugauBubbleChat');
+  const closeBubbleChatBtn = document.getElementById('closeBubbleChatBtn');
+  const sendBubbleChatBtn = document.getElementById('sendBubbleChatBtn');
+  const bubbleChatInput = document.getElementById('bubbleChatInput');
+  const bubbleChatMessages = document.getElementById('bubbleChatMessages');
+
+  // Bấm nút Gấu Gấu => Hiện/ẩn bubble chat
+  gaugauMainBtn.addEventListener('click', () => {
+    gaugauBubbleChat.style.display = (gaugauBubbleChat.style.display === 'none' || !gaugauBubbleChat.style.display) ? 'block' : 'none';
+  });
+
+  // Nút X tắt bubble
+  closeBubbleChatBtn.addEventListener('click', () => {
+    gaugauBubbleChat.style.display = 'none';
+  });
+
+  // Gửi tin nhắn (mẫu, có thể nâng cấp AI như chat overlay)
+  sendBubbleChatBtn.addEventListener('click', () => {
+    const msg = bubbleChatInput.value.trim();
+    if (!msg) return;
+    // Hiển thị tin nhắn mới
+    const userMsgDiv = document.createElement('div');
+    userMsgDiv.textContent = msg;
+    userMsgDiv.style = "background:#3b82f6;color:white;border-radius:12px;padding:5px 10px;margin:5px 0;text-align:right;";
+    bubbleChatMessages.appendChild(userMsgDiv);
+    bubbleChatInput.value = '';
+    bubbleChatMessages.scrollTop = bubbleChatMessages.scrollHeight;
+
+    // Trả lời tự động (có thể gọi API AI như overlay)
+    setTimeout(() => {
+      const replyDiv = document.createElement('div');
+      replyDiv.textContent = "Gấu Gấu: Tớ đã nhận được tin nhắn của bạn! 🐻";
+      replyDiv.style = "background:#eee;color:#333;border-radius:12px;padding:5px 10px;margin:5px 0;text-align:left;";
+      bubbleChatMessages.appendChild(replyDiv);
+      bubbleChatMessages.scrollTop = bubbleChatMessages.scrollHeight;
+    }, 500);
+  });
         // JavaScript cho hiệu ứng cuộn và các animation
         document.addEventListener('DOMContentLoaded', () => {
             const body = document.body;
